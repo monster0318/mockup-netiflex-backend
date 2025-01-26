@@ -13,7 +13,6 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
     RouterOutlet,
     FooterComponent,
     NavBarComponent,
-    StartpageComponent,
     LogInComponent,
     SignUpComponent,
   ],
