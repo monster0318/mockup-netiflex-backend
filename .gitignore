@@ -21,6 +21,7 @@ videoflix_frontend/.c9/
 *.sublime-workspace
 
 # Visual Studio Code
+videoflix_frontend/.vscode
 videoflix_frontend/.vscode/*
 videoflix_frontend/!.vscode/settings.json
 videoflix_frontend/!.vscode/tasks.json

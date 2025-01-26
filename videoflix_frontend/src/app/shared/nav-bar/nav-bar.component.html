@@ -1,0 +1,14 @@
+<nav>
+  <div>
+    <div>
+      <img class="loco-icon" src="assets/img/symbol.svg" alt="Logo" />
+      <img class="symbol" [src]="getLogoImage()" alt="Logo" />
+    </div>
+    <button>
+      @if (logOut !== '') {
+      <img [src]="getLogOutImage()" alt="Log out" />
+      }
+      <span> {{ btnText }} </span>
+    </button>
+  </div>
+</nav>

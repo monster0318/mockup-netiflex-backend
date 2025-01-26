@@ -1,0 +1,18 @@
+@import "../../../styles.scss";
+footer {
+  text-align: center;
+  padding-block: 2rem;
+  padding-inline: $paddingInline;
+  > div {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: center;
+    > a {
+      color: #ffffff;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+}
