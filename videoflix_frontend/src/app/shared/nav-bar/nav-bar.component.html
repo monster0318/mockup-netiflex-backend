@@ -4,7 +4,7 @@
       <img class="loco-icon" src="assets/img/symbol.svg" alt="Logo" />
       <img class="symbol" [src]="getLogoImage()" alt="Logo" />
     </div>
-    <button>
+    <button *ngIf="login === false">
       @if (logOut !== '') {
       <img [src]="getLogOutImage()" alt="Log out" />
       }
