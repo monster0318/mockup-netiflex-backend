@@ -1,0 +1,42 @@
+# See http://help.github.com/ignore-files/ for more about ignoring files.
+
+# Compiled output
+videoflix_frontend/dist
+videoflix_frontend/tmp
+videoflix_frontend/out-tsc
+videoflix_frontend/bazel-out
+
+# Node
+videoflix_frontend/node_modules
+videoflix_frontend/npm-debug.log
+videoflix_frontend/yarn-error.log
+
+# IDEs and editors
+videoflix_frontend/.idea/
+videoflix_frontend/.project
+videoflix_frontend/.classpath
+videoflix_frontend/.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+videoflix_frontend/.vscode/*
+videoflix_frontend/!.vscode/settings.json
+videoflix_frontend/!.vscode/tasks.json
+videoflix_frontend/!.vscode/launch.json
+videoflix_frontend/!.vscode/extensions.json
+videoflix_frontend/.history/*
+
+# Miscellaneous
+videoflix_frontend/.angular/cache
+videoflix_frontend/.sass-cache/
+videoflix_frontend/connect.lock
+videoflix_frontend/coverage
+videoflix_frontend/libpeerconnection.log
+videoflix_frontend/testem.log
+videoflix_frontend/typings
+
+# System files
+videoflix_frontend/.DS_Store
+videoflix_frontend/Thumbs.db
