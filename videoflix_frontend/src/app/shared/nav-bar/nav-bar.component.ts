@@ -12,6 +12,7 @@ export class NavBarComponent {
   @Input({ required: true }) logo: string = '';
   @Input() logOut: string = '';
   @Input() btnText: string = 'Log in';
+  @Input() login: boolean = false;
 
   getLogoImage() {
     return 'assets/img/' + this.logo;

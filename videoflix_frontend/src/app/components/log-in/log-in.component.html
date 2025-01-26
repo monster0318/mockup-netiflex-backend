@@ -1,1 +1,39 @@
-<main></main>
+<main>
+  <app-nav-bar logo="logo.svg" [login]="true" />
+  <app-wrapper class="container">
+    <div class="form-group">
+      <h1>Log in</h1>
+      <form>
+        <input type="text" name="email" placeholder="Email Address" />
+        <div class="password">
+          <input
+            [(ngModel)]="password"
+            type="{{ type }}"
+            name="password"
+            placeholder="Password"
+          />
+          <img
+            (click)="showPassword()"
+            src="assets/img/{{ icon }}"
+            alt="hide password"
+          />
+          <div class="warning">
+            <!-- <img src="assets/img/warning.svg" alt="" /> -->
+            <p>Wrong Email or password</p>
+          </div>
+        </div>
+        <div class="remember-me">
+          <input type="checkbox" />
+          <span>Remember me</span>
+        </div>
+        <button type="submit" class="btn-submit">Log in</button>
+      </form>
+      <button type="button" class="btn-forgot-extra">Forgot password?</button>
+      <div class="signup-group">
+        <span>New to Videoflix?</span
+        ><button class="btn-forgot-extra">Sign Up now</button>
+      </div>
+    </div>
+  </app-wrapper>
+  <app-footer />
+</main>
