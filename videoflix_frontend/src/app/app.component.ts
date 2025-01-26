@@ -5,6 +5,8 @@ import { NavBarComponent } from './shared/nav-bar/nav-bar.component';
 import { StartpageComponent } from './components/startpage/startpage.component';
 import { LogInComponent } from './components/log-in/log-in.component';
 import { SignUpComponent } from './components/sign-up/sign-up.component';
+import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { ResetPasswordComponent } from './components/reset-password/reset-password.component';
 
 @Component({
   selector: 'app-root',
@@ -14,7 +16,8 @@ import { SignUpComponent } from './components/sign-up/sign-up.component';
     FooterComponent,
     NavBarComponent,
     LogInComponent,
-    SignUpComponent,
+    ForgotPasswordComponent,
+    ResetPasswordComponent,
   ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss',
