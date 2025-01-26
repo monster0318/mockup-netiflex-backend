@@ -1,0 +1,14 @@
+main {
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6) 100%,
+      rgba(0, 0, 0, 0.4) 55%,
+      rgba(0, 0, 0, 0.7) 100%
+    ),
+    url("/assets/img/signup.jpeg");
+  background-repeat: no-repeat;
+  object-fit: cover;
+  background-position: center;
+}

@@ -1,0 +1,103 @@
+@import "../../../styles.scss";
+main {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.9) 10%,
+      rgba(0, 0, 0, 0.6) 55%,
+      rgba(0, 0, 0, 0.9) 90%
+    ),
+    url("/assets/img/startsite.jpeg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+  section {
+    flex: 1;
+  }
+}
+
+section {
+  display: flex;
+  padding-inline: $paddingInline;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  color: #ffffff;
+  > h1 {
+    font-weight: 700;
+    font-size: 48px;
+    line-height: 62.5px;
+    text-align: center;
+  }
+  > p {
+    text-align: center;
+  }
+  > div {
+    display: flex;
+    gap: 1rem;
+    > input {
+      height: 48px;
+      max-width: 360px;
+      width: 100vw;
+      color: white;
+      background-color: transparent;
+      border-radius: 40px;
+      border: 2px solid #ffffff;
+      outline: none;
+      padding-left: 1rem;
+      &::placeholder {
+        color: #ffffff;
+      }
+    }
+    > button {
+      color: white;
+      height: 48px;
+      padding: 0.5rem 1rem;
+      cursor: pointer;
+      border-radius: 40px;
+      border: transparent;
+      max-width: 126px;
+      background-color: #2e3edf;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      &:hover {
+        opacity: 0.8;
+        transition: all 250ms ease-in-out;
+      }
+      > span {
+        font-weight: 700;
+      }
+      > img {
+        width: 22px;
+        height: 22px;
+        filter: invert(99%) sepia(4%) saturate(1196%) hue-rotate(309deg)
+          brightness(118%) contrast(100%);
+      }
+    }
+  }
+}
+
+@media screen and (width<615px) {
+  section {
+    padding-inline: $paddingInlineMobile;
+    > h1 {
+      font-size: 40px;
+      line-height: 40px;
+    }
+    > div {
+      > input {
+        width: 90vw;
+      }
+    }
+  }
+  .input-group {
+    flex-direction: column;
+    align-items: center;
+    width: 90vw;
+  }
+}

@@ -1,1 +1,11 @@
 /* You can add global styles to this file, and also import other style files */
+* {
+  font-family: "DM Sans";
+  font-size: 18px;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+$paddingInline: 3rem;
+$paddingInlineMobile: 1rem;
