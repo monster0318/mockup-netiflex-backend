@@ -1,10 +1,20 @@
 <nav>
   <div>
     <div>
-      <img class="loco-icon" src="assets/img/symbol.svg" alt="Logo" />
-      <img class="symbol" [src]="getLogoImage()" alt="Logo" />
+      <img
+        routerLink=""
+        class="logo loco-icon"
+        src="assets/img/symbol.svg"
+        alt="Logo"
+      />
+      <img
+        routerLink=""
+        class="logo symbol"
+        [src]="getLogoImage()"
+        alt="Logo"
+      />
     </div>
-    <button *ngIf="login === false">
+    <button *ngIf="login === false" routerLink="/login">
       @if (logOut !== '') {
       <img [src]="getLogOutImage()" alt="Log out" />
       }
