@@ -19,6 +19,9 @@ export class SignUpComponent {
   icon_confirm: string = 'visibility.svg';
   type_confirm: string = 'password';
 
+  /**
+   * this function allow the user to toggle password view
+   */
   showPassword() {
     if (this.password && this.type === 'password') {
       this.type = 'text';
@@ -28,6 +31,10 @@ export class SignUpComponent {
       this.icon = 'visibility.svg';
     }
   }
+
+  /**
+   * this function allow the user to toggle confirm password view
+   */
   showConfirmPassword() {
     if (this.confirmPassword && this.type_confirm === 'password') {
       this.type_confirm = 'text';
