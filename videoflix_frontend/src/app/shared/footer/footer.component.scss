@@ -17,3 +17,15 @@ footer {
     }
   }
 }
+
+@media screen and (width<390px) {
+  footer {
+    padding-inline: $paddingInlineMobile;
+    > div {
+      gap: 2rem;
+      > a {
+        font-size: 16px;
+      }
+    }
+  }
+}
