@@ -1,0 +1,77 @@
+<main>
+  <app-nav-bar logo="logo.svg" logOut="logout.svg" btnText="Log out" />
+  <section>
+    <video
+      autoplay
+      muted
+      loop
+      playsinline
+      #backgroundVideo
+      class="background-video"
+    >
+      <source src="assets/videos/back.mp4" type="video/mp4" />
+    </video>
+    <div class="container">
+      <article class="current-video-description">
+        <h1>Breakout</h1>
+        <p class="description">
+          In a high-security prison, a wrongly convicted man formulates a
+          meticulous plan to break out and prove his innocence. He must navigate
+          a web of alliances and betrayals to reclaim his freedom and expose the
+          truth.
+        </p>
+        <button>
+          <img src="assets/img/play_arrow.svg" alt="play" />
+          <span>Play</span>
+        </button>
+      </article>
+      <div class="category-list">
+        <article>
+          <h2>New on Videoflix</h2>
+          <div class="video-list">
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <!-- <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" /> -->
+          </div>
+        </article>
+        <article>
+          <h2>Drama</h2>
+          <div class="video-list">
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <!-- <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" /> -->
+          </div>
+        </article>
+        <article>
+          <h2>Documentary</h2>
+          <div class="video-list">
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" />
+            <!-- <img src="assets/video_img/video_1.svg" alt="" />
+            <img src="assets/video_img/video_1.svg" alt="" /> -->
+          </div>
+        </article>
+      </div>
+    </div>
+  </section>
+  <footer>
+    <div>
+      <a routerLink="/privacy-policy">Privacy Policy</a>
+      <a routerLink="/legal-notice">Legal Notice</a>
+    </div>
+  </footer>
+</main>

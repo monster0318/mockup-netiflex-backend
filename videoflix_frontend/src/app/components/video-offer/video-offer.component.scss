@@ -1,0 +1,138 @@
+@import "../../../styles.scss";
+main {
+  min-height: 100vh;
+  position: absolute;
+  inset: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.8) 10%,
+    rgba(0, 0, 0, 0.4) 55%,
+    rgba(0, 0, 0, 1) 90%
+  );
+  > section {
+    > .background-video {
+      position: absolute;
+      width: 100%;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -1;
+      left: 0;
+      top: 0;
+      right: 0;
+    }
+  }
+}
+
+.current-video-description {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 440px;
+  width: 100%;
+  > h1,
+  > p,
+  > button span {
+    color: white;
+  }
+
+  > h1 {
+    font-size: 88px;
+    font-weight: 700;
+    line-height: 114.58px;
+  }
+  > p {
+    font-size: 16px;
+    line-height: 20.83px;
+  }
+
+  > button {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 0.25rem;
+    border: transparent;
+    cursor: pointer;
+    border-radius: 10px;
+    background-color: #2e3edf;
+    padding: 0.5rem 1rem;
+    > img {
+      width: 30px;
+      height: 30px;
+    }
+    > span {
+      font-size: 18px;
+      font-weight: 700;
+      line-height: 23.44px;
+    }
+
+    &:hover {
+      opacity: 0.8;
+      transition: all 300ms ease-in-out;
+    }
+  }
+}
+
+.container {
+  max-width: 1440px;
+  padding-inline: $paddingInline;
+  margin: auto;
+  margin-top: 4rem;
+}
+
+.category-list {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  margin-top: 6rem;
+  > article {
+    padding-bottom: 1.5rem;
+    border-bottom: 1px solid rgb(118, 118, 118);
+    > h2 {
+      font-size: 22px;
+      line-height: 28.64px;
+      color: white;
+      margin-bottom: 0.75rem;
+    }
+    .video-list {
+      display: flex;
+      gap: 1rem;
+      > img {
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+footer {
+  text-align: center;
+  padding-block: 2rem;
+  padding-inline: $paddingInline;
+  > div {
+    display: flex;
+    gap: 2rem;
+    align-items: center;
+    justify-content: flex-end;
+    max-width: 1440px;
+    > a {
+      color: #ffffff;
+      text-decoration: none;
+      font-size: 18px;
+      font-weight: 500;
+      cursor: pointer;
+    }
+  }
+}
+
+@media screen and (width<390px) {
+  footer {
+    padding-inline: $paddingInlineMobile;
+    > div {
+      gap: 2rem;
+      > a {
+        font-size: 16px;
+      }
+    }
+  }
+}

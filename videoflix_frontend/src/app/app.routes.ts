@@ -6,6 +6,7 @@ import { PrivacyPolicyComponent } from './shared/privacy-policy/privacy-policy.c
 import { LegalNoticeComponent } from './shared/legal-notice/legal-notice.component';
 import { StartpageComponent } from './components/startpage/startpage.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { VideoOfferComponent } from './components/video-offer/video-offer.component';
 
 export const routes: Routes = [
   {
@@ -27,6 +28,10 @@ export const routes: Routes = [
   {
     path: 'signup',
     component: SignUpComponent,
+  },
+  {
+    path: 'video-offer',
+    component: VideoOfferComponent,
   },
   {
     path: 'privacy-policy',
