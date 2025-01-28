@@ -23,6 +23,9 @@ export class LogInComponent {
   icon: string = 'visibility.svg';
   type: string = 'password';
 
+  /**
+   * show entered password
+   */
   showPassword() {
     if (this.password && this.type === 'password') {
       this.type = 'text';
