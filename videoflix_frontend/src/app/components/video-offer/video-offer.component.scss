@@ -78,7 +78,7 @@ main {
   max-width: 1440px;
   padding-inline: $paddingInline;
   margin: auto;
-  margin-top: 4rem;
+  margin-top: 3rem;
 }
 
 .category-list {
@@ -89,17 +89,38 @@ main {
   > article {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgb(118, 118, 118);
-    > h2 {
-      font-size: 22px;
-      line-height: 28.64px;
-      color: white;
+    > div {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       margin-bottom: 0.75rem;
+      > h2 {
+        font-size: 22px;
+
+        line-height: 28.64px;
+        color: white;
+      }
+
+      > img {
+        width: 20px;
+        height: 20px;
+        filter: invert(19%) sepia(87%) saturate(4447%) hue-rotate(237deg)
+          brightness(89%) contrast(96%);
+      }
     }
+
     .video-list {
       display: flex;
       gap: 1rem;
-      > img {
-        cursor: pointer;
+      > li {
+        > img {
+          border-radius: 10px;
+          cursor: pointer;
+        }
+        > p {
+          font-size: 16px;
+          color: rgb(118, 118, 118);
+        }
       }
     }
   }
@@ -109,6 +130,14 @@ footer {
   text-align: center;
   padding-block: 2rem;
   padding-inline: $paddingInline;
+  position: sticky;
+  bottom: 0;
+  background-image: linear-gradient(
+    to bottom,
+    rgba(0, 0, 0, 0.2) 10%,
+    rgba(0, 0, 0, 0.8) 55%,
+    rgba(0, 0, 0, 1) 90%
+  );
   > div {
     display: flex;
     gap: 2rem;

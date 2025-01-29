@@ -55,8 +55,9 @@ section {
       border: 1px solid rgb(118, 118, 118);
       outline: none;
       padding-left: 1rem;
+      background-color: rgba(184, 178, 178, 0.15);
       &::placeholder {
-        color: #ffffff;
+        color: rgb(125, 125, 125);
       }
     }
     > button {

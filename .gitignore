@@ -1,5 +1,14 @@
 # See http://help.github.com/ignore-files/ for more about ignoring files.
 
+# Django backend
+videoflix_backend/config
+videoflix_backend/env
+videoflix_backend/videoflix/__pycache__
+videoflix_backend/authentication/__pycache__
+videoflix_backend/authentication/api/__pycache__
+videoflix_backend/authentication/migrations/__pycache__
+
+
 # Compiled output
 videoflix_frontend/dist
 videoflix_frontend/tmp

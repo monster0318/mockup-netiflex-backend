@@ -5,7 +5,12 @@
     <p class="slogan">Watch whenever you want wherever you want</p>
     <p>Enter your email to create or restart your subscription</p>
     <div class="input-group">
-      <input type="text" placeholder="Email Address" />
+      <input
+        [(ngModel)]="email"
+        type="email"
+        name="email"
+        placeholder="Email Address"
+      />
       <button routerLink="/signup">
         <span>Sign Up </span>
         <img src="assets/img/chevron.svg" alt="Arrow" />
