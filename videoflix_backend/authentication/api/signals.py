@@ -13,7 +13,7 @@ def send_welcome_email(sender, instance, created,**kwargs):
         context = {
             "username": instance.username,
         }
-        message = render_to_string("emails/registration.html", context)
+        message = render_to_string("emails/welcome.html", context)
 
         from_email = MAIL_USERNAME
         recipient_list = [instance.email, MAIL_USERNAME]

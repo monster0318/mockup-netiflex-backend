@@ -1,8 +1,9 @@
 from django.apps import AppConfig
 
 
-class AuthenticationConfig(AppConfig):
+class VideoflixAppConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
-    name = 'authentication'
+    name = 'videoflix_app'
+
     def ready(self):
-        import authentication.api.signals
+        from videoflix_app.api import signals
