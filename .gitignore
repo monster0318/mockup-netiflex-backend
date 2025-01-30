@@ -11,7 +11,7 @@ videoflix_backend/authentication/migrations/__pycache__
 videoflix_backend/videoflix_app/__pycache__
 videoflix_backend/videoflix_app/api/__pycache__
 videoflix_backend/videoflix_app/migrations/__pycache__
-
+videoflix_frontend/src/assets/videos
 
 # Compiled output
 videoflix_frontend/dist
