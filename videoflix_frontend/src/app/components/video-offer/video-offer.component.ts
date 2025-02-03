@@ -1,11 +1,12 @@
 import { AfterViewInit, Component, ElementRef, ViewChild } from '@angular/core';
 import { NavBarComponent } from '../../shared/nav-bar/nav-bar.component';
 import { RouterLink } from '@angular/router';
+import { VideoPlayerComponent } from '../video-player/video-player.component';
 
 @Component({
   selector: 'app-video-offer',
   standalone: true,
-  imports: [NavBarComponent, RouterLink],
+  imports: [NavBarComponent, RouterLink, VideoPlayerComponent],
   templateUrl: './video-offer.component.html',
   styleUrl: './video-offer.component.scss',
 })

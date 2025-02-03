@@ -1,0 +1,26 @@
+.reset-link {
+  display: inline-block;
+  background-color: #2e3edf;
+  color: white;
+  text-decoration: none;
+  padding: 0.7rem 1.2rem;
+  border-radius: 1000px;
+  font-size: 16px;
+  font-weight: bold;
+}
+
+.email {
+  color: #2a3647;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+body {
+  font-family: Arial, sans-serif;
+  line-height: 1.6;
+  color: #333;
+}
+
+.para {
+  margin-top: 20px;
+}

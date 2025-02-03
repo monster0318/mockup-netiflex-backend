@@ -47,21 +47,41 @@ INSTALLED_APPS = [
     'videoflix_app.apps.VideoflixAppConfig',
     'authentication.apps.AuthenticationConfig',
     'debug_toolbar',
+    'django_filters',
+    'user',
     'django_rq',
+    'import_export',
+
 ]
+
+AUTH_USER_MODEL = 'user.CustomUser'
 
 RQ_QUEUES = {
     'default': {
         'HOST': 'localhost',
         'PORT': 6379,
         'DB': 0,
-   
+        "password":RQ_PWD,
         'DEFAULT_TIMEOUT': 360,
        
     },
 
   
 }
+
+CACHE_TTL = 60 * 15 # cache every 15 minutes
+
+CACHES = {
+    "default": {
+        "BACKEND": "django.core.cache.backends.redis.RedisCache",
+        "LOCATION": f"redis://:{RQ_PWD}@127.0.0.1:6379/1",
+        "OPTIONS":{
+            "password":RQ_PWD,
+        },
+        "KEY_PREFIX":"videoflix_app",
+    }
+}
+
 
 MIDDLEWARE = [
     'debug_toolbar.middleware.DebugToolbarMiddleware',
@@ -163,6 +183,8 @@ USE_TZ = True
 STATIC_URL = 'authentication/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
+IMPORT_EXPORT_USE_TRANSACTIONS = True
+
 STATICFILES_DIRS = [
     "authentication/static",
 ]
@@ -170,19 +192,6 @@ STATICFILES_DIRS = [
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
-CACHE_TTL = 60 * 15 # cache every 15 minutes
-
-CACHES = {
-    "default": {
-        "BACKEND": "django.core.cache.backends.redis.RedisCache",
-        "LOCATION": "redis://127.0.0.1:6379/1",
-        "OPTIONS":{
-          
-            "CLIENT_CLASS": "django_redis.client.DefaultClient"
-        },
-        "KEY_PREFIX":"videoflix_app",
-    }
-}
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.1/ref/settings/#default-auto-field
@@ -202,4 +211,20 @@ REST_FRAMEWORK = {
    
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ],}
+         'rest_framework.authentication.SessionAuthentication',
+    ],
+    'DEFAULT_FILTER_BACKENDS': [
+        'django_filters.rest_framework.DjangoFilterBackend',
+        'rest_framework.filters.OrderingFilter',
+        'rest_framework.filters.SearchFilter',
+    ],
+ 'DEFAULT_THROTTLE_CLASSES': [
+        'rest_framework.throttling.AnonRateThrottle',
+        'rest_framework.throttling.UserRateThrottle'
+],
+    'DEFAULT_THROTTLE_RATES':{
+        'anon':'50/minute',
+        'user':'80/minute',
+        'eighty':'80/second',
+    },
+       }

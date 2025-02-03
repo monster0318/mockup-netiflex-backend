@@ -7,7 +7,7 @@ from rest_framework import status
 from django.contrib.auth import login
 from rest_framework.response import Response
 from authentication.api.serializers import LoginSerializer, RegisterSerializer
-from authentication.api.utils import guest_login, is_guest_user
+from authentication.api.utils import guest_login, is_guest_user, is_guest_user_email
 
 
 
@@ -16,7 +16,7 @@ class Login(ObtainAuthToken):
     
     Keyword arguments:
     argument -- username - username given during the registration
-    Return: {username, email, token, user_id}
+    Return: {username, email, token}
     """
     permission_classes = [AllowAny]
     serializer_class = LoginSerializer
@@ -28,14 +28,11 @@ class Login(ObtainAuthToken):
             log_data = guest_login(request=request)
         
             return Response(log_data, status=status.HTTP_200_OK)
-
         else:
             serializer = self.serializer_class(data=request.data)
-          
             if serializer.is_valid():
                 validated_user = serializer.validated_data['user']
                 token, _ = Token.objects.get_or_create(user=validated_user)
-
                 login(request,validated_user)
 
                 user_data = {
@@ -50,10 +47,12 @@ class GuestLogout(generics.DestroyAPIView):
     permission_classes = [IsAuthenticated]
     
     def delete(self, request, *args, **kwargs):
-        current_guest_user = request.user 
-        current_guest_user.delete()
-        return Response("Guest user successfully removed", status=status.HTTP_204_NO_CONTENT)
-
+        current_user = request.user 
+        if is_guest_user_email(current_user.email):
+            current_user.delete()
+            return Response({"ok":True,"message":"Guest user successfully removed"}, status=status.HTTP_204_NO_CONTENT)
+        return Response("",status=status.HTTP_400_BAD_REQUEST)
+    
 class Register(APIView):
     """Registration of new user"""
 
@@ -70,5 +69,5 @@ class Register(APIView):
                 "username":saved_account.username,
                 "email":saved_account.email
             }
-            return Response(data, status=status.HTTP_200_OK)
+            return Response(data, status=status.HTTP_201_CREATED)
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

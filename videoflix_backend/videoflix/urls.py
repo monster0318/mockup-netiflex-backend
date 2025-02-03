@@ -23,6 +23,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('api-auth', include("rest_framework.urls")),
     path('api/', include("authentication.api.urls")),
+    path('api/', include("videoflix_app.api.urls")),
     path('__debug__/', include('debug_toolbar.urls')),
     path('django-rq/', include('django_rq.urls')),
 ]
