@@ -24,7 +24,11 @@
             "tsConfig": "tsconfig.app.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/assets/fonts/fonts.scss", "src/styles.scss"],
+            "styles": [
+              "src/assets/fonts/fonts.scss",
+              "src/styles.scss",
+              "src/assets/styles/plyr.css"
+            ],
             "scripts": []
           },
           "configurations": {
@@ -76,7 +80,11 @@
             "tsConfig": "tsconfig.spec.json",
             "inlineStyleLanguage": "scss",
             "assets": ["src/favicon.ico", "src/assets"],
-            "styles": ["src/assets/fonts/fonts.scss", "src/styles.scss"],
+            "styles": [
+              "src/assets/fonts/fonts.scss",
+              "src/styles.scss",
+              "src/assets/styles/plyr.css"
+            ],
             "scripts": []
           }
         }

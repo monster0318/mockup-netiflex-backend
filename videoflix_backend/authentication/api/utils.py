@@ -1,10 +1,21 @@
 import random
 from django.utils.crypto import get_random_string
-from django.contrib.auth.models import User
+from user.models import CustomUser
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 from django.template.loader import render_to_string
 from config.config_settings import *
+
+
+DOMAINS_END = [
+        "test.com",
+        "guest.com",
+        "temp.com",
+        "no-mail.com",
+        "mock.com",
+        "demo.com",
+        "rnd-mail.com",
+    ]
 
 def message_body(username, reset_link, user_email):
     """
@@ -21,23 +32,22 @@ def message_body(username, reset_link, user_email):
     recipient_list=[user_email, MAIL_USERNAME]
     return subject,message,from_email,recipient_list
 
-def is_guest_user(data):
-    return data['email'] == "guest@videoflix.com"
+def is_guest_user(data) ->bool:
+    """Check if the user is logging in as guest"""
+    return data.get('email') == "guest@videoflix.com"
+
+
+def is_guest_user_email(guest_email) ->bool:
+    """Check if the email belongs to a guest user"""
+    domain_end = guest_email.split('@')[1]
+    return domain_end in DOMAINS_END
+
 
 def generate_guest_email():
     """Generate random domain for guest email"""
-    domains = [
-        "test.com",
-        "guest.com",
-        "temp.com",
-        "no-mail.com",
-        "mock.com",
-        "demo.com",
-        "rnd-mail.com",
-    ]
 
-    random_domain = random.choice(domains)
-    email = f"coderr-{get_random_string(6)}@{random_domain}" 
+    random_domain = random.choice(DOMAINS_END)
+    email = f"videoflix-{get_random_string(6)}@{random_domain}" 
     return email
 
 def generate_guest_username():
@@ -56,7 +66,7 @@ def generate_guest_username():
 
 def guest_login(request):
         """Login guest users"""
-        user = User.objects.create_user(
+        user = CustomUser.objects.create_user(
             email=generate_guest_email(),
             username=generate_guest_username()
         )

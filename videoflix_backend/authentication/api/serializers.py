@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from user.models import CustomUser
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -14,8 +15,8 @@ class UserAccountSerializer(serializers.ModelSerializer):
     added for enabling their view
     """
     class Meta:
-        model = User
-        fields = ['id','username','email']
+        model = CustomUser
+        fields = ['id','username','email', 'custom','phone','address']
 
 class LoginSerializer(serializers.Serializer):
     """
@@ -37,9 +38,9 @@ class LoginSerializer(serializers.Serializer):
 
         if email:
             try:
-                user = User.objects.get(email=email)
+                user = CustomUser.objects.get(email=email)
                 username = user.username
-            except User.DoesNotExist:
+            except CustomUser.DoesNotExist:
                 raise serializers.ValidationError({"message":"No user found with this email."})
         elif user_name:
             username = user_name
@@ -63,7 +64,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only = True)
 
     class Meta:
-        model = User
+        model = CustomUser
         fields = ['username','email','password','confirm_password']
         extra_kwargs = {
             "password":{
@@ -78,7 +79,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         has_pwd_match = data["password"] == data["confirm_password"]
         entered_email = data['email']
-        email_list = User.objects.filter(email=entered_email)
+        email_list = CustomUser.objects.filter(email=entered_email)
 
         if len(entered_email)==0:
             raise serializers.ValidationError({"message":"Email address is required"})
@@ -95,7 +96,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Saving user data if no error happened"""
 
         self.validated_data.pop('confirm_password')
-        user = User(
+        user = CustomUser(
             username=self.validated_data['username'],
             email=self.validated_data['email'],
             first_name=self.validated_data['username'],
