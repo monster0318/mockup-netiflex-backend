@@ -4,9 +4,9 @@ class Video(models.Model):
 
     CATEGORY_OPTIONS = (('documentary','documentary'),('action','action'),('horror','horror'))
     LANGUAGE_OPTIONS = (('french','french'),('english','english'),('german','german'))
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=150)
     description = models.TextField(max_length=1000)
-    category = models.CharField(choices=CATEGORY_OPTIONS,max_length=30,blank=True,null=True)
+    category = models.CharField(choices=CATEGORY_OPTIONS,max_length=100,blank=True,null=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     created_by = models.ForeignKey(CustomUser, on_delete=models.PROTECT, default=1)

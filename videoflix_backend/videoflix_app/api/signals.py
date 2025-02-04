@@ -10,7 +10,7 @@ import django_rq
 def video_post_save(sender, instance, created,**kwargs):
  
     if created:
-        convert_mp4_to_m3u8(source=instance.video_file.path)
+        convert_to_format(source=instance.video_file.path)
         # queue = django_rq.get_queue('default',autocommit=True)
         # queue.enqueue(convert_to_format,instance.video_file.path)
         print('Video successfully saved')
@@ -20,7 +20,7 @@ def video_post_save(sender, instance, created,**kwargs):
 def delete_video_on_file_delete(sender, instance, **kwargs):
     """Deleting video automatically when file is deleted"""
 
-    output_file_name = instance.video_file.name.split('.')[0] + "_hd480.mp4"
+    output_file_name = instance.video_file.name.split('.')[0] + "_480p.mp4"
     target = os.path.join('media/', output_file_name)  
     if instance.video_file:
         if os.path.isfile(instance.video_file.path):

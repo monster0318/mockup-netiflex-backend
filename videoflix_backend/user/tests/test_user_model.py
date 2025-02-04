@@ -5,10 +5,10 @@ from user.models import CustomUser
 
 
 class TestUserModel(APITestCase):
+    """Test cases for user model"""
 
     def setUp(self):
         self.user = UserFactory()
-
 
 
 ##############################################################################
@@ -17,7 +17,10 @@ class TestUserModel(APITestCase):
 
 
     def test_user_model(self):
+        """Testing user model"""
+        
         return_data = self.user.to_dict()
+ 
 
         self.assertEqual(len(CustomUser.objects.all()),1)
         self.assertEqual(return_data, {
