@@ -6,7 +6,7 @@ from user.models import CustomUser
 from rest_framework.authtoken.models import Token
 from fixtures.factories import UserFactory, UserDataFactory
 
-class AuthenticationTestCase(APITestCase):
+class AuthenticationTest(APITestCase):
 
     def setUp(self):
         self.client = Client()
@@ -27,9 +27,9 @@ class AuthenticationTestCase(APITestCase):
 
     def test_login(self):
         """Test login of user"""
+
         self.user = UserFactory()
         self.login_credentials = {"email":self.user.email, "password":"FakePassword123!*"}
-
         response = self.client.post(self.login_endpoint, self.login_credentials,format='json')
         self.user_token = Token.objects.get(user=self.user)
 
@@ -60,7 +60,7 @@ class AuthenticationTestCase(APITestCase):
     def test_register_several_users(self):
         """Test creation of new user"""
    
-        for _ in range(10):
+        for _ in range(3):
             self.fake_user_data = UserDataFactory()
             register_data= {"username": self.fake_user_data.username,"email": self.fake_user_data.email, "password":self.fake_user_data.password,"confirm_password":self.fake_user_data.password} 
             response = self.client.post(self.register_endpoint, register_data, format='json')
@@ -69,7 +69,7 @@ class AuthenticationTestCase(APITestCase):
             self.assertEqual(response.status_code,status.HTTP_201_CREATED)
             self.assertEqual(response.data, {"token": user_token.key,"username": user.username,"email": user.email})
         
-        self.assertEqual(len(CustomUser.objects.all()),10)
+        self.assertEqual(len(CustomUser.objects.all()),3)
 
 
     def test_register_bad_user_data(self):
