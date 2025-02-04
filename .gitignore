@@ -4,6 +4,7 @@
 .pytest_cache/
 videoflix_backend/fixtures/__pycache__
 videoflix_backend/config
+videoflix_backend/videoflix_app/management/commands/__pycache__
 videoflix_backend/env
 videoflix_backend/linux_env
 videoflix_backend/exports
