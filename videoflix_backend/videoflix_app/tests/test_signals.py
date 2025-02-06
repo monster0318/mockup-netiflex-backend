@@ -14,6 +14,7 @@ class TestSignals(APITestCase):
 
     def setUp(self):
         self.client = Client()
+        Video.objects.all().delete()
         list_file = glob.glob("media/videos/test_video*")
         if list_file:
             for file in list_file:
@@ -23,6 +24,11 @@ class TestSignals(APITestCase):
 
     def tearDown(self):
         Video.objects.all().delete()
+        list_file = glob.glob("media/videos/test_video*")
+        if list_file:
+            for file in list_file:
+                os.remove(file)
+
 
 
 ########################################################################
@@ -36,12 +42,12 @@ class TestSignals(APITestCase):
         fake_video = SimpleUploadedFile("sample.mp4", b"fake_video_data", content_type="video/mp4")
         self.user = UserFactory()
         self.video = Video.objects.create(title="Test Video", description="Test Description", created_by=self.user,video_file=fake_video)
-        convert_to_format.assert_called_once_with(source=self.video.video_file.path)
+        convert_to_format.assert_called_with(source="media/videos/sample.mp4",quality='hd1080')
+        self.assertEqual(convert_to_format.call_count, 4)
 
 
-    @patch("os.path.isfile", return_value=True)  
-    @patch("os.remove") 
-    def test_delete_video_on_file_delete(self, mock_remove, mock_isfile):
+    @patch("videoflix_app.api.signals.delete_files_starting_with") 
+    def test_delete_video_on_file_delete(self, mock_delete_files_starting_with):
         """Test the deletion of video from folder when file is deleted"""
         
         self.video = VideoFactory()
@@ -51,9 +57,8 @@ class TestSignals(APITestCase):
         self.assertEqual(self.video_url, expected_url)
 
         self.video.delete()
-        original_file = self.video.video_file.path
-        converted_file = os.path.join("media/", "videos/test_video_480p.mp4")
+        original_file = self.video.video_file.name
+        original_file = os.path.join("media/", original_file)
 
-        mock_remove.assert_any_call(original_file)
-        mock_remove.assert_any_call(converted_file)
-        self.assertEqual(mock_remove.call_count, 2)
+        mock_delete_files_starting_with.assert_called_with(source=original_file, file_postfix="")
+        self.assertEqual(mock_delete_files_starting_with.call_count, 3)

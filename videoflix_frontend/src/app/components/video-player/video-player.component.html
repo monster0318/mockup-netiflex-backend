@@ -1,4 +1,5 @@
 <main>
+  <app-nav-bar logo="logo.svg" [login]="true" />
   <div class="video-container">
     <video
       #videoPlayer
@@ -7,7 +8,7 @@
       playsinline
       poster="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.jpg"
       data-plyr-config='{
-        "previewThumbnails": { "enabled": true, "src": "assets/videos/nature.vtt" }
+        "previewThumbnails": { "enabled": true, "src": "assets/videos/the_5th_wave.vtt" }
       }'
     >
       <source
@@ -16,17 +17,17 @@
         size="360"
       />
       <source
-        src="assets/videos/nature_hd480.mp4"
+        src="assets/videos/the_5th_wave_hd480.mp4"
         type="video/mp4"
         size="480"
       />
       <source
-        src="assets/videos/nature_hd720.mp4"
+        src="assets/videos/the_5th_wave_hd720.mp4"
         type="video/mp4"
         size="720"
       />
       <source
-        src="assets/videos/nature_hd1080.mp4"
+        src="assets/videos/the_5th_wave_hd1080.mp4"
         type="video/mp4"
         size="1080"
       />
@@ -51,5 +52,11 @@
         src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"
       />
     </video>
+    <div class="video-title">The 5th wave:</div>
+    <p class="video-description">
+      16-year-old Cassie Sullivan tries to survive in a world devastated by the
+      waves of an alien invasion that has already decimated the population and
+      knocked mankind back to the Stone Age.
+    </p>
   </div>
 </main>

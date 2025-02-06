@@ -15,3 +15,8 @@ body {
 
 $paddingInline: 3rem;
 $paddingInlineMobile: 1rem;
+
+.plyr,
+.video-container {
+  border-radius: 10px !important;
+}
