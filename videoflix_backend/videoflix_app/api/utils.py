@@ -18,7 +18,7 @@ def get_or_404(model,pk):
 def delete_files_starting_with(source, file_postfix="_thumb"):
     # Construct the pattern to match files starting with the given prefix
     file_name, _ = os.path.splitext(source)
-    file_name = file_name.split("/")[-1]
+    file_name = os.path.basename(file_name)
     file_postfix = f"{file_name}" + f"{file_postfix}"
 
     pattern = os.path.join("media/videos/", f"{file_postfix}*")
@@ -29,6 +29,5 @@ def delete_files_starting_with(source, file_postfix="_thumb"):
         for file in files_to_delete:
             try:
                 os.remove(file)
-                print(f"Deleted: {file}")
             except Exception as e:
                 print(f"Error deleting {file}: {e}")

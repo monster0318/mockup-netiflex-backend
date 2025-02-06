@@ -42,7 +42,6 @@ def generate_sprite(source):
     thumbnails = glob.glob(os.path.join(source_folder, f"{file_base_name}_thumb*.jpg"))
 
     if not thumbnails:
-        print(f"Error: No thumbnail images found for '{file_base_name}_thumb*.jpg' in '{source_folder}'!")
         return
 
     num_thumbnails = len(thumbnails)
@@ -51,8 +50,7 @@ def generate_sprite(source):
 
     print(f"Generating sprite with {num_thumbnails} images in a {cols}x{rows} grid.")
  
-    name = file_name.split("/")[-1]
-    target = os.path.join(source_folder, f"{name}.jpg")
+    target = os.path.join(source_folder, f"{file_base_name}.jpg")
 
     if os.name == "nt":
         source_folder = source_folder.replace("\\", "/")
@@ -93,16 +91,15 @@ def generate_vtt(sprite_file, num_thumbnails, cols, thumb_width=320, thumb_heigh
             f.write(f"{start_time} --> {end_time}\n")
             f.write(f"{sprite_file}#xywh={x},{y},{thumb_width},{thumb_height}\n\n")
 
-    print(f"VTT file generated: {vtt_file}")
-
 
 def create_vtt_file(source):
         """Creating the VTT file and removing the unused files"""
-
+        file_name, _ = os.path.splitext(source)
+        sprite_file_name = os.path.basename(file_name)
         video_duration = get_video_duration(source=source)
         generate_thumbnails(source=source, thumb_width=320)
         cols = generate_sprite(source=source)
-        generate_vtt("nature.jpg", num_thumbnails=video_duration, cols=cols, thumb_width=320, thumb_height=180)
+        generate_vtt(f"{sprite_file_name}.jpg", num_thumbnails=video_duration, cols=cols, thumb_width=320, thumb_height=180)
         delete_files_starting_with(source=source)
         
 

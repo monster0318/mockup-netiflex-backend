@@ -1,9 +1,12 @@
 .video-container {
   background-color: aquamarine;
-  max-width: 100vw;
-  max-height: 100vh;
-  max-width: 100dvw;
-  max-height: 100dvh;
+  // max-width: 100vw;
+  // max-height: 100vh;
+  // max-width: 100dvw;
+  // max-height: 100dvh;
+  max-width: 920px;
+  margin-left: 6rem;
+  margin-top: 2rem;
   margin-inline: auto;
   aspect-ratio: 16 / 9;
 
@@ -15,16 +18,27 @@
   );
 }
 
-main {
-  min-height: 100vh;
-  position: absolute;
-  inset: 0;
-  //   background-color: #2e3edf;
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.8) 10%,
-      rgba(0, 0, 0, 0.4) 55%,
-      rgba(0, 0, 0, 1) 90%
-    ),
-    url("/assets/img/startsite.jpeg");
+.video-title {
+  padding-inline: 0.5rem;
+  padding-block: 1rem 0.5rem;
+  color: white;
+  font-size: 40px;
 }
+.video-description {
+  padding-inline: 1rem;
+  color: white;
+}
+
+// main {
+//   min-height: 100vh;
+//   position: absolute;
+//   inset: 0;
+//   //   background-color: #2e3edf;
+//   background-image: linear-gradient(
+//       to bottom,
+//       rgba(0, 0, 0, 0.8) 10%,
+//       rgba(0, 0, 0, 0.4) 55%,
+//       rgba(0, 0, 0, 1) 90%
+//     ),
+//     url("/assets/img/startsite.jpeg");
+// }

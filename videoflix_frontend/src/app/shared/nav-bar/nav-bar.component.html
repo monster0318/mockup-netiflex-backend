@@ -14,6 +14,29 @@
         alt="Logo"
       />
     </div>
+    <input
+      *ngIf="is_authenticated === true && is_watching === false"
+      type="text"
+      name="search"
+      id="search"
+      placeholder="search"
+    />
+    @if(is_authenticated === true){
+    <ul class="user-menu">
+      <li *ngIf="is_watching === true">
+        <img src="assets/img/arrow_left.svg" alt="Home" />
+        <a routerLink="/video-offer">home</a>
+      </li>
+      <li>
+        <img src="assets/img/user.svg" alt="User" />
+        <a href="">username</a>
+      </li>
+      <li *ngIf="is_authenticated === true && is_watching === false">
+        <img src="assets/img/upload.svg" alt="upload" />
+        <a href="">upload</a>
+      </li>
+    </ul>
+    }
     <button *ngIf="login === false" routerLink="/login">
       @if (logOut !== '') {
       <img [src]="getLogOutImage()" alt="Log out" />
