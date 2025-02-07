@@ -5,7 +5,7 @@ import os
 from videoflix_app.api.tasks import convert_to_format, create_vtt_file
 import django_rq
 from videoflix_app.api.utils import delete_files_starting_with
-
+import json
 
 @receiver(post_save, sender=Video)
 def video_post_save(sender, instance, created,**kwargs):
@@ -17,9 +17,9 @@ def video_post_save(sender, instance, created,**kwargs):
         convert_to_format(source=source, quality='hd720')
         convert_to_format(source=source, quality='hd1080')
         create_vtt_file(source=source)
-
-        # queue = django_rq.get_queue('default',autocommit=True)
-        # queue.enqueue(convert_to_format,instance.video_file.path)
+        queue = django_rq.get_queue('default',autocommit=True)
+        # queue.enqueue(convert_to_format,source, "hd480")
+        # queue.enqueue(create_vtt_file,source)
 
 
 @receiver(post_delete, sender = Video)

@@ -56,9 +56,11 @@ INSTALLED_APPS = [
 
 AUTH_USER_MODEL = 'user.CustomUser'
 
+
 RQ_QUEUES = {
     'default': {
         'HOST': 'localhost',
+        'URL': f'redis://:{RQ_PWD}@127.0.0.1:6379/1',
         'PORT': 6379,
         'DB': 0,
         "password":RQ_PWD,

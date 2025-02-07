@@ -9,8 +9,6 @@ class UserDataFactory(factory.Factory):
 
     username = factory.Sequence(lambda n: f"user{n}")
     email = factory.Sequence(lambda n: f"user{n}@videoflix.com")
-    # username = factory.Faker("first_name")
-    # email = factory.Faker("email")
     custom = factory.Faker("text", max_nb_chars=500)
     phone = factory.Faker("phone_number")
     address = factory.Faker("address")
@@ -37,7 +35,8 @@ class VideoDataFactory(factory.Factory):
 
     title = factory.Faker("text", max_nb_chars=100)
     description = factory.Faker("text", max_nb_chars=1000)
-    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror"])
+    author = factory.Faker("name")
+    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror","drama","romance"])
     uploaded_at = factory.LazyFunction(datetime.now)
     updated_at = factory.LazyAttribute(lambda obj: obj.uploaded_at)
     created_by = factory.SubFactory(UserFactory, id=1)  
@@ -54,7 +53,8 @@ class VideoFactory(factory.django.DjangoModelFactory):
 
     title = factory.Faker("text", max_nb_chars=100)
     description = factory.Faker("text", max_nb_chars=1000)
-    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror"])
+    author = factory.Faker("name")
+    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror","drama","romance"])
     uploaded_at = factory.LazyFunction(datetime.now)
     updated_at = factory.LazyAttribute(lambda obj: obj.uploaded_at)
     created_by = factory.SubFactory(UserFactory, id=1)  

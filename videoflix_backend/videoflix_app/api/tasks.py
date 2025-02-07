@@ -27,8 +27,25 @@ def generate_thumbnails(source, thumb_width):
     command = [
         "ffmpeg", "-i", source, "-vf", f"fps=1,scale={thumb_width}:-1", output_pattern
     ]
+
     
     subprocess.run(command, text=True, capture_output=True, shell=True)
+
+def generate_video_poster(source, timestamp="00:00:39"):
+    """Generate a poster for the video"""
+    
+    file_name, _ = os.path.splitext(source)
+    output_path = f"{file_name}_poster.jpg"
+
+    if os.name == "nt":
+        source = source.replace("\\", "/").replace("C:", "/mnt/c")
+        output_path = output_path.replace("\\", "/").replace("C:", "/mnt/c")
+
+    command = [
+        "ffmpeg","-i", source, "-ss", timestamp,"-vframes", "1","-q:v", "2", output_path        
+    ]
+
+    subprocess.run(command, capture_output=True, text=True, shell=True)
 
 
 def generate_sprite(source):
@@ -98,6 +115,7 @@ def create_vtt_file(source):
         sprite_file_name = os.path.basename(file_name)
         video_duration = get_video_duration(source=source)
         generate_thumbnails(source=source, thumb_width=320)
+        generate_video_poster(source=source)
         cols = generate_sprite(source=source)
         generate_vtt(f"{sprite_file_name}.jpg", num_thumbnails=video_duration, cols=cols, thumb_width=320, thumb_height=180)
         delete_files_starting_with(source=source)
