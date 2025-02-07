@@ -140,14 +140,18 @@ main {
     cursor: pointer;
     filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg)
       brightness(105%) contrast(101%);
-    &:hover {
-      filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
-        brightness(88%) contrast(98%);
-      transition: all 250ms ease-in-out;
-    }
   }
+
   > span {
     color: white;
+  }
+}
+
+.single-video:hover {
+  .play-movie > img {
+    filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
+      brightness(88%) contrast(98%);
+    transition: all 250ms ease-in-out;
   }
 }
 

@@ -21,8 +21,10 @@ class Video(models.Model):
     
     def to_dict(self):
         return {
+            "id":self.id,
             "title" :self.title,
             "description" :self.description,
+            "author" :self.author,
             "category" :self.category,
             "uploaded_at" :self.uploaded_at,
             "updated_at" :self.updated_at,
