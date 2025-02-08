@@ -28,7 +28,7 @@ pytest==8.3.4
 pytest-cov==6.0.0
 pytest-django==4.9.0
 python-dateutil==2.9.0.post0
-redis==3.5.2
+redis==5.2.1
 rq==2.1.0
 setuptools==75.8.0
 six==1.17.0

@@ -115,16 +115,56 @@ main {
       > li {
         > img {
           border-radius: 10px;
-          width: 160px;
-          height: 220px;
+          width: 400.25px;
+          aspect-ratio: 16 / 9;
+          border-radius: 10px;
           cursor: pointer;
         }
-        > p {
-          font-size: 16px;
-          color: rgb(118, 118, 118);
+        > div {
+          padding-left: 1rem;
+          padding-top: 1rem;
+          p {
+            font-size: 20px;
+            color: white; //rgb(118, 118, 118);
+          }
         }
       }
     }
+  }
+}
+
+.play-movie {
+  margin-inline: 1rem;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  > img {
+    width: 30px;
+    aspect-ratio: 1 / 1;
+    cursor: pointer;
+    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg)
+      brightness(105%) contrast(101%);
+  }
+
+  > span {
+    color: white;
+  }
+}
+
+.single-video:hover {
+  .play-movie > img {
+    filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
+      brightness(88%) contrast(98%);
+    transition: all 250ms ease-in-out;
+  }
+}
+
+.watch-movie {
+  color: #2e3edf;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+    transition: all 250ms ease-in-out;
   }
 }
 

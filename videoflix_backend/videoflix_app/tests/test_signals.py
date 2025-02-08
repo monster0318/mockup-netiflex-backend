@@ -1,12 +1,11 @@
 from rest_framework.test import APITestCase
-from django.test import Client
+from django.core.files.uploadedfile import SimpleUploadedFile
+from fixtures.factories import UserFactory, VideoFactory
 from videoflix_app.models import Video
 from unittest.mock import patch
-from fixtures.factories import UserFactory, VideoFactory
-import os
-from django.db.models.signals import post_save, post_delete
+from django.test import Client
 import glob
-from django.core.files.uploadedfile import SimpleUploadedFile
+import os
 
 
 

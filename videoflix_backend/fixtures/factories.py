@@ -7,10 +7,9 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 class UserDataFactory(factory.Factory):
 
+    id = factory.Sequence(lambda n:n)
     username = factory.Sequence(lambda n: f"user{n}")
     email = factory.Sequence(lambda n: f"user{n}@videoflix.com")
-    # username = factory.Faker("first_name")
-    # email = factory.Faker("email")
     custom = factory.Faker("text", max_nb_chars=500)
     phone = factory.Faker("phone_number")
     address = factory.Faker("address")
@@ -21,6 +20,7 @@ class UserDataFactory(factory.Factory):
 
 class UserFactory(factory.django.DjangoModelFactory):
 
+    id = factory.Sequence(lambda n:n)
     username = factory.Faker("first_name")
     email = factory.Faker("email")
     custom = factory.Faker("text", max_nb_chars=500)
@@ -35,9 +35,11 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 class VideoDataFactory(factory.Factory):
 
+    id = factory.Sequence(lambda n:n)
     title = factory.Faker("text", max_nb_chars=100)
     description = factory.Faker("text", max_nb_chars=1000)
-    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror"])
+    author = factory.Faker("name")
+    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror","drama","romance"])
     uploaded_at = factory.LazyFunction(datetime.now)
     updated_at = factory.LazyAttribute(lambda obj: obj.uploaded_at)
     created_by = factory.SubFactory(UserFactory, id=1)  
@@ -52,9 +54,11 @@ class VideoDataFactory(factory.Factory):
 
 class VideoFactory(factory.django.DjangoModelFactory):
 
+    id = factory.Sequence(lambda n:n)
     title = factory.Faker("text", max_nb_chars=100)
     description = factory.Faker("text", max_nb_chars=1000)
-    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror"])
+    author = factory.Faker("name")
+    category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror","drama","romance"])
     uploaded_at = factory.LazyFunction(datetime.now)
     updated_at = factory.LazyAttribute(lambda obj: obj.uploaded_at)
     created_by = factory.SubFactory(UserFactory, id=1)  

@@ -46,6 +46,9 @@ class SingleVideoView(generics.RetrieveUpdateDestroyAPIView):
     serializer_class = VideoSerializer 
     throttle_classes = [EightyCallsPerSecond]
     parser_classes = [MultiPartParser, FormParser, JSONParser]
+
+    def get_serializer_context(self):
+        return {"request":self.request}
     
     def get(self, request, pk, *args, **kwargs):
         """Retrieving video data - all authenticated  users can access single video for watching"""
@@ -69,8 +72,11 @@ class SingleVideoView(generics.RetrieveUpdateDestroyAPIView):
         """Updating Video data - only admin user can update video data"""
         video = get_or_404(Video, pk)
         if request.user and request.user.is_superuser:
-            serializer = VideoSerializer(video,context={"request":request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = VideoSerializer(video,data=request.data,partial=True,context={"request":request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"ok":False,"message":"You don't have the permission for this operation"}, status=status.HTTP_401_UNAUTHORIZED)
     
 
@@ -78,6 +84,9 @@ class SingleVideoView(generics.RetrieveUpdateDestroyAPIView):
         """Updating Video data - only admin user can update video data"""
         video = get_or_404(Video, pk)
         if request.user and request.user.is_superuser:
-            serializer = VideoSerializer(video,context={"request":request})
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            serializer = VideoSerializer(video,data=request.data,partial=True,context={"request":request})
+            if serializer.is_valid():
+                serializer.save()
+                return Response(serializer.data, status=status.HTTP_200_OK)
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"ok":False,"message":"You don't have the permission for this operation"}, status=status.HTTP_401_UNAUTHORIZED)

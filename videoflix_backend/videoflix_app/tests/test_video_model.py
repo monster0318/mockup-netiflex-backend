@@ -28,8 +28,10 @@ class TestUserModel(APITestCase):
         return_data = self.video.to_dict()
         self.assertEqual(len(Video.objects.all()),1)
         self.assertEqual(return_data, {
+            "id":self.video.id,
             "title" :self.video.title,
             "description" :self.video.description,
+            "author" :self.video.author,
             "category" :self.video.category,
             "uploaded_at" :self.video.uploaded_at,
             "updated_at" :self.video.updated_at,
