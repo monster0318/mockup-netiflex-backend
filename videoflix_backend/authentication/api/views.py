@@ -8,7 +8,6 @@ from django.contrib.auth import login
 from rest_framework.response import Response
 from authentication.api.serializers import ActivateAccountSerializer, ConfirmResetPasswordSerializer, LoginSerializer, RegisterSerializer, ResetPasswordSerializer
 from authentication.api.utils import guest_login, is_guest_user, is_guest_user_email
-from user.models import CustomUser
 
 
 class Login(ObtainAuthToken):
@@ -76,7 +75,7 @@ class Register(APIView):
 
 class ActivateAccountView(generics.CreateAPIView):
     """Activate user account after first sign up"""
-
+    serializer_class = ActivateAccountSerializer
     permission_classes = [AllowAny]
 
     def post(self,request):
