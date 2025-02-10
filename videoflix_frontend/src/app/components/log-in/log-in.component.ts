@@ -1,9 +1,12 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { NavBarComponent } from '../../shared/nav-bar/nav-bar.component';
 import { WrapperComponent } from '../../shared/wrapper/wrapper.component';
-import { RouterLink } from '@angular/router';
+import { ActivatedRoute, Router, RouterLink } from '@angular/router';
+import { ApiService } from '../../services/api.service';
+import { RequestsService } from '../../services/requests.service';
+import { CommonModule } from '@angular/common';
 
 @Component({
   selector: 'app-log-in',
@@ -12,6 +15,7 @@ import { RouterLink } from '@angular/router';
     FormsModule,
     FooterComponent,
     NavBarComponent,
+    CommonModule,
     WrapperComponent,
     RouterLink,
   ],
@@ -20,9 +24,14 @@ import { RouterLink } from '@angular/router';
 })
 export class LogInComponent {
   password!: string;
+  email!: string;
+  rememberMe: boolean = false;
   icon: string = 'visibility.svg';
   type: string = 'password';
 
+  private apiService = inject(ApiService);
+  private requestsService = inject(RequestsService);
+  constructor(private router: Router, private route: ActivatedRoute) {}
   /**
    * show entered password
    */
@@ -34,5 +43,16 @@ export class LogInComponent {
       this.type = 'password';
       this.icon = 'visibility.svg';
     }
+  }
+
+  login() {
+    this.requestsService.postData(
+      'login/',
+      { email: this.email, password: this.password },
+      this.apiService.getUnAuthHeaders(),
+      () => {
+        this.requestsService.goToPage('/video-offer');
+      }
+    );
   }
 }

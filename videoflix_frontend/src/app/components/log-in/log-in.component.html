@@ -4,7 +4,12 @@
     <div class="form-group">
       <h1>Log in</h1>
       <form>
-        <input type="text" name="email" placeholder="Email Address" />
+        <input
+          [(ngModel)]="email"
+          type="text"
+          name="email"
+          placeholder="Email Address"
+        />
         <div class="password">
           <input
             [(ngModel)]="password"
@@ -27,11 +32,7 @@
           <span>Remember me</span>
         </div>
         <div class="btn-group">
-          <button
-            routerLink="/video-player"
-            type="submit"
-            class="btn btn-submit"
-          >
+          <button (click)="login()" type="submit" class="btn btn-submit">
             Log in
           </button>
           <button

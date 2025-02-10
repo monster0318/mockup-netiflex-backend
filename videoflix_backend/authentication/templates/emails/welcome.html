@@ -1,34 +1,15 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
+<div class="logo-videoflix">
+  <img src="{% static 'img/logo.svg' %}" alt="logo" />
+</div>
+<h2>Dear {{ username }},</h2>
+<p>
+  Thank you for registering with Videoflix. To complete your registration and
+  verify your email address, please click the link below:
+</p>
+<a class="reset-link" href="{{ activate_link }}">Activate account</a>
+<p>If you did not sign up for Videoflix, please ignore this email.</p>
 
-<h2>Welcome to Videoflix, {{ username }}!</h2>
-<p>
-  Thank you for registering an account on Videoflix. I am thrilled to have you
-  join my app user community.
-</p>
-<p>With Videoflix, you can:</p>
-<ul>
-  <li>watch movies with a user-friendly interface.</li>
-  <li>Add and organize your contacts to collaborate effectively.</li>
-  <li>
-    Assign tasks to specific contacts to ensure everyone knows their
-    responsibilities.
-  </li>
-  <li>Track the progress of your projects and stay on top of deadlines.</li>
-</ul>
-<p>
-  If you have any questions or improvement suggestions, feel free to reach me
-  anytime at
-  <a href="mailto:contact@ibrahima-sourabie.com" class="email"
-    >contact@ibrahima-sourabie.com</a
-  >
-  or using the contact form on my portfolio webpage at
-  <a class="email" href="https://ibrahima-sourabie.com"
-    >https://ibrahima-sourabie.com/</a
-  >.
-</p>
-<p>
-  I hope you enjoy using my platform to streamline your project management and
-  boost your productivity. I look forward to supporting your success!
-</p>
-
+<p>Happy Streaming! 🎬</p>
+<p>Best regards,<br />Your Videoflix team!</p>
 {% endblock %}

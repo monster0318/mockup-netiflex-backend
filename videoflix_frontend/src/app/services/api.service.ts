@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root',
 })
 export class ApiService {
-  private URL = 'https://videoflix.ibrahima-sourabie-server.com/api/';
+  private URL = 'http://127.0.0.1:8000/';
   private httpClient = inject(HttpClient);
 
   constructor() {}
