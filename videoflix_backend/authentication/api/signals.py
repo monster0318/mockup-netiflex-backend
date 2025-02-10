@@ -1,18 +1,26 @@
 from django.db.models.signals import post_save
-from django.contrib.auth.models import User
+from user.models import CustomUser
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
-import os
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes
 from config.config_settings import *
 
-@receiver(post_save, sender=User)
+
+@receiver(post_save, sender=CustomUser)
 def send_welcome_email(sender, instance, created,**kwargs):
     if created:  
-        subject = "Welcome To Videoflix!"
+        subject = "Confirm your email"
+        user = CustomUser.objects.get(email=instance.email)
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
         context = {
             "username": instance.username,
+            "activate_link":f"https://127.0.0.1:8000/activate-account/{uid}/{token}/",
         }
+
         message = render_to_string("emails/welcome.html", context)
 
         from_email = MAIL_USERNAME

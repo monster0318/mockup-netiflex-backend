@@ -41,17 +41,19 @@ class LoginSerializer(serializers.Serializer):
                 user = CustomUser.objects.get(email=email)
                 username = user.username
             except CustomUser.DoesNotExist:
-                raise serializers.ValidationError({"message":"No user found with this email."})
+                raise serializers.ValidationError({"message":"No user found with this email"})
         elif user_name:
             username = user_name
         else:
-            raise serializers.ValidationError({"message":"Please provide an email or a username, field is missing."})
+            raise serializers.ValidationError({"message":"Please provide an email or a username, field is missing"})
+        
+        if not user.is_active:
+            raise serializers.ValidationError({"message":"User account is not activated"})
         
         user = authenticate(username=username, password=password)
         if user is None:
-            raise serializers.ValidationError({"message":"Incorrect email or password. Please try again."})
-        elif not user.is_active:
-            raise serializers.ValidationError({"message":"User account is disabled"})
+            raise serializers.ValidationError({"message":"Wrong Email or password"})
+
         
         data['user'] = user
         return data
@@ -62,6 +64,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     and email. 
     """
     confirm_password = serializers.CharField(write_only = True)
+    username = serializers.CharField(required=False, read_only=True)
 
     class Meta:
         model = CustomUser
@@ -85,10 +88,10 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"message":"Email address is required"})
        
         if len(email_list) > 0:
-            raise serializers.ValidationError({"message":"This Email already exists. Please chose a different email"})
+            raise serializers.ValidationError({"message":"This Email already exists"})
 
         if  not has_pwd_match:
-             raise serializers.ValidationError({"message":"Your passwords don't match. Try again"})
+             raise serializers.ValidationError({"message":"Passwords must match"})
         return data
 
     
@@ -96,16 +99,38 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Saving user data if no error happened"""
 
         self.validated_data.pop('confirm_password')
+        username = "@" + self.validated_data['email'].split('@')[0]
         user = CustomUser(
-            username=self.validated_data['username'],
+            username=username,
             email=self.validated_data['email'],
-            first_name=self.validated_data['username'],
         )
         user.set_password(self.validated_data['password'])
+        user.is_active = False
         user.save()
         return user
     
 
+class ActivateAccountSerializer(serializers.Serializer):
+    uid = serializers.CharField()
+    token = serializers.CharField()
+
+    def validate(self, data):
+
+        try:
+            uid = urlsafe_base64_decode(data['uid']).decode()
+            user = User.objects.get(pk=uid)
+        except (User.DoesNotExist, ValueError):
+            raise serializers.ValidationError("Invalid user ID or token.")
+        if not default_token_generator.check_token(user, data['token']):
+            raise serializers.ValidationError("Invalid or expired token")
+        
+        data['user'] = user
+        return data 
+
+    def save(self):
+        user = self.validated_data['user']
+        user.is_active = True
+        user.save()
 
 class ResetPasswordSerializer(serializers.Serializer):
     """ Reset user's password"""
@@ -121,7 +146,7 @@ class ResetPasswordSerializer(serializers.Serializer):
         user = User.objects.get(email=email)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        reset_link = f"https://videoflix.ibrahima-sourabie.com/account/reset-password/{uid}/{token}/"
+        reset_link = f"https://videoflix.ibrahima-sourabie.com/reset-password/{uid}/{token}/"
 
         subject,message,from_email,recipient_list = message_body(user.first_name,reset_link,email)
        

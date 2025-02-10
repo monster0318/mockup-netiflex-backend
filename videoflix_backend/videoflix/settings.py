@@ -106,7 +106,8 @@ ROOT_URLCONF = 'videoflix.urls'
 
 CORS_ALLOWED_ORIGINS = [
  "https://localhost:8000",
- "http://127.0.0.1:8000"
+ "http://127.0.0.1:8000",
+ "http://localhost:4200"
 ]
 
 CORS_ALLOW_HEADERS = [
@@ -182,14 +183,16 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/5.1/howto/static-files/
 
-STATIC_URL = 'authentication/static/'
+STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'authentication/static'),
+]
 
 IMPORT_EXPORT_USE_TRANSACTIONS = True
 
-STATICFILES_DIRS = [
-    "authentication/static",
-]
+
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
@@ -213,7 +216,7 @@ REST_FRAMEWORK = {
    
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-         'rest_framework.authentication.SessionAuthentication',
+        #  'rest_framework.authentication.SessionAuthentication',
     ],
     'DEFAULT_FILTER_BACKENDS': [
         'django_filters.rest_framework.DjangoFilterBackend',
