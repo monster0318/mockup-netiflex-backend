@@ -1,11 +1,11 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { WrapperComponent } from '../../shared/wrapper/wrapper.component';
 import { NavBarComponent } from '../../shared/nav-bar/nav-bar.component';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { FormsModule } from '@angular/forms';
 import { ApiService } from '../../services/api.service';
-import { ActivatedRoute, Router } from '@angular/router';
 import { RequestsService } from '../../services/requests.service';
+import { ModuleService } from '../../services/module.service';
 
 @Component({
   selector: 'app-sign-up',
@@ -14,18 +14,25 @@ import { RequestsService } from '../../services/requests.service';
   templateUrl: './sign-up.component.html',
   styleUrl: './sign-up.component.scss',
 })
-export class SignUpComponent {
-  email!: string;
+export class SignUpComponent implements OnInit {
+  email!: string | null;
   password!: string;
   confirmPassword!: string;
   icon: string = 'visibility.svg';
   type: string = 'password';
   icon_confirm: string = 'visibility.svg';
   type_confirm: string = 'password';
+  emailAddress!: string | null;
 
   private apiService = inject(ApiService);
   private requestsService = inject(RequestsService);
-  constructor(private router: Router, private route: ActivatedRoute) {}
+  constructor(private moduleService: ModuleService) {}
+
+  ngOnInit(): void {
+    this.moduleService.email$.subscribe((email) => {
+      this.email = email;
+    });
+  }
 
   /**
    * this function allow the user to toggle password view
