@@ -7,11 +7,19 @@
     <div class="input-group">
       <input
         [(ngModel)]="email"
+        #emailInput="ngModel"
+        required
         type="email"
         name="email"
         placeholder="Email Address"
       />
-      <button (click)="sendEmail(email)">
+      <button
+        [class.hover-effect]="emailInput.valid"
+        [disabled]="!emailInput.valid"
+        [class.btn-opacity]="!emailInput.valid"
+        [style.opacity]="!emailInput.valid ? '0.75' : '1'"
+        (click)="sendEmail(email)"
+      >
         <span>Sign Up </span>
         <img src="assets/img/chevron.svg" alt="Arrow" />
       </button>

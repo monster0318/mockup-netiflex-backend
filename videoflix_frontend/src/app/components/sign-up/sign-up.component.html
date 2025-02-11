@@ -3,16 +3,26 @@
   <app-wrapper class="container">
     <div class="form-group">
       <h1>Sign up</h1>
-      <form>
-        <input
-          [(ngModel)]="email"
-          type="text"
-          name="email"
-          placeholder="Email Address"
-        />
+      <form (ngSubmit)="signUp()" #form="ngForm">
+        <div>
+          <input
+            [(ngModel)]="email"
+            #emailInput="ngModel"
+            type="text"
+            required
+            name="email"
+            placeholder="Email Address"
+          />
+          <div class="warning">
+            <!-- <img src="assets/img/warning.svg" alt="" /> -->
+            <p>{{ errorType === "email" ? errorMessage : "" }}</p>
+          </div>
+        </div>
         <div class="password">
           <input
             [(ngModel)]="password"
+            #passwordInput="ngModel"
+            required
             type="{{ type }}"
             placeholder="Enter a password"
             name="password"
@@ -27,6 +37,8 @@
         <div class="password">
           <input
             [(ngModel)]="confirmPassword"
+            #passwordConfirmInput="ngModel"
+            required
             type="{{ type_confirm }}"
             name="confirmPassword"
             placeholder="Confirm password"
@@ -38,10 +50,31 @@
           />
           <div class="warning">
             <!-- <img src="assets/img/warning.svg" alt="" /> -->
-            <p>Passwords must match</p>
+            <p>{{ errorType === "password" ? errorMessage : "" }}</p>
           </div>
         </div>
-        <button type="submit" (click)="signUp()">Get Started</button>
+        <button
+          [class.hover_effect]="
+            emailInput.valid &&
+            passwordInput.valid &&
+            passwordConfirmInput.valid
+          "
+          [disabled]="
+            !passwordInput.valid ||
+            !emailInput.valid ||
+            !passwordConfirmInput.valid
+          "
+          [style.opacity]="
+            !passwordInput.valid ||
+            !emailInput.valid ||
+            !passwordConfirmInput.valid
+              ? '0.75'
+              : '1'
+          "
+          type="submit"
+        >
+          Get Started
+        </button>
       </form>
     </div>
   </app-wrapper>

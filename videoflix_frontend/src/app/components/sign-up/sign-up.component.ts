@@ -23,6 +23,8 @@ export class SignUpComponent implements OnInit {
   icon_confirm: string = 'visibility.svg';
   type_confirm: string = 'password';
   emailAddress!: string | null;
+  errorMessage: string | null = null;
+  errorType: string | null = null;
 
   private apiService = inject(ApiService);
   private requestsService = inject(RequestsService);
@@ -31,6 +33,11 @@ export class SignUpComponent implements OnInit {
   ngOnInit(): void {
     this.moduleService.email$.subscribe((email) => {
       this.email = email;
+    });
+
+    this.requestsService.errorMessage$.subscribe((message) => {
+      this.errorMessage = message['message'][0];
+      this.errorType = message['type'][0];
     });
   }
 

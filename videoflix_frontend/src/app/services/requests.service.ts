@@ -21,9 +21,9 @@ export class RequestsService {
   isError$ = this.isErrorSubject.asObservable();
 
   private errorMessageSubject = new BehaviorSubject<{
-    error_type: string | string[] | null[];
-    error_message: string | string[] | null[];
-  }>({ error_type: [null], error_message: [null] });
+    type: string[] | null[];
+    message: string[] | null[];
+  }>({ type: [null], message: [null] });
 
   errorMessage$ = this.errorMessageSubject.asObservable();
 
@@ -39,7 +39,7 @@ export class RequestsService {
     this.isLoadingSubject.next(bool);
   }
 
-  emitError(bool: boolean) {
+  emitIsError(bool: boolean) {
     this.isErrorSubject.next(bool);
   }
 
@@ -105,12 +105,12 @@ export class RequestsService {
         if (error.status === 400 || error.status === 404) {
           console.log('error 1', error.error);
 
-          this.emitError(error.error);
+          this.emitErrorMessage(error.error);
           this.resetLoading(0);
           return error.error;
         } else {
           console.log('error 2', error.message);
-          this.emitError(error.message);
+          this.emitErrorMessage(error.message);
           this.resetLoading(0);
           return error.message;
         }

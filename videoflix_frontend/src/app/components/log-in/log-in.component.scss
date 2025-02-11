@@ -23,6 +23,11 @@ main {
   }
 }
 
+.hover_effect:hover {
+  opacity: 0.8 !important;
+  transition: all 250ms ease-in-out !important;
+}
+
 h1 {
   text-align: center;
   font-size: 48px;
@@ -53,17 +58,32 @@ form {
     font-size: 16px;
     line-height: 19.2px;
   }
-  > input {
+  > .email-input-group {
     max-width: 408px;
     width: 100%;
-    color: #2e3edf;
-    border-radius: 12px;
     height: 48px;
-    border: 2px solid #2e3edf;
-    padding: 1rem 1.5rem;
-    outline: none;
-    &::placeholder {
+    position: relative;
+    display: flex;
+    align-items: center;
+    input {
+      max-width: 408px;
+      width: 100%;
       color: #2e3edf;
+      border-radius: 12px;
+      height: 48px;
+      border: 2px solid #2e3edf;
+      padding: 1rem 1.5rem;
+      outline: none;
+      &::placeholder {
+        color: #2e3edf;
+      }
+    }
+    > .warning {
+      display: flex;
+      gap: 1rem;
+      position: absolute;
+      bottom: -1.5rem;
+      color: #ff002e;
     }
   }
 

@@ -40,18 +40,18 @@ class LoginSerializer(serializers.Serializer):
                 user = CustomUser.objects.get(email=email)
                 username = user.username
             except CustomUser.DoesNotExist:
-                raise serializers.ValidationError({"message":"No user found with this email"})
+                raise serializers.ValidationError({"type":"email","message":"No user found with this email"})
         elif user_name:
             username = user_name
         else:
-            raise serializers.ValidationError({"message":"Please provide an email or a username, field is missing"})
+            raise serializers.ValidationError({"type":"email","message":"Please provide an email or a username, field is missing"})
         
         if not user.is_active:
-            raise serializers.ValidationError({"message":"User account is not activated"})
+            raise serializers.ValidationError({"type":"account","message":"User account is not activated"})
         
         user = authenticate(username=username, password=password)
         if user is None:
-            raise serializers.ValidationError({"message":"Wrong Email or password"})
+            raise serializers.ValidationError({"type":"credentials","message":"Wrong Email or password"})
 
         
         data['user'] = user
@@ -84,13 +84,13 @@ class RegisterSerializer(serializers.ModelSerializer):
         email_list = CustomUser.objects.filter(email=entered_email)
 
         if len(entered_email)==0:
-            raise serializers.ValidationError({"message":"Email address is required"})
+            raise serializers.ValidationError({"type":"email","message":"Email address is required"})
        
         if len(email_list) > 0:
-            raise serializers.ValidationError({"message":"This Email already exists"})
+            raise serializers.ValidationError({"type":"email","message":"This Email already exists"})
 
         if  not has_pwd_match:
-             raise serializers.ValidationError({"message":"Passwords must match"})
+             raise serializers.ValidationError({"type":"password","message":"Passwords must match"})
         return data
 
     
@@ -119,9 +119,9 @@ class ActivateAccountSerializer(serializers.Serializer):
             uid = urlsafe_base64_decode(data['uid']).decode()
             user = CustomUser.objects.get(pk=uid)
         except (CustomUser.DoesNotExist, ValueError):
-            raise serializers.ValidationError("Invalid user ID or token.")
+            raise serializers.ValidationError({"type":"token","message":"Invalid user ID or token"})
         if not default_token_generator.check_token(user, data['token']):
-            raise serializers.ValidationError("Invalid or expired token")
+            raise serializers.ValidationError({"type":"token","message":"Invalid or expired token"})
         
         data['user'] = user
         return data 
@@ -137,7 +137,7 @@ class ResetPasswordSerializer(serializers.Serializer):
 
     def validate_email(self, value):
         if not CustomUser.objects.filter(email=value).exists():
-            raise serializers.ValidationError("No account found with this email")
+            raise serializers.ValidationError({"type":"email","message":"No account found with this email"})
         return value
 
     def save(self):
@@ -175,13 +175,13 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
             uid = urlsafe_base64_decode(data['uid']).decode()
             user = CustomUser.objects.get(pk=uid)
         except (CustomUser.DoesNotExist, ValueError):
-            raise serializers.ValidationError("Invalid user ID or token.")
+            raise serializers.ValidationError({"type":"token","message":"Invalid user ID or token"})
 
         if not default_token_generator.check_token(user, data['token']):
-            raise serializers.ValidationError("Invalid or expired token")
+            raise serializers.ValidationError({"type":"token","message":"Invalid or expired token"})
         
         if  not has_pwd_match:
-             raise serializers.ValidationError({"message":"Passwords must match"})
+             raise serializers.ValidationError({"type":"password","message":"Passwords must match"})
         
         data['user'] = user
         return data

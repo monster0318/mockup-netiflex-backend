@@ -6,7 +6,8 @@ from rest_framework import generics
 from rest_framework import status
 from django.contrib.auth import login
 from rest_framework.response import Response
-from authentication.api.serializers import ActivateAccountSerializer, ConfirmResetPasswordSerializer, LoginSerializer, RegisterSerializer, ResetPasswordSerializer
+from authentication.api.serializers import ActivateAccountSerializer, ConfirmResetPasswordSerializer,\
+      LoginSerializer, RegisterSerializer, ResetPasswordSerializer
 from authentication.api.utils import guest_login, is_guest_user, is_guest_user_email
 
 
@@ -93,6 +94,7 @@ class ResetPasswordView(APIView):
     password when forgotten
 
     """
+    serializer_class = ResetPasswordSerializer
     permission_classes = [AllowAny]
 
     def post(self,request):
@@ -109,6 +111,7 @@ class ResetPasswordConfirmView(APIView):
     password when forgotten
 
     """
+    serializer_class = ConfirmResetPasswordSerializer
     permission_classes = [AllowAny]
     
     def post(self,request):
