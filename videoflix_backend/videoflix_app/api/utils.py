@@ -12,7 +12,7 @@ def get_or_404(model,pk):
     except ValueError:
         raise ValueError("The ID must be an integer")
     except model.DoesNotExist:
-        raise Http404("Model does not exit")
+        raise Http404("Model does not exist")
       
 
 def delete_files_starting_with(source, file_postfix="_thumb"):

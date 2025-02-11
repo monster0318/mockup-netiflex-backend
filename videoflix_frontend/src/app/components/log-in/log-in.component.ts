@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { NavBarComponent } from '../../shared/nav-bar/nav-bar.component';
@@ -22,16 +22,25 @@ import { CommonModule } from '@angular/common';
   templateUrl: './log-in.component.html',
   styleUrl: './log-in.component.scss',
 })
-export class LogInComponent {
+export class LogInComponent implements OnInit {
   password!: string;
   email!: string;
   rememberMe: boolean = false;
   icon: string = 'visibility.svg';
   type: string = 'password';
+  errorMessage: string | null = null;
+  errorType: string | null = null;
 
   private apiService = inject(ApiService);
   private requestsService = inject(RequestsService);
   constructor(private router: Router, private route: ActivatedRoute) {}
+
+  ngOnInit(): void {
+    this.requestsService.errorMessage$.subscribe((message) => {
+      this.errorMessage = message['message'][0];
+      this.errorType = message['type'][0];
+    });
+  }
   /**
    * show entered password
    */
@@ -45,7 +54,7 @@ export class LogInComponent {
     }
   }
 
-  login() {
+  onLogin() {
     this.requestsService.postData(
       'login/',
       { email: this.email, password: this.password },
