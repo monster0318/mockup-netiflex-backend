@@ -1,4 +1,3 @@
-from django.contrib.auth.models import User
 from user.models import CustomUser
 from rest_framework import serializers
 from django.contrib.auth import authenticate
@@ -118,8 +117,8 @@ class ActivateAccountSerializer(serializers.Serializer):
 
         try:
             uid = urlsafe_base64_decode(data['uid']).decode()
-            user = User.objects.get(pk=uid)
-        except (User.DoesNotExist, ValueError):
+            user = CustomUser.objects.get(pk=uid)
+        except (CustomUser.DoesNotExist, ValueError):
             raise serializers.ValidationError("Invalid user ID or token.")
         if not default_token_generator.check_token(user, data['token']):
             raise serializers.ValidationError("Invalid or expired token")
@@ -137,16 +136,16 @@ class ResetPasswordSerializer(serializers.Serializer):
     email = serializers.EmailField()
 
     def validate_email(self, value):
-        if not User.objects.filter(email=value).exists():
+        if not CustomUser.objects.filter(email=value).exists():
             raise serializers.ValidationError("No account found with this email")
         return value
 
     def save(self):
         email = self.validated_data['email']
-        user = User.objects.get(email=email)
+        user = CustomUser.objects.get(email=email)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        reset_link = f"https://videoflix.ibrahima-sourabie.com/reset-password/{uid}/{token}/"
+        reset_link = f"http://localhost:4200/reset-password/{uid}/{token}/"
 
         subject,message,from_email,recipient_list = message_body(user.first_name,reset_link,email)
        
@@ -174,8 +173,8 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
 
         try:
             uid = urlsafe_base64_decode(data['uid']).decode()
-            user = User.objects.get(pk=uid)
-        except (User.DoesNotExist, ValueError):
+            user = CustomUser.objects.get(pk=uid)
+        except (CustomUser.DoesNotExist, ValueError):
             raise serializers.ValidationError("Invalid user ID or token.")
 
         if not default_token_generator.check_token(user, data['token']):

@@ -91,8 +91,10 @@ export class RequestsService {
     this.apiService.postData(endpoint, data, header).subscribe({
       next: (response) => {
         if (response.token) {
-          this.fetchVideos('api/videos/', response.token);
-          sessionStorage.setItem('token', response.token);
+          if (endpoint === 'login/') {
+            this.fetchVideos('api/videos/', response.token);
+            sessionStorage.setItem('token', response.token);
+          }
           callback();
         }
       },
