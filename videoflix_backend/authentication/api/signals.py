@@ -18,7 +18,7 @@ def send_welcome_email(sender, instance, created,**kwargs):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         context = {
             "username": instance.username,
-            "activate_link":f"https://127.0.0.1:8000/activate-account/{uid}/{token}/",
+            "activate_link":f"http://localhost:4200/activate-account/{uid}/{token}/",
         }
 
         message = render_to_string("emails/welcome.html", context)
