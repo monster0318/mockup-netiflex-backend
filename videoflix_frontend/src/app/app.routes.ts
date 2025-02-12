@@ -9,6 +9,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
 import { VideoOfferComponent } from './components/video-offer/video-offer.component';
 import { VideoPlayerComponent } from './components/video-player/video-player.component';
 import { ActivateAccountComponent } from './components/activate-account/activate-account.component';
+import { authenticatorGuard } from './guards/authenticator.guard';
 
 export const routes: Routes = [
   {
@@ -44,11 +45,13 @@ export const routes: Routes = [
   {
     path: 'video-offer',
     component: VideoOfferComponent,
+    canActivate: [authenticatorGuard],
     title: 'Videoflix | Videos',
   },
   {
     path: 'video-player',
     component: VideoPlayerComponent,
+    canActivate: [authenticatorGuard],
     title: 'Videoflix | Player',
   },
   {
@@ -61,4 +64,5 @@ export const routes: Routes = [
     component: LegalNoticeComponent,
     title: 'Videoflix | Legal Notice',
   },
+  { path: '**', redirectTo: 'login' },
 ];
