@@ -1,6 +1,7 @@
 import { CommonModule } from '@angular/common';
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router, RouterLink } from '@angular/router';
+import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-nav-bar',
@@ -9,15 +10,18 @@ import { Router, RouterLink } from '@angular/router';
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
 })
-export class NavBarComponent {
+export class NavBarComponent implements OnInit {
   @Input({ required: true }) logo: string = '';
   @Input() logOut: string = '';
   @Input() btnText: string = 'Log in';
-  @Input() is_authenticated: boolean = true;
+  @Input() isAuthenticated: boolean = false;
   @Input() is_watching: boolean = false;
   @Input() login: boolean = false;
 
-  constructor(private router: Router) {}
+  constructor(private router: Router, private apiService: ApiService) {}
+  ngOnInit(): void {
+    this.isAuthenticated = this.apiService.isAuthenticated();
+  }
 
   getLogoImage() {
     return 'assets/img/' + this.logo;
@@ -26,8 +30,20 @@ export class NavBarComponent {
     return 'assets/img/' + this.logOut;
   }
 
-  logUserOut() {
-    sessionStorage.removeItem('token');
-    this.router.navigateByUrl('');
+  onReturnToStartPage() {
+    if (this.isAuthenticated) {
+      this.router.navigateByUrl('/video-offer');
+    } else {
+      this.router.navigateByUrl('');
+    }
+  }
+
+  logUserInOrOut() {
+    if (this.btnText === 'Log out') {
+      sessionStorage.removeItem('token');
+      this.router.navigateByUrl('');
+    } else if (this.btnText === 'Log in') {
+      this.router.navigateByUrl('/login');
+    }
   }
 }

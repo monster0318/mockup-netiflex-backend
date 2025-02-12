@@ -14,16 +14,21 @@ export class RequestsService {
   private videoSubject = new BehaviorSubject<Video | null>(null);
   videos$ = this.videoSubject.asObservable();
 
+  private responseSubject = new BehaviorSubject<{ message: string | null }>({
+    message: null,
+  });
+  response$ = this.responseSubject.asObservable();
+
   private isLoadingSubject = new BehaviorSubject<boolean>(true);
   isLoading$ = this.isLoadingSubject.asObservable();
 
   private isErrorSubject = new BehaviorSubject<boolean>(false);
   isError$ = this.isErrorSubject.asObservable();
 
-  private errorMessageSubject = new BehaviorSubject<{
-    type: string[] | null[];
-    message: string[] | null[];
-  }>({ type: [null], message: [null] });
+  private errorMessageSubject = new BehaviorSubject<any>({
+    type: [null],
+    message: [null],
+  });
 
   errorMessage$ = this.errorMessageSubject.asObservable();
 
@@ -39,12 +44,24 @@ export class RequestsService {
     this.isLoadingSubject.next(bool);
   }
 
+  emitResponse(response: { message: string | null }) {
+    this.responseSubject.next(response);
+  }
+
+  resetResponse() {
+    this.responseSubject.next({ message: null });
+  }
+
   emitIsError(bool: boolean) {
     this.isErrorSubject.next(bool);
   }
 
   emitErrorMessage(message: any) {
-    this.errorMessageSubject.next(message);
+    try {
+      this.errorMessageSubject.next(message);
+    } catch (error) {
+      console.log('Typeerror');
+    }
   }
 
   /**
@@ -90,6 +107,7 @@ export class RequestsService {
   ) {
     this.apiService.postData(endpoint, data, header).subscribe({
       next: (response) => {
+        this.emitResponse(response);
         if (response.token) {
           if (endpoint === 'login/') {
             this.fetchVideos('api/videos/', response.token);
