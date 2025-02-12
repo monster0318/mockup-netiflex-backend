@@ -15,14 +15,14 @@ import { ModuleService } from '../../services/module.service';
   styleUrl: './sign-up.component.scss',
 })
 export class SignUpComponent implements OnInit {
-  email!: string | null;
-  password!: string;
-  confirmPassword!: string;
+  email: string | null = null;
+  password: string | null = null;
+  confirmPassword: string | null = null;
   icon: string = 'visibility.svg';
   type: string = 'password';
   icon_confirm: string = 'visibility.svg';
   type_confirm: string = 'password';
-  emailAddress!: string | null;
+  emailAddress: string | null = null;
   errorMessage: string | null = null;
   errorType: string | null = null;
 

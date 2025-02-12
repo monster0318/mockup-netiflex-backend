@@ -6,7 +6,9 @@ from django.contrib.auth.tokens import default_token_generator
 from django.core.mail import EmailMessage
 from django.utils.encoding import force_bytes
 from authentication.api.utils import message_body
-
+from django.core.exceptions import ValidationError
+from django.core.validators import validate_email
+from django.contrib.auth.password_validation import validate_password
 
 class UserAccountSerializer(serializers.ModelSerializer):
     """
@@ -75,6 +77,7 @@ class RegisterSerializer(serializers.ModelSerializer):
          
         }
 
+    
 
     def validate(self, data):
         """ Validating user data """
@@ -88,7 +91,12 @@ class RegisterSerializer(serializers.ModelSerializer):
        
         if len(email_list) > 0:
             raise serializers.ValidationError({"type":"email","message":"This Email already exists"})
-
+        
+        try:
+            validate_password(data["password"]) 
+        except ValidationError as e:
+            raise serializers.ValidationError({"type":"password","message":e.messages})
+        
         if  not has_pwd_match:
              raise serializers.ValidationError({"type":"password","message":"Passwords must match"})
         return data
@@ -128,20 +136,30 @@ class ActivateAccountSerializer(serializers.Serializer):
 
     def save(self):
         user = self.validated_data['user']
-        user.is_active = True
-        user.save()
+        if user.is_active:
+            raise serializers.ValidationError({"type":["account"],"message":["This account is already active. You can log in!"]})
+        else:
+            user.is_active = True
+            user.save()
 
 class ResetPasswordSerializer(serializers.Serializer):
     """ Reset user's password"""
     email = serializers.EmailField()
 
-    def validate_email(self, value):
-        if not CustomUser.objects.filter(email=value).exists():
+    
+    def validate(self, data):
+        entered_email = data.get('email')
+
+        try:
+            validate_email(entered_email)
+        except ValidationError as e:
+            raise serializers.ValidationError({"type":"email","message":e.messages})
+        if not CustomUser.objects.filter(email=entered_email).exists():
             raise serializers.ValidationError({"type":"email","message":"No account found with this email"})
-        return value
+        return data
 
     def save(self):
-        email = self.validated_data['email']
+        email = self.validated_data.get('email')
         user = CustomUser.objects.get(email=email)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))

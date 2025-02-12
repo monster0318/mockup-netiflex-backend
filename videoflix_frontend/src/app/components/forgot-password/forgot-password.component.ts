@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 import { FooterComponent } from '../../shared/footer/footer.component';
 import { NavBarComponent } from '../../shared/nav-bar/nav-bar.component';
@@ -13,13 +13,22 @@ import { ApiService } from '../../services/api.service';
   templateUrl: './forgot-password.component.html',
   styleUrl: './forgot-password.component.scss',
 })
-export class ForgotPasswordComponent {
-  email!: string;
+export class ForgotPasswordComponent implements OnInit {
+  email: string | null = null;
+  errorMessage: string | null = null;
+  errorType: string | null = null;
 
   constructor(
     private requestsService: RequestsService,
     private apiService: ApiService
   ) {}
+
+  ngOnInit(): void {
+    this.requestsService.errorMessage$.subscribe((message) => {
+      this.errorMessage = message['message'][0];
+      this.errorType = message['type'][0];
+    });
+  }
 
   sendEmailResetPassword() {
     this.requestsService.postData(

@@ -1,3 +1,25 @@
-<h1>ACCOUNT</h1>
+<main>
+  <app-nav-bar logo="logo.svg" />
+  <app-wrapper class="container">
+    <div class="form-group">
+      <h1>
+        {{
+          errorType === "account" && !responseMessage
+            ? errorMessage
+            : !responseMessage
+            ? "Click the button below to activate your account!"
+            : ""
+        }}
+        {{ responseMessage ? responseMessage : "" }}
+      </h1>
+      <button (click)="onActivateAccount()" type="submit">
+        Activate account
+      </button>
 
-<button (click)="onNewPassword()">Activate account</button>
+      <p class="warning">
+        {{ errorType === "token" ? errorMessage : "" }}
+      </p>
+    </div>
+  </app-wrapper>
+  <app-footer />
+</main>

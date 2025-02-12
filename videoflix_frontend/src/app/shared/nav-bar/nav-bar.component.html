@@ -2,26 +2,26 @@
   <div>
     <div>
       <img
-        routerLink=""
+        (click)="onReturnToStartPage()"
         class="logo loco-icon"
         src="assets/img/symbol.svg"
         alt="Logo"
       />
       <img
-        routerLink=""
+        (click)="onReturnToStartPage()"
         class="logo symbol"
         [src]="getLogoImage()"
         alt="Logo"
       />
     </div>
-    <input
-      *ngIf="is_authenticated === true && is_watching === false"
+    <!-- <input
+      *ngIf="isAuthenticated === true && is_watching === false"
       type="text"
       name="search"
       id="search"
       placeholder="search"
-    />
-    @if(is_authenticated === true){
+    /> -->
+    <!-- @if(isAuthenticated === true){
     <ul class="user-menu">
       <li *ngIf="is_watching === true">
         <img src="assets/img/arrow_left.svg" alt="Home" />
@@ -31,13 +31,13 @@
         <img src="assets/img/user.svg" alt="User" />
         <a href="">username</a>
       </li>
-      <li *ngIf="is_authenticated === true && is_watching === false">
+      <li *ngIf="isAuthenticated === true && is_watching === false">
         <img src="assets/img/upload.svg" alt="upload" />
         <a href="">upload</a>
       </li>
     </ul>
-    }
-    <button *ngIf="login === false" routerLink="/login">
+    } -->
+    <button (click)="logUserInOrOut()" *ngIf="login === false">
       @if (logOut !== '') {
       <img [src]="getLogOutImage()" alt="Log out" />
       }
