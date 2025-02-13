@@ -69,6 +69,11 @@ footer {
     border-radius: 8px;
     border: transparent;
     cursor: pointer;
+    > a {
+      text-decoration: none;
+      color: #2e3edf;
+      font-weight: 500;
+    }
     &:hover {
       opacity: 0.8;
       transition: all 300ms ease-in-out;
@@ -88,6 +93,8 @@ footer {
 
 @media screen and (width<615px) {
   main {
-    padding-inline: $paddingInlineMobile;
+    section {
+      padding-inline: $paddingInlineMobile;
+    }
   }
 }

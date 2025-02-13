@@ -23,6 +23,16 @@ main {
   }
 }
 
+.loading-background {
+  background-image: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.8) 10%,
+      rgba(0, 0, 0, 0.4) 55%,
+      rgba(0, 0, 0, 1) 90%
+    ),
+    url("/assets/img/signup.jpeg");
+}
+
 .current-video-description {
   display: flex;
   flex-direction: column;
@@ -96,7 +106,6 @@ main {
       margin-bottom: 0.75rem;
       > h2 {
         font-size: 22px;
-
         line-height: 28.64px;
         color: white;
       }
@@ -113,16 +122,17 @@ main {
       display: flex;
       gap: 1rem;
       > li {
-        > img {
-          border-radius: 10px;
-          width: 400.25px;
-          aspect-ratio: 16 / 9;
-          border-radius: 10px;
-          cursor: pointer;
+        > .video-and-duration {
+          position: relative;
+          > img {
+            border-radius: 12px;
+            width: 400.25px;
+            aspect-ratio: 16 / 9;
+            cursor: pointer;
+          }
         }
         > div {
           padding-left: 1rem;
-          padding-top: 1rem;
           p {
             font-size: 20px;
             color: white; //rgb(118, 118, 118);
@@ -137,6 +147,8 @@ main {
   margin-inline: 1rem;
   display: flex;
   align-items: center;
+  position: absolute;
+  bottom: 1rem;
   gap: 1rem;
   > img {
     width: 30px;
@@ -151,7 +163,7 @@ main {
   }
 }
 
-.single-video:hover {
+.video-and-duration:hover {
   .play-movie > img {
     filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
       brightness(88%) contrast(98%);

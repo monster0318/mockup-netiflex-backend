@@ -19,7 +19,7 @@ export class RequestsService {
   });
   response$ = this.responseSubject.asObservable();
 
-  private isLoadingSubject = new BehaviorSubject<boolean>(true);
+  private isLoadingSubject = new BehaviorSubject<boolean>(false);
   isLoading$ = this.isLoadingSubject.asObservable();
 
   private isErrorSubject = new BehaviorSubject<boolean>(false);
@@ -73,14 +73,13 @@ export class RequestsService {
     this.emitIsLoading(true);
     this.apiService.getData(endpoint, token).subscribe({
       next: (response) => {
-        console.log('RESPONSE Body', response.body);
         this.emitVideos(response.body);
       },
       error: (error) => {
         this.emitErrorMessage(error.message);
       },
       complete: () => {
-        this.emitIsLoading(false);
+        this.resetLoading(5000);
       },
     });
   }
@@ -117,7 +116,7 @@ export class RequestsService {
         }
       },
       complete: () => {
-        this.resetLoading(5000);
+        this.resetLoading(2500);
       },
       error: (error) => {
         if (error.status === 400 || error.status === 404) {

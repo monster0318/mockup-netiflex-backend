@@ -2,7 +2,7 @@
   <app-nav-bar class="app-nav-bar" logo="logo.svg" />
   <section>
     <h1>Legal Notice</h1>
-    <p>Last updated: January 28, 2025</p>
+    <p>Last updated: {{ todayDate | date : "MMMM d, y" }}</p>
     <h2>Interpretation and Definitions</h2>
     <h3>Interpretation</h3>
     <p>
@@ -180,7 +180,6 @@
       </div>
       <a class="footer-link">Terms of Use</a>
       <a routerLink="/privacy-policy" class="footer-link">Privacy Policy</a>
-      <a class="footer-link">Impressum</a>
     </section>
   </footer>
 </main>
