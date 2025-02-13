@@ -15,3 +15,10 @@ export interface Video {
   language: 'french' | 'english' | 'german';
   video_file: string | null;
 }
+
+export interface VideoData {
+  title: string;
+  duration: string;
+  poster: string;
+  // url:string;
+}

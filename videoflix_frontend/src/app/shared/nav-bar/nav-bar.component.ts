@@ -1,12 +1,12 @@
 import { CommonModule } from '@angular/common';
 import { Component, Input, OnInit } from '@angular/core';
-import { Router, RouterLink } from '@angular/router';
+import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 
 @Component({
   selector: 'app-nav-bar',
   standalone: true,
-  imports: [CommonModule, RouterLink],
+  imports: [CommonModule],
   templateUrl: './nav-bar.component.html',
   styleUrl: './nav-bar.component.scss',
 })
@@ -34,7 +34,7 @@ export class NavBarComponent implements OnInit {
     if (this.isAuthenticated) {
       this.router.navigateByUrl('/video-offer');
     } else {
-      this.router.navigateByUrl('');
+      this.router.navigateByUrl('/login');
     }
   }
 
