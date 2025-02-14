@@ -11,7 +11,7 @@ import { HttpHeaders } from '@angular/common/http';
 export class RequestsService {
   private token: string | null = null;
 
-  private videoSubject = new BehaviorSubject<Video | null>(null);
+  private videoSubject = new BehaviorSubject<Video[] | []>([]);
   videos$ = this.videoSubject.asObservable();
 
   private responseSubject = new BehaviorSubject<{ message: string | null }>({
@@ -36,7 +36,7 @@ export class RequestsService {
 
   constructor(private router: Router, private route: ActivatedRoute) {}
 
-  emitVideos(data: Video | null) {
+  emitVideos(data: Video[] | []) {
     this.videoSubject.next(data);
   }
 

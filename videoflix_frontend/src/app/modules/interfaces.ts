@@ -4,6 +4,7 @@ export interface MenuLink {
 }
 
 export interface Video {
+  id: number;
   title: string;
   description: string;
   author: string;

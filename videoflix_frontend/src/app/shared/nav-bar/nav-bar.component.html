@@ -1,4 +1,4 @@
-<nav>
+<nav [class.backgroundPlayerNav]="isPlayerNav === true">
   <div>
     <div>
       <img
@@ -10,7 +10,7 @@
       <img
         (click)="onReturnToStartPage()"
         class="logo symbol"
-        [src]="getLogoImage()"
+        [src]="getImagePath(logo)"
         alt="Logo"
       />
     </div>
@@ -39,7 +39,13 @@
     } -->
     <button (click)="logUserInOrOut()" *ngIf="login === false">
       @if (logOut !== '') {
-      <img [src]="getLogOutImage()" alt="Log out" />
+      <img [src]="getImagePath(logOut)" alt="Log out" />
+      }
+      <span> {{ btnText }} </span>
+    </button>
+    <button (click)="logUserInOrOut()" *ngIf="isPlayerNav === true">
+      @if (logOut !== '') {
+      <img [src]="getImagePath(logOut)" alt="Log out" />
       }
       <span> {{ btnText }} </span>
     </button>

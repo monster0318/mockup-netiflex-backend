@@ -5,7 +5,7 @@ import math
 from videoflix_app.api.utils import delete_files_starting_with
 
 def convert_to_format(source,quality):
-    """Convert video to format {360,480,720,1080}"""
+    """Convert video to format {360,120,720,1080}"""
     file_name, _ = os.path.splitext(source)
     target = file_name + f'_{quality}.mp4'
     if os.name == "nt":
