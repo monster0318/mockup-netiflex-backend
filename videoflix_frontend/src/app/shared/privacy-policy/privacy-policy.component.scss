@@ -46,14 +46,14 @@ h3 {
   gap: 2rem;
   > button {
     padding: 0.35rem 1rem;
-    background-color: white;
+    background-color: #2e3edf;
     height: 50px;
     border-radius: 8px;
     border: transparent;
     cursor: pointer;
     > a {
       text-decoration: none;
-      color: #2e3edf;
+      color: white;
       font-weight: 500;
     }
     &:hover {

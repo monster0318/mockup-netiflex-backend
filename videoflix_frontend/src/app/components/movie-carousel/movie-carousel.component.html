@@ -1,33 +1,31 @@
-<!-- <div #glide class="glide">
-  <div class="glide__track" data-glide-el="track">
-    <ul class="glide__slides">
-      <li class="glide__slide" *ngFor="let movie of movies">
-        <img [src]="movie.image" [alt]="movie.title" />
-        <p>{{ movie.title }}</p>
-      </li>
-    </ul>
-  </div>
-
-  <div class="glide__arrows" data-glide-el="controls">
-    <button class="glide__arrow glide__arrow--left" data-glide-dir="+">
-      +
-    </button>
-    <button class="glide__arrow glide__arrow--right" data-glide-dir="+">
-      +
-    </button>
-  </div>
-</div> -->
 <div #glide class="glide">
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
-      <li class="glide__slide" *ngFor="let movie of movies">
-        <img [src]="movie.image" [alt]="movie.title" />
-        <p>{{ movie.title }}</p>
+      <li
+        class="glide__slide single-video"
+        *ngFor="let video of videos"
+        routerLink="/video-player"
+      >
+        <div class="video-and-duration">
+          <img [src]="video.image" [alt]="video.title" />
+          <div class="play-movie">
+            <img src="assets/img/circle_play.svg" alt="Play" />
+            <span>{{ video.duration ? video.duration : "" }}</span>
+          </div>
+        </div>
+        <div class="title-watch-now">
+          <p>{{ video.title ? video.title : "No title" }}</p>
+          <a class="watch-movie">Watch now</a>
+        </div>
       </li>
     </ul>
   </div>
 
-  <div class="glide__arrows" data-glide-el="controls">
+  <div
+    class="glide__arrows"
+    data-glide-el="controls"
+    *ngIf="videos.length !== 0"
+  >
     <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
       <img src="assets/img/chevron-left.svg" alt="Left" />
     </button>

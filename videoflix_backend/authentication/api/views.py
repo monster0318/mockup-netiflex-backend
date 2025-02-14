@@ -4,7 +4,7 @@ from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework import generics
 from rest_framework import status
-from django.contrib.auth import login
+from django.contrib.auth import login, logout
 from rest_framework.response import Response
 from authentication.api.serializers import ActivateAccountSerializer, ConfirmResetPasswordSerializer,\
       LoginSerializer, RegisterSerializer, ResetPasswordSerializer
@@ -51,7 +51,8 @@ class GuestLogout(generics.DestroyAPIView):
         if is_guest_user_email(current_user.email):
             current_user.delete()
             return Response({"ok":True,"message":"Guest user successfully removed"}, status=status.HTTP_204_NO_CONTENT)
-        return Response("",status=status.HTTP_400_BAD_REQUEST)
+        logout(request)
+        return Response({"ok":True,"message":f"User {current_user.username} has logged out"},status=status.HTTP_200_OK)
     
 class Register(APIView):
     """Registration of new user"""

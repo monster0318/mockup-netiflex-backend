@@ -1,5 +1,5 @@
 <main>
-  <app-nav-bar class="app-nav-bar" logo="logo.svg" />
+  <app-nav-bar class="app-nav-bar" [login]="isAuthenticated" logo="logo.svg" />
   <section>
     <h1>Legal Notice</h1>
     <p>Last updated: {{ todayDate | date : "MMMM d, y" }}</p>

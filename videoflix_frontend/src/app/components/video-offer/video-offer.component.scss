@@ -180,12 +180,11 @@ main {
   }
 }
 
+.hero-footer,
 footer {
   text-align: center;
   padding-block: 2rem;
   padding-inline: $paddingInline;
-  position: sticky;
-  bottom: 0rem;
   background-image: linear-gradient(
     to bottom,
     rgba(0, 0, 0, 0.2) 10%,
@@ -208,14 +207,29 @@ footer {
   }
 }
 
-@media screen and (width<390px) {
+.hero-footer {
+  position: sticky;
+  bottom: 0rem;
+}
+
+@media screen and (width<615px) {
+  .hero-footer,
   footer {
     padding-inline: $paddingInlineMobile;
     > div {
       gap: 2rem;
+      justify-content: center;
       > a {
         font-size: 16px;
       }
+    }
+  }
+  .container {
+    padding-inline: $paddingInlineMobile !important;
+  }
+  .current-video-description {
+    > h1 {
+      font-size: 60px;
     }
   }
 }

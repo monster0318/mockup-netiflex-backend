@@ -5,7 +5,6 @@ from videoflix_app.api.utils import get_or_404
 from rest_framework.response import Response
 from rest_framework import filters
 from rest_framework import status
-from videoflix_app.api.paginations import VideoPagination
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from videoflix_app.api.filters import VideoFilter
 from django_filters.rest_framework import DjangoFilterBackend

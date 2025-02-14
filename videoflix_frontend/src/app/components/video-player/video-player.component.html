@@ -1,62 +1,99 @@
 <main>
-  <app-nav-bar logo="logo.svg" [login]="true" />
-  <div class="video-container">
-    <video
-      #videoPlayer
-      controls
-      crossorigin
-      playsinline
-      poster="assets/videos/the_5th_wave_poster.jpg"
-      data-plyr-config='{
+  <app-nav-bar
+    class="app-nav-bar"
+    logo="logo.svg"
+    [login]="true"
+    logOut="logout.svg"
+    btnText="Log out"
+    [isPlayerNav]="true"
+  />
+  <section>
+    <div class="video-container">
+      <video
+        #videoPlayer
+        controls
+        crossorigin
+        playsinline
+        poster="assets/videos/the_5th_wave_poster.jpg"
+        data-plyr-config='{
         "previewThumbnails": { "enabled": true, "src": "assets/videos/the_5th_wave.vtt" }
       }'
-    >
-      <source
-        src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4"
-        type="video/mp4"
-        size="360"
-      />
-      <source
-        src="assets/videos/the_5th_wave_hd480.mp4"
-        type="video/mp4"
-        size="480"
-      />
-      <source
-        src="assets/videos/the_5th_wave_hd720.mp4"
-        type="video/mp4"
-        size="720"
-      />
-      <source
-        src="assets/videos/the_5th_wave_hd1080.mp4"
-        type="video/mp4"
-        size="1080"
-      />
-      <track
-        kind="captions"
-        label="English"
-        srclang="en"
-        src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
-        default
-      />
-      <track
-        kind="captions"
-        label="Deutsch"
-        srclang="de"
-        src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
-        default
-      />
-      <track
-        kind="captions"
-        label="Français"
-        srclang="fr"
-        src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"
-      />
-    </video>
-    <div class="video-title">The 5th wave:</div>
-    <p class="video-description">
-      16-year-old Cassie Sullivan tries to survive in a world devastated by the
-      waves of an alien invasion that has already decimated the population and
-      knocked mankind back to the Stone Age.
-    </p>
+      >
+        <source
+          src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-720p.mp4"
+          type="video/mp4"
+          size="360"
+        />
+        <source
+          src="assets/videos/the_5th_wave_hd480.mp4"
+          type="video/mp4"
+          size="480"
+        />
+        <source
+          src="assets/videos/the_5th_wave_hd720.mp4"
+          type="video/mp4"
+          size="720"
+        />
+        <source
+          src="assets/videos/the_5th_wave_hd1080.mp4"
+          type="video/mp4"
+          size="1080"
+        />
+        <track
+          kind="captions"
+          label="English"
+          srclang="en"
+          src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+          default
+        />
+        <track
+          kind="captions"
+          label="Deutsch"
+          srclang="de"
+          src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.en.vtt"
+          default
+        />
+        <track
+          kind="captions"
+          label="Français"
+          srclang="fr"
+          src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"
+        />
+      </video>
+      <div class="video-title">The 5th wave:</div>
+      <p class="video-description">
+        16-year-old Cassie Sullivan tries to survive in a world devastated by
+        the waves of an alien invasion that has already decimated the population
+        and knocked mankind back to the Stone Age.
+      </p>
+    </div>
+    <div class="video-recommendation">
+      <h1>Up next</h1>
+      <ul class="recommendations">
+        <app-video-recommendation />
+      </ul>
+    </div>
+  </section>
+  <div class="categories">
+    <app-video-category [videos]="videos" categoryTitle="New on Videoflix" />
+    <app-video-category [videos]="videos" categoryTitle="Drama" />
+    <app-video-category [videos]="videos" categoryTitle="Documentary" />
   </div>
+  <footer>
+    <section>
+      <div class="help">
+        <h2>Need help?</h2>
+        <button>
+          <a
+            href="https://ibrahima-sourabie.com"
+            rel="external nofollow noopener"
+            target="_blank"
+            >Contact me</a
+          >
+        </button>
+      </div>
+      <a class="footer-link">Terms of Use</a>
+      <a routerLink="/privacy-policy" class="footer-link">Privacy Policy</a>
+    </section>
+  </footer>
 </main>

@@ -7,6 +7,7 @@ import { ActivatedRoute, Router, RouterLink } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { RequestsService } from '../../services/requests.service';
 import { CommonModule } from '@angular/common';
+import { GuestCredentials } from '../../modules/config';
 
 @Component({
   selector: 'app-log-in',
@@ -58,6 +59,21 @@ export class LogInComponent implements OnInit {
     this.requestsService.postData(
       'login/',
       { email: this.email, password: this.password },
+      this.apiService.getUnAuthHeaders(),
+      () => {
+        this.requestsService.goToPage('/video-offer');
+      }
+    );
+  }
+  onGuestLogin() {
+    const guest = new GuestCredentials();
+
+    this.requestsService.postData(
+      'login/',
+      {
+        email: guest.GUEST_CREDENTIALS['email'],
+        username: guest.GUEST_CREDENTIALS['username'],
+      },
       this.apiService.getUnAuthHeaders(),
       () => {
         this.requestsService.goToPage('/video-offer');

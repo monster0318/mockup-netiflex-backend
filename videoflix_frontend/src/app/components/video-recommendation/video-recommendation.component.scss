@@ -1,0 +1,60 @@
+:host {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+.single-recommendation {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  > .poster {
+    width: 100px;
+    cursor: pointer;
+    aspect-ratio: 9 / 12;
+    object-fit: cover;
+    border-radius: 12px;
+  }
+  > .feature-recommendation {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    > .player {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      > img {
+        width: 30px;
+        aspect-ratio: 1 / 1;
+        cursor: pointer;
+        filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg)
+          brightness(105%) contrast(101%);
+      }
+
+      > span {
+        color: white;
+      }
+    }
+  }
+}
+
+.title,
+.watch-now {
+  color: white;
+}
+
+.title {
+  font-size: 25px;
+}
+
+.watch-now {
+  color: #2e3edf;
+  cursor: pointer;
+  &:hover {
+    text-decoration: underline;
+  }
+}
+
+.description {
+  color: rgb(141, 132, 132);
+  font-weight: 500;
+}
