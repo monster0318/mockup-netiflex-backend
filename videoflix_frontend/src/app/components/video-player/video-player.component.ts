@@ -12,6 +12,7 @@ import { VideoCategoryComponent } from '../video-category/video-category.compone
 import { VideoRecommendationComponent } from '../video-recommendation/video-recommendation.component';
 import { Video } from '../../modules/interfaces';
 import { RequestsService } from '../../services/requests.service';
+import { RouterLink } from '@angular/router';
 
 @Component({
   selector: 'app-video-player',
@@ -21,6 +22,7 @@ import { RequestsService } from '../../services/requests.service';
     NavBarComponent,
     VideoCategoryComponent,
     VideoRecommendationComponent,
+    RouterLink,
   ],
   templateUrl: './video-player.component.html',
   styleUrl: './video-player.component.scss',
@@ -28,6 +30,7 @@ import { RequestsService } from '../../services/requests.service';
 export class VideoPlayerComponent implements AfterViewInit, OnInit {
   @ViewChild('videoPlayer', { static: true })
   videoElement!: ElementRef<HTMLVideoElement>;
+  private storageKey = 'video-progress';
 
   vid: Video[] = [];
 
@@ -88,8 +91,40 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit {
   ngAfterViewInit() {
     this.player = new Plyr(this.videoElement.nativeElement, {
       captions: { active: true },
+      quality: {
+        default: 720,
+        options: [1080, 720, 480, 360, 240],
+      },
     });
 
     (window as any).player = this.player;
+
+    /**
+     * Saave view state
+     */
+    this.player.on('timeupdate', () => {
+      localStorage.setItem(this.storageKey, this.player.currentTime.toString());
+    });
+
+    /**
+     * restore state
+     */
+    const lastTime = localStorage.getItem(this.storageKey);
+    if (lastTime) {
+      this.player.once('loadedmetadata', () => {
+        this.player.currentTime = parseFloat(lastTime!);
+      });
+    }
+
+    /**
+     * clear after end video
+     */
+    this.player.on('ended', () => {
+      localStorage.removeItem(this.storageKey);
+    });
   }
+
+  //   this.player.on('timeupdate', () => {
+  //     localStorage.setItem('video-progress', this.player.currentTime);
+  // });
 }

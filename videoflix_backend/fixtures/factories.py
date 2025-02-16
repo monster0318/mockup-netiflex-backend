@@ -46,6 +46,7 @@ class VideoDataFactory(factory.Factory):
     is_favorite = factory.fuzzy.FuzzyChoice(choices=[True,False])
     language = factory.fuzzy.FuzzyChoice(choices=["french","english","german"])
     video_file = SimpleUploadedFile("test_video.mp4", b"fake_video_data", content_type="video/mp4")
+    duration = factory.Faker("pyint", min_value=1,max_value=10)
 
 
 
@@ -65,7 +66,7 @@ class VideoFactory(factory.django.DjangoModelFactory):
     is_favorite = factory.fuzzy.FuzzyChoice(choices=[True,False])
     language = factory.fuzzy.FuzzyChoice(choices=["french","english","german"])
     video_file = SimpleUploadedFile("test_video.mp4", b"fake_video_data", content_type="video/mp4")
-
+    duration = factory.Faker("pyint", min_value=1,max_value=10)
 
 
     class Meta:
