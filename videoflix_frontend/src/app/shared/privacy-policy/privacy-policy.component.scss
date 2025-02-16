@@ -80,6 +80,8 @@ footer {
 .footer-link {
   display: block;
   width: fit-content;
+  color: white;
+  text-decoration: none;
   &:hover {
     cursor: pointer;
     text-decoration: underline;

@@ -1,6 +1,7 @@
 @import "../../../styles.scss";
 main {
   min-height: 100vh;
+  min-height: 100dvh;
   position: absolute;
   inset: 0;
   background-image: linear-gradient(
@@ -14,6 +15,7 @@ main {
       position: absolute;
       width: 100%;
       height: 100vh;
+      height: 100dvh;
       object-fit: cover;
       z-index: -1;
       left: 0;

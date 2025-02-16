@@ -111,6 +111,9 @@ footer {
 .footer-link {
   display: block;
   width: fit-content;
+  text-decoration: none;
+  outline: none;
+  color: white;
   &:hover {
     cursor: pointer;
     text-decoration: underline;

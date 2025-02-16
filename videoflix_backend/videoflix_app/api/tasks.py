@@ -3,6 +3,7 @@ import glob
 import os
 import math
 from videoflix_app.api.utils import delete_files_starting_with
+from videoflix_app.models import Video
 
 def convert_to_format(source,quality):
     """Convert video to format {360,120,720,1080}"""
@@ -89,6 +90,14 @@ def get_video_duration(source):
         print("Error getting video duration:", result.stderr)
         return 0
     return int(float(result.stdout.strip()))
+
+# def myi():
+#     dur = get_video_duration("media/videos/the_5th_wave.mp4")
+#     vi = Video.objects.get(pk=23)
+#     vi.duration = dur
+#     vi.save()
+# get_video_duration("media/videos/the_5th_wave.mp4")
+# # myi()
 
 
 def generate_vtt(sprite_file, num_thumbnails, cols, thumb_width=320, thumb_height=180):
