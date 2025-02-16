@@ -9,7 +9,9 @@ from rest_framework.response import Response
 from authentication.api.serializers import ActivateAccountSerializer, ConfirmResetPasswordSerializer,\
       LoginSerializer, RegisterSerializer, ResetPasswordSerializer
 from authentication.api.utils import guest_login, is_guest_user, is_guest_user_email
+import logging
 
+logger = logging.getLogger(__name__)
 
 class Login(ObtainAuthToken):
     """Users can log in using their username and password
@@ -26,7 +28,7 @@ class Login(ObtainAuthToken):
         
         if request_data and is_guest_user(request_data):
             log_data = guest_login(request=request)
-        
+            logger.info("New guest has logged in")
             return Response(log_data, status=status.HTTP_200_OK)
         else:
             serializer = self.serializer_class(data=request.data)
@@ -40,6 +42,7 @@ class Login(ObtainAuthToken):
                     "username":validated_user.username,
                     "email":validated_user.email,
                 }
+                logger.info(f"{request.user.username} has logged in")
                 return Response(user_data, status=status.HTTP_200_OK)
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
@@ -50,8 +53,10 @@ class GuestLogout(generics.DestroyAPIView):
         current_user = request.user 
         if is_guest_user_email(current_user.email):
             current_user.delete()
+            logger.info("Guest user has logged out")
             return Response({"ok":True,"message":"Guest user successfully removed"}, status=status.HTTP_204_NO_CONTENT)
         logout(request)
+        logger.info(f"{current_user.username} has logged out")
         return Response({"ok":True,"message":f"User {current_user.username} has logged out"},status=status.HTTP_200_OK)
     
 class Register(APIView):
