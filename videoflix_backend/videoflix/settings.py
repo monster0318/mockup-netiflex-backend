@@ -105,6 +105,7 @@ class Dev(Configuration):
             'django.contrib.sessions',
             'django.contrib.messages',
             'django.contrib.staticfiles',
+            'drf_yasg',
             'corsheaders',
             'rest_framework',
             'rest_framework.authtoken',
@@ -288,10 +289,10 @@ class Dev(Configuration):
                 'rest_framework.filters.OrderingFilter',
                 'rest_framework.filters.SearchFilter',
             ],
-        'DEFAULT_THROTTLE_CLASSES': [
+            'DEFAULT_THROTTLE_CLASSES': [
                 'rest_framework.throttling.AnonRateThrottle',
                 'rest_framework.throttling.UserRateThrottle'
-        ],
+            ],
             'DEFAULT_THROTTLE_RATES':{
                 'anon':'50/minute',
                 'user':'80/minute',
@@ -299,7 +300,13 @@ class Dev(Configuration):
             },
             }
         
-
+        SWAGGER_SETTINGS = {
+            "SECURITY_DEFINITIONS": {
+            "Token": {"type": "apiKey", "name": "Authorization", "in": "header"},
+            "Basic": {"type": "basic"},
+            }
+            }
+        
 
 class Prod(Dev):
         DEBUG = False

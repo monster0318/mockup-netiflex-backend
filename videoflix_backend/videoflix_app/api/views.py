@@ -10,6 +10,7 @@ from videoflix_app.api.filters import VideoFilter
 from django_filters.rest_framework import DjangoFilterBackend
 from videoflix_app.api.throttles import EightyCallsPerSecond
 
+
 class VideoListView(generics.ListCreateAPIView):
     queryset =  Video.objects.all()
     serializer_class = VideoSerializer
@@ -89,3 +90,4 @@ class SingleVideoView(generics.RetrieveUpdateDestroyAPIView):
                 return Response(serializer.data, status=status.HTTP_200_OK)
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
         return Response({"ok":False,"message":"You don't have the permission for this operation"}, status=status.HTTP_401_UNAUTHORIZED)
+    
