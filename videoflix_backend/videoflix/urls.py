@@ -38,7 +38,6 @@ urlpatterns = [
     path('api-auth', include("rest_framework.urls")),
     path('', include("authentication.api.urls")),
     path('api/', include("videoflix_app.api.urls")),
-    path('__debug__/', include('debug_toolbar.urls')),
     path('django-rq/', include('django_rq.urls')),
 ]
 
@@ -48,3 +47,8 @@ urlpatterns +=[
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+
+if settings.DEBUG:
+    urlpatterns += [
+        path('__debug__/', include('debug_toolbar.urls')),
+    ]

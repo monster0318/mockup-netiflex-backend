@@ -1,0 +1,9 @@
+{% extends "rest_framework/base.html" %} {% block branding %}
+<a href="/" class="navbar-brand"> VideoFlix REST API </a>
+{% endblock %} {% block style %} {{ block.super }}
+<style>
+  div .navbar {
+    border-top-color: #1e90ff;
+  }
+</style>
+{% endblock %}

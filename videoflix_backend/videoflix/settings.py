@@ -183,7 +183,7 @@ class Dev(Configuration):
         TEMPLATES = [
             {
                 'BACKEND': 'django.template.backends.django.DjangoTemplates',
-                'DIRS': [BASE_DIR / "authentication/templates"],
+                'DIRS': [BASE_DIR / "authentication/templates",BASE_DIR / "templates"],
                 'APP_DIRS': True,
                 'OPTIONS': {
                     'context_processors': [
