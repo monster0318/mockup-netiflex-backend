@@ -52,7 +52,7 @@ class LoginSerializer(serializers.Serializer):
             raise serializers.ValidationError({"type":"account","message":"User account is not activated"})
         
         user = authenticate(username=username, password=password)
-        if user is None:
+        if not user:
             raise serializers.ValidationError({"type":"credentials","message":"Wrong Email or password"})
 
         
