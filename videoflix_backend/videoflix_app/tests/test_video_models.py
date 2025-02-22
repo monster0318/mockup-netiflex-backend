@@ -35,9 +35,10 @@ class TestUserModel(APITestCase):
             "category" :self.video.category,
             "uploaded_at" :self.video.uploaded_at,
             "updated_at" :self.video.updated_at,
-            "created_by" :self.video.created_by,
+            "uploaded_by" :self.video.uploaded_by,
             "is_favorite" :self.video.is_favorite,
             "language" :self.video.language,
             "video_file" :self.video.video_file,
+             "duration" :self.video.duration,
         }
 )

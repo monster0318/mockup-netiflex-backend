@@ -87,7 +87,6 @@ def get_video_duration(source):
     ]
     result = subprocess.run(command, text=True, capture_output=True)
     if result.returncode != 0:
-        print("Error getting video duration:", result.stderr)
         return 0
     return int(float(result.stdout.strip()))
 
