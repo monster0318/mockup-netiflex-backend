@@ -7,7 +7,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 class UserDataFactory(factory.Factory):
 
-    id = factory.Sequence(lambda n:n)
+    id = factory.Sequence(lambda n:n+1)
     username = factory.Sequence(lambda n: f"user{n}")
     email = factory.Sequence(lambda n: f"user{n}@videoflix.com")
     custom = factory.Faker("text", max_nb_chars=500)
@@ -20,8 +20,8 @@ class UserDataFactory(factory.Factory):
 
 class UserFactory(factory.django.DjangoModelFactory):
 
-    id = factory.Sequence(lambda n:n)
-    username = factory.Faker("first_name")
+    id = factory.Sequence(lambda n:n+1)
+    username = factory.Sequence(lambda n: f"user{n}")
     email = factory.Faker("email")
     custom = factory.Faker("text", max_nb_chars=500)
     phone = factory.Faker("phone_number")
@@ -35,14 +35,14 @@ class UserFactory(factory.django.DjangoModelFactory):
 
 class VideoDataFactory(factory.Factory):
 
-    id = factory.Sequence(lambda n:n)
+    id = factory.Sequence(lambda n:n+1)
     title = factory.Faker("text", max_nb_chars=100)
     description = factory.Faker("text", max_nb_chars=1000)
     author = factory.Faker("name")
     category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror","drama","romance"])
     uploaded_at = factory.LazyFunction(datetime.now)
     updated_at = factory.LazyAttribute(lambda obj: obj.uploaded_at)
-    uploaded_by = factory.SubFactory(UserFactory, id=1)  
+    uploaded_by = factory.SubFactory(UserFactory)  
     is_favorite = factory.fuzzy.FuzzyChoice(choices=[True,False])
     language = factory.fuzzy.FuzzyChoice(choices=["french","english","german"])
     video_file = SimpleUploadedFile("test_video.mp4", b"fake_video_data", content_type="video/mp4")
@@ -55,14 +55,14 @@ class VideoDataFactory(factory.Factory):
 
 class VideoFactory(factory.django.DjangoModelFactory):
 
-    id = factory.Sequence(lambda n:n)
+    id = factory.Sequence(lambda n:n+1)
     title = factory.Faker("text", max_nb_chars=100)
     description = factory.Faker("text", max_nb_chars=1000)
     author = factory.Faker("name")
     category = factory.fuzzy.FuzzyChoice(choices=["documentary","action","horror","drama","romance"])
     uploaded_at = factory.LazyFunction(datetime.now)
     updated_at = factory.LazyAttribute(lambda obj: obj.uploaded_at)
-    uploaded_by = factory.SubFactory(UserFactory, id=1)  
+    uploaded_by = factory.SubFactory(UserFactory)  
     is_favorite = factory.fuzzy.FuzzyChoice(choices=[True,False])
     language = factory.fuzzy.FuzzyChoice(choices=["french","english","german"])
     video_file = SimpleUploadedFile("test_video.mp4", b"fake_video_data", content_type="video/mp4")

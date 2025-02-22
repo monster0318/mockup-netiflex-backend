@@ -4,16 +4,16 @@ from rest_framework.test import APITestCase
 from user.models import CustomUser
 from videoflix_app.models import Video
 from fixtures.factories import VideoFactory,UserFactory
-from videoflix_app.api.utils import get_or_404, delete_files_starting_with
+from videoflix_app.api.utils import get_or_404
 
 class GetOr404Test(APITestCase):
     """Test get model or return 404 Not found"""
     
     def setUp(self):
+        
         self.video = VideoFactory()
         self.user = UserFactory()
-
-
+        
     def tearDown(self):
         Video.objects.all().delete()
         CustomUser.objects.all().delete()

@@ -3,16 +3,17 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 from fixtures.factories import UserFactory, VideoFactory
 from videoflix_app.models import Video
 from unittest.mock import patch
-from django.test import Client
+from rest_framework.test import APIClient
 import glob
 import os
 
 
 
 class TestSignals(APITestCase):
+    """Testing signals"""
 
     def setUp(self):
-        self.client = Client()
+        self.client = APIClient()
         Video.objects.all().delete()
         list_file = glob.glob("media/videos/test_video*")
         if list_file:
@@ -40,7 +41,7 @@ class TestSignals(APITestCase):
 
         fake_video = SimpleUploadedFile("sample.mp4", b"fake_video_data", content_type="video/mp4")
         self.user = UserFactory()
-        self.video = Video.objects.create(title="Test Video", description="Test Description", created_by=self.user,video_file=fake_video)
+        self.video = Video.objects.create(title="Test Video", description="Test Description", uploaded_by=self.user,video_file=fake_video)
         convert_to_format.assert_called_with(source="media/videos/sample.mp4",quality='hd1080')
         self.assertEqual(convert_to_format.call_count, 4)
 
