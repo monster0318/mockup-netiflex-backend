@@ -1,9 +1,10 @@
 import subprocess
 import glob
 import os
-import math
-from videoflix_app.api.utils import delete_files_starting_with
+import math  
+from videoflix_app.api.utils import delete_files_starting_with, seconds_to_time
 from videoflix_app.models import Video
+
 
 def convert_to_format(source,quality):
     """Convert video to format {360,120,720,1080}"""
@@ -32,11 +33,16 @@ def generate_thumbnails(source, thumb_width):
     
     subprocess.run(command, text=True, capture_output=True, shell=True)
 
-def generate_video_poster(source, timestamp="00:00:39"):
+def generate_video_poster(source, video_duration):
     """Generate a poster for the video"""
     
     file_name, _ = os.path.splitext(source)
     output_path = f"{file_name}_poster.jpg"
+
+# "00:00:39"
+    if video_duration>=60:
+        video_duration = 10
+    timestamp = "00:" + seconds_to_time(video_duration)
 
     if os.name == "nt":
         source = source.replace("\\", "/").replace("C:", "/mnt/c")
@@ -90,14 +96,18 @@ def get_video_duration(source):
         return 0
     return int(float(result.stdout.strip()))
 
-# def myi():
-#     dur = get_video_duration("media/videos/the_5th_wave.mp4")
-#     vi = Video.objects.get(pk=23)
-#     vi.duration = dur
-#     vi.save()
-# get_video_duration("media/videos/the_5th_wave.mp4")
-# # myi()
-
+def update_video_duration(source,video_path):
+    """Update video duration"""
+    try:
+        video = Video.objects.filter(video_file=video_path).first()
+        duration = get_video_duration(source)
+        video.duration = seconds_to_time(duration)
+        video.save()
+        return 1
+    except Video.DoesNotExist:
+        print("Video does not exist")
+        return 0
+    
 
 def generate_vtt(sprite_file, num_thumbnails, cols, thumb_width=320, thumb_height=180):
     """Generate vtt file from the sprites to be used in plyr"""
@@ -123,9 +133,8 @@ def create_vtt_file(source):
         sprite_file_name = os.path.basename(file_name)
         video_duration = get_video_duration(source=source)
         generate_thumbnails(source=source, thumb_width=320)
-        generate_video_poster(source=source)
+        generate_video_poster(source=source, video_duration=int(0.5*video_duration))
         cols = generate_sprite(source=source)
         generate_vtt(f"{sprite_file_name}.jpg", num_thumbnails=video_duration, cols=cols, thumb_width=320, thumb_height=180)
         delete_files_starting_with(source=source)
         
-

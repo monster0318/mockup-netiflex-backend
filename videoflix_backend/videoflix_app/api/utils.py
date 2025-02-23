@@ -31,3 +31,16 @@ def delete_files_starting_with(source, file_postfix="_thumb"):
                 os.remove(file)
             except Exception as e:
                 print(f"Error deleting {file}: {e}")
+
+
+def seconds_to_time(seconds):
+    """Convert time in string"""
+
+    hours = seconds // 3600
+    minutes = (seconds % 3600) // 60
+    remaining_seconds = seconds % 60
+
+    if hours > 0:
+        return f"{hours:02}:{minutes:02}:{remaining_seconds:02}"
+    else:
+        return f"{minutes:02}:{remaining_seconds:02}"

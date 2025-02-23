@@ -14,7 +14,7 @@ class Video(models.Model):
     is_favorite = models.BooleanField(default=False)
     language = models.CharField(max_length=150,choices=LANGUAGE_OPTIONS, blank=True, null=True)
     video_file = models.FileField(upload_to='videos',blank=True,null=True)
-    duration=models.PositiveIntegerField(blank=True,null=True)
+    duration=models.CharField(max_length=10,blank=True,null=True)
 
 
     def __str__(self):

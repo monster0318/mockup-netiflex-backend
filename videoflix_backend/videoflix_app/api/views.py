@@ -1,7 +1,7 @@
 from rest_framework import viewsets
 from videoflix_app.models import Video
 from videoflix_app.api.serializers import VideoSerializer
-from rest_framework import filters
+from rest_framework import filters, status
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from videoflix_app.api.filters import VideoFilter
@@ -33,4 +33,4 @@ class VideoViewSet(viewsets.ModelViewSet):
             videos = videos.exclude(pk=exclude_video.pk)
         videos = videos[:5]
         serializer_videos = VideoSerializer(videos, many=True, context={"request":request})
-        return Response(serializer_videos.data)
+        return Response(serializer_videos.data,status=status.HTTP_200_OK)
