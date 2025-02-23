@@ -115,13 +115,10 @@ class Dev(Configuration):
                 'DB': 0,
                 "password":RQ_PWD,
                 'DEFAULT_TIMEOUT': 360,
-            
             },
-
-        
         }
 
-        CACHE_TTL = 60 * 15 # cache every 15 minutes
+        CACHE_TTL = 300#60 * 15 # cache every 15 minutes
 
         CACHES = {
             "default": {

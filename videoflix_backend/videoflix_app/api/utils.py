@@ -24,7 +24,6 @@ def delete_files_starting_with(source, file_postfix="_thumb"):
     pattern = os.path.join("media/videos/", f"{file_postfix}*")
     
     files_to_delete = glob.glob(pattern)
-    
     if files_to_delete:
         for file in files_to_delete:
             try:
