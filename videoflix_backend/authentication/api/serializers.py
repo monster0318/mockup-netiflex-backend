@@ -25,7 +25,6 @@ class LoginSerializer(serializers.Serializer):
     with email and password.
     """
 
-    username = serializers.CharField(required = False)
     email = serializers.EmailField(required = False)
     password = serializers.CharField(write_only = True)
     remember_me = serializers.BooleanField(default=False)
@@ -34,8 +33,7 @@ class LoginSerializer(serializers.Serializer):
     def validate(self, data):
    
         email = data.get("email",'')
-        user_name = data.get('username', '')
-        password = data["password"]
+        password = data.get("password")
 
         if email:
             try:
@@ -43,8 +41,6 @@ class LoginSerializer(serializers.Serializer):
                 username = user.username
             except CustomUser.DoesNotExist:
                 raise serializers.ValidationError({"type":"email","message":"No user found with this email"})
-        elif user_name:
-            username = user_name
         else:
             raise serializers.ValidationError({"type":"email","message":"Please provide an email or a username, field is missing"})
         
@@ -82,8 +78,8 @@ class RegisterSerializer(serializers.ModelSerializer):
     def validate(self, data):
         """ Validating user data """
         
-        has_pwd_match = data["password"] == data["confirm_password"]
-        entered_email = data['email']
+        has_pwd_match = data.get("password") == data.get("confirm_password")
+        entered_email = data.get('email', [])
         email_list = CustomUser.objects.filter(email=entered_email)
 
         if len(entered_email)==0:
@@ -93,11 +89,11 @@ class RegisterSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError({"type":"email","message":"This Email already exists"})
         
         try:
-            validate_password(data["password"]) 
+            validate_password(data.get("password")) 
         except ValidationError as e:
             raise serializers.ValidationError({"type":"password","message":e.messages})
         
-        if  not has_pwd_match:
+        if not has_pwd_match:
              raise serializers.ValidationError({"type":"password","message":"Passwords must match"})
         return data
 
@@ -106,12 +102,12 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Saving user data if no error happened"""
 
         self.validated_data.pop('confirm_password')
-        username = "@" + self.validated_data['email'].split('@')[0]
+        username = "@" + self.validated_data.get('email').split('@')[0]
         user = CustomUser(
             username=username,
-            email=self.validated_data['email'],
+            email=self.validated_data.get('email'),
         )
-        user.set_password(self.validated_data['password'])
+        user.set_password(self.validated_data.get('password'))
         user.is_active = False
         user.save()
         return user
@@ -124,23 +120,24 @@ class ActivateAccountSerializer(serializers.Serializer):
     def validate(self, data):
 
         try:
-            uid = urlsafe_base64_decode(data['uid']).decode()
+            uid = urlsafe_base64_decode(data.get('uid')).decode()
             user = CustomUser.objects.get(pk=uid)
         except (CustomUser.DoesNotExist, ValueError):
             raise serializers.ValidationError({"type":"token","message":"Invalid user ID or token"})
-        if not default_token_generator.check_token(user, data['token']):
+        if not default_token_generator.check_token(user, data.get('token')):
             raise serializers.ValidationError({"type":"token","message":"Invalid or expired token"})
         
         data['user'] = user
         return data 
 
     def save(self):
-        user = self.validated_data['user']
+        user = self.validated_data.get('user')
         if user.is_active:
-            raise serializers.ValidationError({"type":["account"],"message":["This account is already active. You can log in!"]})
+            raise serializers.ValidationError({"type":"account","message":"This account is already active. You can log in!"})
         else:
             user.is_active = True
             user.save()
+            return user
 
 class ResetPasswordSerializer(serializers.Serializer):
     """ Reset user's password"""
@@ -165,7 +162,7 @@ class ResetPasswordSerializer(serializers.Serializer):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         reset_link = f"http://localhost:4200/reset-password/{uid}/{token}/"
 
-        subject,message,from_email,recipient_list = message_body(user.first_name,reset_link,email)
+        subject,message,from_email,recipient_list = message_body(user.username,reset_link,email)
        
         email_to_send = EmailMessage(
             subject=subject,
@@ -187,7 +184,7 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
 
     def validate(self, data):
 
-        has_pwd_match = data["new_password"] == data["confirm_new_password"]
+        has_pwd_match = data.get("new_password") == data.get("confirm_new_password")
 
         try:
             uid = urlsafe_base64_decode(data['uid']).decode()
@@ -209,5 +206,6 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
    
         self.validated_data.pop('confirm_new_password')
         user = self.validated_data['user']
-        user.set_password(self.validated_data['new_password'])
+        user.set_password(self.validated_data.get('new_password'))
         user.save()
+        return user

@@ -5,15 +5,21 @@ from django.urls import reverse
 from rest_framework import status
 from user.models import CustomUser
 from rest_framework.authtoken.models import Token
-from fixtures.factories import UserFactory, UserDataFactory
 from django.contrib.auth import get_user_model
-class AuthenticationTest(APITestCase):
+from fixtures.factories import UserFactory, UserDataFactory
+from django.contrib.auth.tokens import default_token_generator
+from django.utils.http import urlsafe_base64_encode
+from django.utils.encoding import force_bytes
 
-    def setUp(self):
-        self.client = APIClient()
-        self.login_endpoint = reverse('login')
-        self.register_endpoint = reverse('register')
-        self.logout_endpoint = reverse('logout')
+class AuthenticationViewTest(APITestCase):
+    """Testing authentication views"""
+
+    @classmethod
+    def setUpTestData(cls):
+        cls.client = APIClient()
+        cls.login_endpoint = reverse('login')
+        cls.register_endpoint = reverse('register')
+        cls.logout_endpoint = reverse('logout')
 
 
     def tearDown(self):
@@ -103,3 +109,123 @@ class AuthenticationTest(APITestCase):
         response = self.client.delete(self.logout_endpoint)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
         self.assertEqual(len(CustomUser.objects.all()),0)
+
+
+    def test_activate_account_view_good_data(self):
+        """Test account activation view with good credentials"""
+
+        user = get_user_model().objects.create(username='test',email="testuser@gmail.com", password="password", is_active=False)
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        url = reverse("activate-account")
+        activation_credentials = {
+            "uid": uid,
+            "token":token
+        }
+        response = self.client.post(url,activation_credentials, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+
+    def test_activate_account_view_already_active_account(self):
+        """Test account activation of already activated account"""
+
+        user = UserFactory()
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        url = reverse("activate-account")
+        activation_credentials = {
+            "uid": uid,
+            "token":token
+        }
+        response = self.client.post(url,activation_credentials, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data.get("message"), "This account is already active. You can log in!")
+
+    def test_activate_account_view_bad_data(self):
+        """Test account activation view with bad credentials"""
+
+        user = UserFactory()
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(100))
+        url = reverse("activate-account")
+        activation_credentials = {
+            "uid": uid,
+            "token":token
+        }
+        response = self.client.post(url,activation_credentials, format='json')
+        self.assertEqual(response.data.get("message")[0], "Invalid user ID or token")
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_reset_pwd_view_good_data(self):
+        """Testing reset password view with good data"""
+
+        user = UserFactory()
+        url = reverse("reset-password")
+        email_address = {
+            "email":user.email,
+            }
+        response = self.client.post(url,email_address, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get("message"), "Password reset link sent to your email!")
+    
+    def test_reset_pwd_view_bad_data(self):
+        """Testing reset password view with non existing email"""
+
+        user = UserFactory()
+        url = reverse("reset-password")
+        email_address = {
+            "email":"test@gmail.com",
+            }
+        response = self.client.post(url,email_address, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data.get("message")[0], "No account found with this email")
+
+    def test_confirm_reset_pwd_view_good_data(self):
+        """Testing confirm reset password view with good data"""
+
+        user = UserFactory()
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        url = reverse("confirm-reset-password")
+        credentials = {
+            "uid":uid,
+            "token":token,
+            "new_password":"Test456!",
+            "confirm_new_password":"Test456!"
+            }
+        response = self.client.post(url,credentials, format='json')
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        self.assertEqual(response.data.get("message"), "Password successfully reset!")
+    
+    def test_confirm_reset_pwd_view_bad_data(self):
+        """Testing confirm reset password view with non existing email"""
+
+        user = UserFactory()
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(100))
+        url = reverse("confirm-reset-password")
+        credentials = {
+            "uid":uid,
+            "token":token,
+            "new_password":"Test456!",
+            "confirm_new_password":"Test456!"
+            }
+        response = self.client.post(url,credentials, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data.get("message")[0], "Invalid user ID or token")
+
+    def test_confirm_reset_pwd_view_bad_passwords(self):
+        """Testing confirm reset password view with no matching password"""
+
+        user = UserFactory()
+        token = default_token_generator.make_token(user)
+        uid = urlsafe_base64_encode(force_bytes(user.pk))
+        url = reverse("confirm-reset-password")
+        credentials = {
+            "uid":uid,
+            "token":token,
+            "new_password":"Test456!",
+            "confirm_new_password":"Test456789!"
+            }
+        response = self.client.post(url,credentials, format='json')
+        self.assertEqual(response.status_code, status.HTTP_400_BAD_REQUEST)
+        self.assertEqual(response.data.get("message")[0], "Passwords must match")

@@ -7,6 +7,7 @@ from fixtures.factories import UserFactory, UserDataFactory, VideoDataFactory, V
 from videoflix_app.models import Video
 from django.contrib.auth import get_user_model
 from rest_framework.authtoken.models import Token
+from random import randint
  ###########################################################################################################################
  #####               TEST FOR ALL VIDEO VIEW
  ###########################################################################################################################
@@ -22,7 +23,6 @@ class VideoListTest(APITestCase):
 
     @classmethod
     def tearDownTestData(cls):
-        print('I was call')
         Video.objects.all().delete()
         CustomUser.objects.all().delete()
 
@@ -91,6 +91,49 @@ class VideoListTest(APITestCase):
         response = self.client.post(self.video_endpoint, self.video_data.to_dict(), format='multipart')
         self.assertIn(response.status_code, self.non_authorized_forbidden)
  
+    
+    def test_recent_videos_list(self):
+        """Testing list of 5 recent uploaded videos"""
+        
+        Video.objects.all().delete()
+        url = reverse("video-recent-videos")
+    
+        for _ in range(6):
+            VideoFactory(uploaded_by=self.user)
+        response_video_ids = {data.id for data in Video.objects.all()}
+        video_id = randint(min(response_video_ids)+1,max(response_video_ids))
+
+        self.assertEqual(Video.objects.all().count(), 6)
+        response = self.client.get(url)
+        self.assertEqual(len(response.data), 5)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        first_video = Video.objects.get(pk = min(response_video_ids))
+        response_is = {data.get("id") for data in response.data}
+        self.assertNotIn(first_video.pk, response_is)
+        other_video = Video.objects.get(pk= video_id)
+        response_ids = {data.get("id") for data in response.data}
+        self.assertIn(other_video.pk, response_ids)
+
+    def test_recent_videos_list_with_exclusion(self):
+        """Testing list of 5 recent uploaded videos with exclusion of current video"""
+        
+        Video.objects.all().delete()
+
+        for _ in range(6):
+            VideoFactory(uploaded_by=self.user)
+        self.assertEqual(Video.objects.all().count(), 6)
+        response_video_ids = {data.id for data in Video.objects.all()}
+        to_exclude = randint(min(response_video_ids),max(response_video_ids))
+        url_exclude =  reverse("video-recent-videos") + f"?to_exclude_id={to_exclude}"
+        response = self.client.get(url_exclude)
+        self.assertEqual(len(response.data), 5)
+        self.assertEqual(response.status_code, status.HTTP_200_OK)
+        excluded_video = Video.objects.get(pk= to_exclude)
+        response_ids = {data.get("id") for data in response.data}
+        self.assertNotIn(excluded_video.pk, response_ids)
+
+  
+
 
 #  ###########################################################################################################################
 #  #####               TEST FOR SINGLE VIDEO VIEW
@@ -107,7 +150,6 @@ class SingleVideoViewTest(APITestCase):
 
     @classmethod
     def tearDownTestData(cls):
-        print('I was call')
         Video.objects.all().delete()
         CustomUser.objects.all().delete()
 

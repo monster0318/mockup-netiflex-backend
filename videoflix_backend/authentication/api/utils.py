@@ -21,7 +21,7 @@ def message_body(username, reset_link, user_email):
     """
     This function render the email body for password reset using the template.
     """
-    subject = "Join Password Reset"
+    subject = "Videoflix Reset Password"
     context = {
         "username": username,
         "reset_link": reset_link,

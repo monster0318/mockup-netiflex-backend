@@ -10,7 +10,7 @@ class TestUtils(SimpleTestCase):
         reset_link = "https://videoflix.ibrahima-sourabie.com/account/reset-password/"
 
         subject,message,from_email,recipient_list = message_body(username,reset_link,user_email)
-        self.assertIn(subject,"Join Password Reset")
+        self.assertIn(subject,"Videoflix Reset Password")
         self.assertEqual(from_email,MAIL_USERNAME)
         self.assertEqual(len(recipient_list), 2)
         self.assertIn(user_email,recipient_list)
