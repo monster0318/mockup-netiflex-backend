@@ -118,7 +118,7 @@ class Dev(Configuration):
             },
         }
 
-        CACHE_TTL = 300#60 * 15 # cache every 15 minutes
+        CACHE_TTL = 60 * 15 # cache every 15 minutes
 
         CACHES = {
             "default": {

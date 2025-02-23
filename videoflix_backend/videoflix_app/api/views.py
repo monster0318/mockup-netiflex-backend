@@ -35,7 +35,7 @@ class VideoViewSet(viewsets.ModelViewSet):
     def list(self, request, *args, **kwargs):
         return super(VideoViewSet, self).list(request, *args, **kwargs)
 
-    @method_decorator(cache_page(15*60))
+    @method_decorator(cache_page(CACHE_TTL))
     @action(methods=['get'], detail=False)
     def recent_videos(self,request):
         """Recent 5 uploaded videos"""
