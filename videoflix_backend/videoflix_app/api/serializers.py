@@ -12,4 +12,7 @@ class VideoSerializer(serializers.ModelSerializer):
         model = Video
         fields = "__all__"
         read_only_fields = ['uploaded_at','updated_at']
+
+
+
       

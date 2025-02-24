@@ -14,11 +14,17 @@ class Video(models.Model):
     is_favorite = models.BooleanField(default=False)
     language = models.CharField(max_length=150,choices=LANGUAGE_OPTIONS, blank=True, null=True)
     video_file = models.FileField(upload_to='videos',blank=True,null=True)
+    poster = models.CharField(max_length=200, blank=True, null=True, default="")
+    video_file_hd360 = models.CharField(max_length=200, blank=True, null=True, default="")
+    video_file_hd480 = models.CharField(max_length=200, blank=True, null=True, default="")
+    video_file_hd720 = models.CharField(max_length=200, blank=True, null=True, default="")
+    video_file_hd1080 = models.CharField(max_length=200, blank=True, null=True, default="")
     duration=models.CharField(max_length=10,blank=True,null=True)
 
 
     def __str__(self):
         return self.title
+    
     
     def to_dict(self):
         return {

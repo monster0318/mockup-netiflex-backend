@@ -258,6 +258,8 @@ class Dev(Configuration):
         EMAIL_HOST_USER = MAIL_USERNAME  
         EMAIL_HOST_PASSWORD = MAIL_PASSWORD
 
+        DOMAIN = "http://127.0.0.1:8000/"
+
 
 
         REST_FRAMEWORK = {
@@ -296,3 +298,4 @@ class Dev(Configuration):
 class Prod(Dev):
         DEBUG = False
         SECRET_KEY = values.SecretValue()
+        DOMAIN = DOMAIN_PROD
