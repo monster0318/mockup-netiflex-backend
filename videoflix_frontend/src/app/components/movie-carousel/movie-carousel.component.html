@@ -7,7 +7,11 @@
         routerLink="/video-player"
       >
         <div class="video-and-duration">
-          <img [src]="video.image" [alt]="video.title" />
+          <img
+            src="http://127.0.0.1:8000/media/videos/nature_poster.jpg"
+            [alt]="video.title"
+          />
+          <!-- <img [src]="video.video_file" [alt]="video.title" /> -->
           <div class="play-movie">
             <img src="assets/img/circle_play.svg" alt="Play" />
             <span>{{ video.duration ? video.duration : "" }}</span>

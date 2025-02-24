@@ -10,6 +10,7 @@ import { RouterLink } from '@angular/router';
 import { RequestsService } from '../../services/requests.service';
 import { SpinnerComponent } from '../../shared/spinner/spinner.component';
 import { VideoCategoryComponent } from '../video-category/video-category.component';
+import { Video } from '../../modules/interfaces';
 
 @Component({
   selector: 'app-video-offer',
@@ -25,6 +26,7 @@ import { VideoCategoryComponent } from '../video-category/video-category.compone
 })
 export class VideoOfferComponent implements AfterViewInit, OnInit {
   isLoading: boolean = false;
+  recent_videos: Video[] | [] = [];
 
   @ViewChild('backgroundVideo') backgroundVideo!: ElementRef<HTMLVideoElement>;
 
@@ -33,6 +35,9 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.requestsService.isLoading$.subscribe((value) => {
       this.isLoading = value;
+    });
+    this.requestsService.recentVideos$.subscribe((videos) => {
+      this.recent_videos = videos;
     });
   }
 
