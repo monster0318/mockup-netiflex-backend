@@ -15,6 +15,11 @@ export interface Video {
   is_favorite: boolean;
   language: 'french' | 'english' | 'german';
   video_file: string | null;
+  poster: string;
+  video_file_hd360: string;
+  video_file_hd480: string;
+  video_file_hd720: string;
+  video_file_hd1080: string;
   duration: string;
 }
 

@@ -35,11 +35,9 @@ def generate_thumbnails(source, thumb_width):
 
 def generate_video_poster(source, video_duration):
     """Generate a poster for the video"""
-    
     file_name, _ = os.path.splitext(source)
     output_path = f"{file_name}_poster.jpg"
 
-# "00:00:39"
     if video_duration>=60:
         video_duration = 10
     timestamp = "00:" + seconds_to_time(video_duration)
@@ -51,7 +49,6 @@ def generate_video_poster(source, video_duration):
     command = [
         "ffmpeg","-i", source, "-ss", timestamp,"-vframes", "1","-q:v", "2", output_path        
     ]
-
     subprocess.run(command, capture_output=True, text=True, shell=True)
 
 
