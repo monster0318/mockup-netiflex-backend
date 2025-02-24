@@ -7,7 +7,7 @@ class Video(models.Model):
     title = models.CharField(max_length=150)
     description = models.TextField(max_length=1000)
     author = models.CharField(max_length=150, blank=True,null=True, default="")
-    category = models.CharField(choices=CATEGORY_OPTIONS,max_length=100,blank=True,null=True)
+    genre = models.CharField(choices=CATEGORY_OPTIONS,max_length=100,blank=True,null=True, db_index=True)
     uploaded_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     uploaded_by = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.PROTECT, default=1)
@@ -26,7 +26,7 @@ class Video(models.Model):
             "title" :self.title,
             "description" :self.description,
             "author" :self.author,
-            "category" :self.category,
+            "genre" :self.genre,
             "uploaded_at" :self.uploaded_at,
             "updated_at" :self.updated_at,
             "uploaded_by" :self.uploaded_by,

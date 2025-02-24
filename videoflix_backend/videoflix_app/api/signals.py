@@ -12,10 +12,10 @@ def video_post_save(sender, instance, created,**kwargs):
 
     source = os.path.join('media/', instance.video_file.name)
     if created:
-        # convert_to_format(source=source, quality='hd360')
+        convert_to_format(source=source, quality='hd360')
         convert_to_format(source=source, quality='hd480')
-        # convert_to_format(source=source, quality='hd720')
-        # convert_to_format(source=source, quality='hd1080')
+        convert_to_format(source=source, quality='hd720')
+        convert_to_format(source=source, quality='hd1080')
         create_vtt_file(source=source)
         update_video_duration(source=source, video_path=instance.video_file.name)
         queue = django_rq.get_queue('default',autocommit=True)

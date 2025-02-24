@@ -1,5 +1,16 @@
 <main>
   <app-nav-bar logo="logo.svg" />
+  @if (isSpinnerShowed) {
+
+  <ngx-spinner
+    bdColor="rgba(0, 0, 0, 0.9)"
+    size="large"
+    color="#2e3edf"
+    type="ball-beat"
+    [fullScreen]="true"
+    ><p style="color: white">Loading...</p></ngx-spinner
+  >
+  }
   <section class="content">
     <h1>Movies, TV shows, and more</h1>
     <p class="slogan">Watch whenever you want wherever you want</p>
@@ -26,5 +37,6 @@
       </button>
     </div>
   </section>
+
   <app-footer />
 </main>

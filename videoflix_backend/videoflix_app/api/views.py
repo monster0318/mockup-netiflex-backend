@@ -5,10 +5,10 @@ from rest_framework import filters, status
 from rest_framework.decorators import action
 from rest_framework.parsers import MultiPartParser, FormParser, JSONParser
 from videoflix_app.api.filters import VideoFilter
+from videoflix_app.api.throttles import BurstLimit, SustainedLimit
 from rest_framework.response import Response
 from videoflix_app.api.utils import get_or_404
 from django_filters.rest_framework import DjangoFilterBackend
-from videoflix_app.api.throttles import EightyCallsPerSecond
 from videoflix_app.api.permissions import IsAdminOrNotModify
 from django.conf import settings
 from django.core.cache.backends.base import DEFAULT_TIMEOUT
@@ -25,17 +25,22 @@ class VideoViewSet(viewsets.ModelViewSet):
     parser_classes = [MultiPartParser, FormParser, JSONParser]
     filter_backends = [DjangoFilterBackend,filters.SearchFilter,filters.OrderingFilter]
     filterset_class = VideoFilter
-    throttle_classes = [EightyCallsPerSecond]
+    throttle_classes = [SustainedLimit, BurstLimit]
     ordering_fields=['uploaded_at','updated_at']
     search_fields = ['title','description']
 
 
-    @method_decorator(cache_page(CACHE_TTL))
+    def get_queryset(self):
+        queryset = super(VideoViewSet, self).get_queryset()
+        return queryset.order_by("-uploaded_at")
+
+
+    @method_decorator(cache_page(10))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         return super(VideoViewSet, self).list(request, *args, **kwargs)
 
-    @method_decorator(cache_page(CACHE_TTL))
+    @method_decorator(cache_page(10))
     @action(methods=['get'], detail=False)
     def recent_videos(self,request):
         """Recent 5 uploaded videos"""
