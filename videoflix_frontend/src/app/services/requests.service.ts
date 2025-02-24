@@ -1,8 +1,8 @@
+import { Video } from './../modules/interfaces';
 import { Injectable, inject } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
 import { ApiService } from './api.service';
-import { Video } from '../modules/interfaces';
 import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
@@ -13,6 +13,9 @@ export class RequestsService {
 
   private videoSubject = new BehaviorSubject<Video[] | []>([]);
   videos$ = this.videoSubject.asObservable();
+
+  private recentVideoSubject = new BehaviorSubject<Video[] | []>([]);
+  recentVideos$ = this.recentVideoSubject.asObservable();
 
   private responseSubject = new BehaviorSubject<{ message: string | null }>({
     message: null,
@@ -38,6 +41,10 @@ export class RequestsService {
 
   emitVideos(data: Video[] | []) {
     this.videoSubject.next(data);
+  }
+
+  emitRecentVideos(data: Video[] | []) {
+    this.recentVideoSubject.next(data);
   }
 
   emitIsLoading(bool: boolean) {
@@ -66,14 +73,14 @@ export class RequestsService {
 
   /**
    *
-   * @param endpoint: string - API endpoint for fetching all videos
+   * @param endpoint: string - API endpoint for fetching video data
    * @param token : string - token of the authenticated user
    */
-  fetchVideos(endpoint: string, token: string) {
+  getData(endpoint: string, token: string, callback: (arg: any) => void) {
     this.emitIsLoading(true);
     this.apiService.getData(endpoint, token).subscribe({
       next: (response) => {
-        this.emitVideos(response.body);
+        callback(response.body);
       },
       error: (error) => {
         this.emitErrorMessage(error.message);
@@ -82,16 +89,6 @@ export class RequestsService {
         this.resetLoading(5000);
       },
     });
-  }
-
-  /**
-   * fetch videos after changes in the UI
-   */
-  fetchUpdatedVideoData() {
-    this.token = sessionStorage.getItem('token');
-    if (this.token) {
-      this.fetchVideos('api/videos/', this.token);
-    }
   }
 
   /**
@@ -109,7 +106,12 @@ export class RequestsService {
         this.emitResponse(response);
         if (response.token) {
           if (endpoint === 'login/') {
-            this.fetchVideos('api/videos/', response.token);
+            this.getData('api/videos', response.token, (data) =>
+              this.emitVideos(data)
+            );
+            this.getData('api/videos/recent_videos', response.token, (data) =>
+              this.emitRecentVideos(data)
+            );
             sessionStorage.setItem('token', response.token);
           }
           callback();

@@ -8,13 +8,14 @@ export interface Video {
   title: string;
   description: string;
   author: string;
-  category: 'documentary' | 'action' | 'horror' | 'drama' | 'romance';
+  genre: 'documentary' | 'action' | 'horror' | 'drama' | 'romance';
   uploaded_at: Date;
   updated_at: Date;
-  created_by: string;
+  uploaded_by: string;
   is_favorite: boolean;
   language: 'french' | 'english' | 'german';
   video_file: string | null;
+  duration: string;
 }
 
 export interface VideoData {

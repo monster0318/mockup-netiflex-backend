@@ -281,7 +281,7 @@ class Dev(Configuration):
                 'anon':'50/minute',
                 'user':'100/minute',
                 "user_sustained": "1000/day",
-                "user_burst": "100/minute",
+                "user_burst": "10/minute",
             },
             }
         
