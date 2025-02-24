@@ -31,7 +31,6 @@ class LoginSerializer(serializers.Serializer):
 
 
     def validate(self, data):
-   
         email = data.get("email",'')
         password = data.get("password")
 
@@ -46,11 +45,9 @@ class LoginSerializer(serializers.Serializer):
         
         if not user.is_active:
             raise serializers.ValidationError({"type":"account","message":"User account is not activated"})
-        
         user = authenticate(username=username, password=password)
         if not user:
             raise serializers.ValidationError({"type":"credentials","message":"Wrong Email or password"})
-
         
         data['user'] = user
         return data
@@ -143,7 +140,6 @@ class ResetPasswordSerializer(serializers.Serializer):
     """ Reset user's password"""
     email = serializers.EmailField()
 
-    
     def validate(self, data):
         entered_email = data.get('email')
 
@@ -192,7 +188,7 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
         except (CustomUser.DoesNotExist, ValueError):
             raise serializers.ValidationError({"type":"token","message":"Invalid user ID or token"})
 
-        if not default_token_generator.check_token(user, data['token']):
+        if not default_token_generator.check_token(user, data.get('token')):
             raise serializers.ValidationError({"type":"token","message":"Invalid or expired token"})
         
         if  not has_pwd_match:
@@ -201,7 +197,6 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
         data['user'] = user
         return data
        
-
     def save(self):
    
         self.validated_data.pop('confirm_new_password')

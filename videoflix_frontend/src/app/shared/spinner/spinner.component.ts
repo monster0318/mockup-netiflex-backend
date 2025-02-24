@@ -18,7 +18,6 @@ export class SpinnerComponent implements OnInit {
       this.spinner.hide();
     }, 5000);
   }
-
   // showSpinner() {
   //   this.spinner.show();
 

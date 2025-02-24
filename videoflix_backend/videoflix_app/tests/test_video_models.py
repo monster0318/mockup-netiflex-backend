@@ -32,7 +32,7 @@ class TestUserModel(APITestCase):
             "title" :self.video.title,
             "description" :self.video.description,
             "author" :self.video.author,
-            "category" :self.video.category,
+            "genre" :self.video.genre,
             "uploaded_at" :self.video.uploaded_at,
             "updated_at" :self.video.updated_at,
             "uploaded_by" :self.video.uploaded_by,

@@ -30,7 +30,8 @@
               "src/assets/styles/glide.core.min.css",
               "src/assets/styles/glide.theme.min.css",
               "src/assets/styles/plyr.css",
-              "node_modules/ngx-spinner/animations/ball-zig-zag-deflect.css"
+              "node_modules/ngx-spinner/animations/ball-zig-zag-deflect.css",
+              "node_modules/ngx-spinner/animations/ball-beat.css"
             ],
             "scripts": []
           },
@@ -89,7 +90,8 @@
               "src/assets/styles/plyr.css",
               "src/assets/styles/glide.core.min.css",
               "src/assets/styles/glide.theme.min.css",
-              "node_modules/ngx-spinner/animations/ball-zig-zag-deflect.css"
+              "node_modules/ngx-spinner/animations/ball-zig-zag-deflect.css",
+              "node_modules/ngx-spinner/animations/ball-beat.css"
             ],
             "scripts": []
           }

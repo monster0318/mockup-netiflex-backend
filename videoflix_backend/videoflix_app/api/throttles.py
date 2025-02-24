@@ -1,6 +1,10 @@
 from rest_framework.throttling import UserRateThrottle
 
 
-class EightyCallsPerSecond(UserRateThrottle):
+class BurstLimit(UserRateThrottle):
 
-    scope = 'eighty'
+    scope = 'user_burst'
+
+class SustainedLimit(UserRateThrottle):
+
+    scope = 'user_sustained'
