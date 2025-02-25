@@ -17,6 +17,9 @@ export class RequestsService {
   private recentVideoSubject = new BehaviorSubject<Video[] | []>([]);
   recentVideos$ = this.recentVideoSubject.asObservable();
 
+  private currentVideoSubject = new BehaviorSubject<Video | null>(null);
+  currentVideos$ = this.currentVideoSubject.asObservable();
+
   private responseSubject = new BehaviorSubject<{ message: string | null }>({
     message: null,
   });
@@ -41,6 +44,10 @@ export class RequestsService {
 
   emitVideos(data: Video[] | []) {
     this.videoSubject.next(data);
+  }
+
+  emitCurrentVideos(data: Video | null) {
+    this.currentVideoSubject.next(data);
   }
 
   emitRecentVideos(data: Video[] | []) {
@@ -106,10 +113,10 @@ export class RequestsService {
         this.emitResponse(response);
         if (response.token) {
           if (endpoint === 'login/') {
-            this.getData('api/videos', response.token, (data) =>
+            this.getData('api/videos/', response.token, (data) =>
               this.emitVideos(data)
             );
-            this.getData('api/videos/recent_videos', response.token, (data) =>
+            this.getData('api/videos/recent_videos/', response.token, (data) =>
               this.emitRecentVideos(data)
             );
             sessionStorage.setItem('token', response.token);

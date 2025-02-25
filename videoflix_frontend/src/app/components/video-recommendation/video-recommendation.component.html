@@ -1,16 +1,12 @@
 <li class="single-recommendation" *ngFor="let video of recommendedVideos">
-  <img
-    class="poster"
-    src="assets/videos/the_5th_wave_poster.jpg"
-    alt="Video title"
-  />
+  <img class="poster" [src]="video.poster" alt="{{ video.title }}" />
   <div class="feature-recommendation">
     <div class="player">
       <img src="assets/img/circle_play.svg" alt="Play" />
-      <span>02:30</span>
+      <span>{{ video.duration }}</span>
     </div>
-    <p class="title">The 5th Wave</p>
+    <p class="title">{{ video.title }}</p>
     <a class="watch-now">watch now</a>
-    <p class="description">300 words description</p>
+    <p class="description">{{ video.author }}</p>
   </div>
 </li>

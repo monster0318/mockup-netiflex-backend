@@ -14,7 +14,7 @@
         controls
         crossorigin
         playsinline
-        poster="assets/videos/the_5th_wave_poster.jpg"
+        poster="{{ currentVideo?.poster }}"
         data-plyr-config='{
         "previewThumbnails": { "enabled": true, "src": "assets/videos/the_5th_wave.vtt" }
       }'
@@ -25,17 +25,17 @@
           size="360"
         />
         <source
-          src="assets/videos/the_5th_wave_hd480.mp4"
+          [src]="currentVideo?.video_file_hd480"
           type="video/mp4"
           size="480"
         />
         <source
-          src="assets/videos/the_5th_wave_hd720.mp4"
+          [src]="currentVideo?.video_file_hd720"
           type="video/mp4"
           size="720"
         />
         <source
-          src="assets/videos/the_5th_wave_hd1080.mp4"
+          [src]="currentVideo?.video_file_hd1080"
           type="video/mp4"
           size="1080"
         />
@@ -60,7 +60,7 @@
           src="https://cdn.plyr.io/static/demo/View_From_A_Blue_Moon_Trailer-HD.fr.vtt"
         />
       </video>
-      <div class="video-title">The 5th wave:</div>
+      <div class="video-title">{{ currentVideo?.title }}:</div>
       <p class="video-description">
         16-year-old Cassie Sullivan tries to survive in a world devastated by
         the waves of an alien invasion that has already decimated the population
@@ -70,14 +70,17 @@
     <div class="video-recommendation">
       <h1>Up next</h1>
       <ul class="recommendations">
-        <app-video-recommendation />
+        <app-video-recommendation [recommendedVideos]="recentVideos" />
       </ul>
     </div>
   </section>
   <div class="categories">
-    <app-video-category [videos]="videos" categoryTitle="New on Videoflix" />
-    <app-video-category [videos]="videos" categoryTitle="Drama" />
-    <app-video-category [videos]="videos" categoryTitle="Documentary" />
+    <app-video-category
+      [videos]="recentVideos"
+      categoryTitle="New on Videoflix"
+    />
+    <!-- <app-video-category [videos]="videos" categoryTitle="Drama" />
+    <app-video-category [videos]="videos" categoryTitle="Documentary" /> -->
   </div>
   <footer>
     <section>

@@ -135,3 +135,15 @@ footer {
     gap: 1rem;
   }
 }
+
+@media screen and (width<875px) {
+  .video-recommendation {
+    display: none !important;
+  }
+}
+@media screen and (width<615px) {
+  .categories,
+  main section {
+    padding-inline: $paddingInlineMobile;
+  }
+}
