@@ -26,7 +26,9 @@ import { Video } from '../../modules/interfaces';
 })
 export class VideoOfferComponent implements AfterViewInit, OnInit {
   isLoading: boolean = false;
-  recent_videos: Video[] | [] = [];
+  recentVideos: Video[] | [] = [];
+  token: string | null = null;
+  currentVideo: Video | null = null;
 
   @ViewChild('backgroundVideo') backgroundVideo!: ElementRef<HTMLVideoElement>;
 
@@ -37,7 +39,12 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
       this.isLoading = value;
     });
     this.requestsService.recentVideos$.subscribe((videos) => {
-      this.recent_videos = videos;
+      this.recentVideos = videos;
+    });
+
+    this.requestsService.currentVideos$.subscribe((video) => {
+      this.currentVideo = video;
+      console.log('Current Offer video:', this.currentVideo);
     });
   }
 
@@ -90,6 +97,16 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
   ngAfterViewInit(): void {
     if (this.backgroundVideo?.nativeElement) {
       this.backgroundVideo.nativeElement.playbackRate = 0.5;
+    }
+  }
+
+  updateRecentVideo() {
+    this.token = sessionStorage.getItem('token');
+    if (this.token) {
+      this.requestsService.getData(`api/videos/49`, this.token, (data) => {
+        this.requestsService.emitCurrentVideos(data);
+      });
+      console.log('Current Offers video:', this.currentVideo);
     }
   }
 }

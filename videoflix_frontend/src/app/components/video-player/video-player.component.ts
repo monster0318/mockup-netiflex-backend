@@ -30,6 +30,9 @@ import { RouterLink } from '@angular/router';
 export class VideoPlayerComponent implements AfterViewInit, OnInit {
   @ViewChild('videoPlayer', { static: true })
   videoElement!: ElementRef<HTMLVideoElement>;
+  token: string | null = null;
+  currentVideo: Video | null = null;
+  recentVideos: Video[] = [];
   private storageKey = 'video-progress';
 
   vid: Video[] = [];
@@ -82,7 +85,15 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit {
   ngOnInit(): void {
     this.requestsService.videos$.subscribe((videos) => {
       this.vid = videos;
-      console.log(this.vid);
+    });
+
+    this.requestsService.recentVideos$.subscribe((videos) => {
+      this.recentVideos = videos;
+    });
+
+    this.requestsService.currentVideos$.subscribe((video) => {
+      this.currentVideo = video;
+      console.log('Current video:', this.currentVideo);
     });
   }
 
@@ -127,4 +138,13 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit {
   //   this.player.on('timeupdate', () => {
   //     localStorage.setItem('video-progress', this.player.currentTime);
   // });
+
+  updateRecentVideo(id: number) {
+    this.token = sessionStorage.getItem('token');
+    if (this.token) {
+      this.requestsService.getData(`api/videos/${id}`, this.token, (data) => {
+        this.requestsService.emitCurrentVideos(data);
+      });
+    }
+  }
 }

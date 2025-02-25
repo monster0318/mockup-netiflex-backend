@@ -25,12 +25,14 @@
         </p>
         <button>
           <img src="assets/img/play_arrow.svg" alt="play" />
-          <span>Play Now</span>
+          <span routerLink="/video-player" (click)="updateRecentVideo()"
+            >Play Now</span
+          >
         </button>
       </article>
       <div class="category-list">
         <app-video-category
-          [videos]="recent_videos"
+          [videos]="recentVideos"
           categoryTitle="New on Videoflix"
         />
         <!-- <app-video-category [videos]="videos" categoryTitle="Drama" />
