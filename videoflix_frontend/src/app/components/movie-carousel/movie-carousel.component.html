@@ -1,21 +1,21 @@
-<div #glide class="glide">
+<div #glide class="glide" (click)="handleClick($event)">
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
       <li
         class="glide__slide single-video"
         *ngFor="let video of videos"
-        routerLink="/video-player"
+        [attr.data-video-id]="video.id"
       >
         <div class="video-and-duration">
-          <img [src]="video.poster" [alt]="video.title" />
-          <div class="play-movie" (click)="updateRecentVideo()">
+          <img [src]="video.poster" [alt]="video.title" data-clickable />
+          <div class="play-movie" data-clickable>
             <img src="assets/img/circle_play.svg" alt="Play" />
             <span>{{ video.duration ? video.duration : "" }}</span>
           </div>
         </div>
         <div class="title-watch-now">
-          <p>{{ video.title ? video.title : "No title" }}</p>
-          <a class="watch-movie">Watch now</a>
+          <p>{{ video.title ? video.title : "" }}</p>
+          <a class="watch-movie" data-clickable>Watch now</a>
         </div>
       </li>
     </ul>
