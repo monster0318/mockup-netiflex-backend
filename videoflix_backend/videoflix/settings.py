@@ -98,25 +98,30 @@ class Dev(Configuration):
             'debug_toolbar',
             'django_filters',
             'user',
-            'django_rq',
+            # 'django_rq',
             'import_export',
             'videoflix_app.apps.VideoflixAppConfig',
+            'django_celery_results',
+            'django_celery_beat',
 
         ]
 
         AUTH_USER_MODEL = 'user.CustomUser'
 
+        CELERY_RESULT_BACKEND = "django-db"
+        CELERY_BROKER_URL = f'redis://:{RQ_PWD}@127.0.0.1:6379/1'
+        BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
-        RQ_QUEUES = {
-            'default': {
-                'HOST': 'localhost',
-                'URL': f'redis://:{RQ_PWD}@127.0.0.1:6379/1',
-                'PORT': 6379,
-                'DB': 0,
-                "password":RQ_PWD,
-                'DEFAULT_TIMEOUT': 360,
-            },
-        }
+        # RQ_QUEUES = {
+        #     'default': {
+        #         'HOST': 'localhost',
+        #         'URL': f'redis://:{RQ_PWD}@127.0.0.1:6379/1',
+        #         'PORT': 6379,
+        #         'DB': 0,
+        #         "password":RQ_PWD,
+        #         'DEFAULT_TIMEOUT': 360,
+        #     },
+        # }
 
         CACHE_TTL = 60 * 15 # cache every 15 minutes
 

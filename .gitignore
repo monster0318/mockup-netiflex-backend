@@ -6,6 +6,7 @@ videoflix_backend/fixtures/__pycache__
 videoflix_backend/config
 videoflix_backend/videoflix_app/management/commands/__pycache__
 videoflix_backend/env
+videoflix_backend/ntenv
 videoflix_backend/linux_env
 videoflix_backend/exports
 videoflix_backend/media
@@ -63,6 +64,6 @@ videoflix_frontend/testem.log
 videoflix_frontend/typings
 videoflix_frontend/src/app/modules/config.ts
 
-# System files
+# System files  
 videoflix_frontend/.DS_Store
-videoflix_frontend/Thumbs.db
+videoflix_frontend/Thumbs.dt
