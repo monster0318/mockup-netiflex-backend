@@ -1,5 +1,13 @@
 from django.db import models
 from django.conf import settings
+
+# class VideoQuality(models.Model):
+#     vtt_file = models.CharField(max_length=1000, blank=True, null=True, default="")
+#     hd360 = models.CharField(max_length=1000, blank=True, null=True, default="")
+#     hd480 = models.CharField(max_length=1000, blank=True, null=True, default="")
+#     hd720 = models.CharField(max_length=1000, blank=True, null=True, default="")
+#     hd1080 = models.CharField(max_length=1000, blank=True, null=True, default="")
+    
 class Video(models.Model):
 
     CATEGORY_OPTIONS = (('documentary','documentary'),('action','action'),('horror','horror'),('drama','drama'),('romance','romance'))
@@ -15,6 +23,7 @@ class Video(models.Model):
     language = models.CharField(max_length=150,choices=LANGUAGE_OPTIONS, blank=True, null=True)
     video_file = models.FileField(upload_to='videos',blank=True,null=True)
     poster = models.CharField(max_length=200, blank=True, null=True, default="")
+    vtt_file = models.CharField(max_length=200, blank=True, null=True, default="")
     video_file_hd360 = models.CharField(max_length=200, blank=True, null=True, default="")
     video_file_hd480 = models.CharField(max_length=200, blank=True, null=True, default="")
     video_file_hd720 = models.CharField(max_length=200, blank=True, null=True, default="")

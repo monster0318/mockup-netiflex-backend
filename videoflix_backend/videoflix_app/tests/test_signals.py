@@ -1,6 +1,7 @@
 from rest_framework.test import APITestCase
 from django.core.files.uploadedfile import SimpleUploadedFile
 from fixtures.factories import UserFactory, VideoFactory
+from videoflix_app.api.utils import VIDEO_EXTRA_FILES
 from videoflix_app.models import Video
 from unittest.mock import patch
 from rest_framework.test import APIClient
@@ -35,15 +36,19 @@ class TestSignals(APITestCase):
 #          TEST CASES FOR SIGNALS
 #########################################################################
 
-    @patch("videoflix_app.api.signals.convert_to_format")
-    def test_video_post_save(self, convert_to_format):
+    @patch('videoflix_app.api.signals.update_video_file.si')
+    @patch('videoflix_app.api.signals.create_vtt_file.si')
+    @patch('videoflix_app.api.signals.convert_to_format.s')  
+    def test_video_post_save(self, mock_convert_to_format,mock_create_vtt,mock_update_video):
         """Test the conversion of video after it is uploaded"""
 
         fake_video = SimpleUploadedFile("sample.mp4", b"fake_video_data", content_type="video/mp4")
         self.user = UserFactory()
         self.video = Video.objects.create(title="Test Video", description="Test Description", uploaded_by=self.user,video_file=fake_video)
-        convert_to_format.assert_called_with(source="media/videos/sample.mp4",quality='hd1080')
-        self.assertEqual(convert_to_format.call_count, 4)
+        mock_convert_to_format.assert_called_once_with('media/videos/sample.mp4', ['hd360', 'hd480', 'hd720', 'hd1080'])
+        mock_create_vtt.assert_called_once_with('media/videos/sample.mp4')
+        mock_update_video.assert_called_once_with('media/videos/sample.mp4', 'videos/sample.mp4', VIDEO_EXTRA_FILES)
+
 
 
     @patch("videoflix_app.api.signals.delete_files_starting_with") 
@@ -59,6 +64,4 @@ class TestSignals(APITestCase):
         self.video.delete()
         original_file = self.video.video_file.name
         original_file = os.path.join("media/", original_file)
-
-        mock_delete_files_starting_with.assert_called_with(source=original_file, file_postfix="")
-        self.assertEqual(mock_delete_files_starting_with.call_count, 3)
+        mock_delete_files_starting_with.assert_called_once_with(source=original_file, file_suffixes=["_","-",""])
