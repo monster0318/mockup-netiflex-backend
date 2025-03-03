@@ -6,6 +6,7 @@ from celery import shared_task
 import subprocess
 import glob
 import os
+import json
 import datetime
 import math  
 from celery import Task
@@ -23,6 +24,82 @@ class CustomTask(Task):
             task_result.save()
         super().on_success(retval, task_id, args, kwargs)
 
+def has_audio_stream(source):
+    """Use ffprobe to check if the source file contains an audio stream."""
+    cmd = [
+        "ffprobe",
+        "-v", "error",
+        "-select_streams", "a",
+        "-show_entries", "stream=index",
+        "-of", "json",
+        source
+    ]
+    result = subprocess.run(cmd, capture_output=True, text=True)
+    try:
+        info = json.loads(result.stdout)
+        streams = info.get("streams", [])
+        return len(streams) > 0
+    except Exception:
+        return False
+
+def convert_to_format_m3u8(source, qualities):
+    """
+    Convert video to an HLS stream with two quality variants: 480p and 720p.
+    This generates a master playlist (master.m3u8) that references the two variant playlists.
+    """
+    # Ensure qualities is a list and contains both 480 and 720 (as strings for comparison)
+    if not qualities or not isinstance(qualities, list):
+        return
+    required = {"480", "720"}
+    provided = {str(q) for q in qualities}
+    if not required.issubset(provided):
+        # If both qualities are not requested, you can decide to add defaults or return.
+        return
+
+    # Get the file name without extension
+    file_name, _ = os.path.splitext(source)
+    # If running on Windows, adjust path for WSL (as in your original function)
+    if os.name == "nt":
+        source = source.replace("\\", "/").replace("C:", "/mnt/c")
+        file_name = file_name.replace("\\", "/").replace("C:", "/mnt/c")
+
+    audio_exists = has_audio_stream(source)
+
+    # Build the FFmpeg command based on whether audio exists
+    if audio_exists:
+        # Build command including audio mapping
+        ffmpeg_command = (
+            f'ffmpeg -i "{source}" '
+            f'-filter_complex "[0:v]split=2[v720][v480]" '
+            f'-map "[v720]" -c:v:0 libx264 -b:v:0 2500k -s:v:0 1280x720 '
+            f'-map 0:a -c:a aac -b:a:0 128k '
+            f'-map "[v480]" -c:v:1 libx264 -b:v:1 1000k -s:v:1 854x480 '
+            f'-map 0:a -c:a aac -b:a:1 96k '
+            f'-f hls -hls_time 4 -hls_playlist_type vod '
+            f'-var_stream_map "v:0,a:0 v:1,a:1" '
+            f'-master_pl_name master.m3u8 '
+            f'-hls_segment_filename "{file_name}_%v_%03d.ts" '
+            f'"{file_name}_%v.m3u8"'
+        )
+    else:
+        # Build command without audio mapping
+        ffmpeg_command = (
+            f'ffmpeg -i "{source}" '
+            f'-filter_complex "[0:v]split=2[v720][v480]" '
+            f'-map "[v720]" -c:v:0 libx264 -b:v:0 2500k -s:v:0 1280x720 '
+            f'-map "[v480]" -c:v:1 libx264 -b:v:1 1000k -s:v:1 854x480 '
+            f'-f hls -hls_time 4 -hls_playlist_type vod '
+            f'-var_stream_map "v:0 v:1" '
+            f'-master_pl_name master.m3u8 '
+            f'-hls_segment_filename "{file_name}_%v_%03d.ts" '
+            f'"{file_name}_%v.m3u8"'
+        )
+
+    resp=subprocess.run(ffmpeg_command, capture_output=True, shell=True,text=True)
+    if resp.returncode !=0:
+        print('error happen',resp.stderr)
+    else:
+        print('success')
 
 @shared_task(name="Generate-video-qualities", base=CustomTask)
 def convert_to_format(source,qualities):

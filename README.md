@@ -2,5 +2,6 @@
 
 Backend of video a streaming platform using ffmpeg video encoding technics, django and django rest framework
 
-![Django](https://img.shields.io/badge/Django-3.2-green)
-![Redis](https://img.shields.io/badge/Redis-DC382D?style=for-the-badge&logo=redis&logoColor=white)
+![Redis](https://img.shields.io/badge/-Redis-DC382D?logo=redis&logoColor=white&style=flat)
+![Celery](https://img.shields.io/badge/-Celery-37814A?logo=celery&logoColor=white&style=flat)
+![Celery Beat](https://img.shields.io/badge/-Celery%20Beat-37814A?style=flat)

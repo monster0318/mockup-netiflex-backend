@@ -112,17 +112,6 @@ class Dev(Configuration):
         CELERY_BROKER_URL = f'redis://:{RQ_PWD}@127.0.0.1:6379/1'
         BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
-        # RQ_QUEUES = {
-        #     'default': {
-        #         'HOST': 'localhost',
-        #         'URL': f'redis://:{RQ_PWD}@127.0.0.1:6379/1',
-        #         'PORT': 6379,
-        #         'DB': 0,
-        #         "password":RQ_PWD,
-        #         'DEFAULT_TIMEOUT': 360,
-        #     },
-        # }
-
         CACHE_TTL = 60 * 15 # cache every 15 minutes
 
         CACHES = {
@@ -240,7 +229,8 @@ class Dev(Configuration):
         STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
         STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, 'authentication/static'),
+             'authentication/static',
+            os.path.join(BASE_DIR, '/static'),
         ]
 
         IMPORT_EXPORT_USE_TRANSACTIONS = True
