@@ -15,9 +15,9 @@
         crossorigin
         playsinline
         poster="{{ currentVideo?.poster }}"
-        data-plyr-config='{
-        "previewThumbnails": { "enabled": true, "src": "assets/videos/the_5th_wave.vtt" }
-      }'
+        [attr.data-plyr-config]="{
+          previewThumbnails: { enabled: true, src: this.currentVideo?.vtt_file },
+        }"
       >
         <source
           [src]="currentVideo?.video_file_hd480"

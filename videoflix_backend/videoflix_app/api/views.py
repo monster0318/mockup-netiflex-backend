@@ -16,6 +16,7 @@ from django.views.decorators.cache import cache_page
 from django.views.decorators.vary import vary_on_cookie
 from django.utils.decorators import method_decorator
 
+
 CACHE_TTL = getattr(settings, 'CACHE_TTL', DEFAULT_TIMEOUT)
 
 class VideoViewSet(viewsets.ModelViewSet):
@@ -53,3 +54,4 @@ class VideoViewSet(viewsets.ModelViewSet):
         videos = videos[:5]
         serializer_videos = VideoSerializer(videos, many=True, context={"request":request})
         return Response(serializer_videos.data,status=status.HTTP_200_OK)
+

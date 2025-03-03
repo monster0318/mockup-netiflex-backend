@@ -20,7 +20,7 @@ def send_welcome_email(sender, instance, created,**kwargs):
             "username": instance.username,
             "activate_link":f"http://localhost:4200/activate-account/{uid}/{token}/",
         }
-        message = render_to_string("emails/welcome.html", context)
+        message = render_to_string("welcome.html", context)
         from_email = MAIL_USERNAME
         recipient_list = [instance.email, MAIL_USERNAME]
         email_to_send = EmailMessage( subject=subject,body=message,from_email=from_email,to=recipient_list) 
