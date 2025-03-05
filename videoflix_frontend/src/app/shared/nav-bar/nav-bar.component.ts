@@ -1,26 +1,29 @@
-import { CommonModule } from '@angular/common';
-import { Component, Input, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
-import { ApiService } from '../../services/api.service';
+import { CommonModule } from "@angular/common";
+import { Component, inject, Input, OnInit } from "@angular/core";
+import { Router } from "@angular/router";
+import { ApiService } from "../../services/api.service";
+import { RequestsService } from "../../services/requests.service";
+import { AuthFormService } from "../../services/auth-form.service";
 
 @Component({
-  selector: 'app-nav-bar',
+  selector: "app-nav-bar",
   standalone: true,
   imports: [CommonModule],
-  templateUrl: './nav-bar.component.html',
-  styleUrl: './nav-bar.component.scss',
+  templateUrl: "./nav-bar.component.html",
+  styleUrl: "./nav-bar.component.scss",
 })
 export class NavBarComponent implements OnInit {
-  @Input({ required: true }) logo: string = '';
-  @Input() logOut: string = '';
-  @Input() btnText: string = 'Log in';
+  @Input({ required: true }) logo: string = "";
+  @Input() logOut: string = "";
+  @Input() btnText: string = "Log in";
   @Input() isAuthenticated: boolean = false;
   @Input() is_watching: boolean = false;
   @Input() login: boolean = false;
   @Input() isPlayerNav: boolean = false;
   token: string | null = null;
 
-  constructor(private router: Router, private apiService: ApiService) {}
+  private requestsService = inject(RequestsService);
+  constructor(private authFormService: AuthFormService, private router: Router, private apiService: ApiService) {}
   ngOnInit(): void {
     this.isAuthenticated = this.apiService.isAuthenticated();
   }
@@ -30,7 +33,7 @@ export class NavBarComponent implements OnInit {
    * @returns (url : string) - src path of the icon
    */
   getImagePath(imageName: string) {
-    return 'assets/img/' + imageName;
+    return "assets/img/" + imageName;
   }
 
   /**
@@ -39,34 +42,42 @@ export class NavBarComponent implements OnInit {
    */
   onReturnToStartPage() {
     if (this.isAuthenticated) {
-      this.router.navigateByUrl('/video-offer');
+      this.router.navigateByUrl("/video-offer");
     } else {
-      this.router.navigateByUrl('/login');
+      this.router.navigateByUrl("/login");
     }
+    this.requestsService.resetErrorState();
+  }
+
+  resetForms() {
+    this.authFormService.resetSignUpForm();
+    this.authFormService.resetLogInForm();
   }
 
   /**
    * Log the guest user out and redirect to login page
    */
   logUserInOrOut() {
-    if (this.btnText === 'Log out') {
+    if (this.btnText === "Log out") {
       this.removeGuestAccountOnLogout();
     }
-    this.router.navigateByUrl('/login');
+    this.requestsService.resetErrorState();
+    this.resetForms();
+    this.router.navigateByUrl("/login");
   }
 
   /**
    * Remove guest account on logout
    */
   removeGuestAccountOnLogout() {
-    this.token = sessionStorage.getItem('token');
+    this.token = sessionStorage.getItem("token");
     if (this.token) {
-      this.apiService.deleteData('logout/', this.token).subscribe({
-        next: (response) => {
-          console.log(response ? response : 'Guest User logged out');
+      this.apiService.deleteData("logout/", this.token).subscribe({
+        next: response => {
+          console.log(response ? response : "Guest User logged out");
         },
         complete: () => {
-          sessionStorage.removeItem('token');
+          sessionStorage.removeItem("token");
         },
       });
     }

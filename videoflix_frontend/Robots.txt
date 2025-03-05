@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: /src/assets/
+Disallow: /src/app/footer/legal-notice/legal-notice.component.html
+Disallow: /src/app/footer/privacy-policy/privacy-policy.component.html

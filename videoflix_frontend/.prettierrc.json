@@ -1,0 +1,5 @@
+{
+  "arrowParens": "avoid",
+  "singleQuote": false,
+  "printWidth": 180
+}

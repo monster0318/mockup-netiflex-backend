@@ -10,7 +10,7 @@
   },
   "private": true,
   "dependencies": {
-    "@angular/animations": "^17.2.0",
+    "@angular/animations": "^17.3.12",
     "@angular/common": "^17.2.0",
     "@angular/compiler": "^17.2.0",
     "@angular/core": "^17.2.0",
@@ -22,6 +22,7 @@
     "@videojs/http-streaming": "^3.17.0",
     "hls.js": "^1.5.20",
     "ngx-spinner": "^17.0.0",
+    "ngx-toastr": "^19.0.0",
     "plyr": "^3.7.8",
     "rxjs": "~7.8.0",
     "tslib": "^2.3.0",
