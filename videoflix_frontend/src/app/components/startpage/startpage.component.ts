@@ -31,6 +31,10 @@ export class StartpageComponent {
     }, 5000);
   }
 
+  /**
+   * take email address and provide it to sign up form
+   * @param emailAddress - string: email address of user
+   */
   sendEmail(emailAddress: string) {
     if (this.email) {
       this.moduleService.emitEmail(emailAddress);

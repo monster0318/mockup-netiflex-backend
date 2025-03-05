@@ -1,12 +1,12 @@
-import { Video } from './../modules/interfaces';
-import { Injectable, inject } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
-import { ApiService } from './api.service';
-import { HttpHeaders } from '@angular/common/http';
+import { Video } from "./../modules/interfaces";
+import { Injectable, inject } from "@angular/core";
+import { ActivatedRoute, Router } from "@angular/router";
+import { BehaviorSubject } from "rxjs";
+import { ApiService } from "./api.service";
+import { HttpHeaders } from "@angular/common/http";
 
 @Injectable({
-  providedIn: 'root',
+  providedIn: "root",
 })
 export class RequestsService {
   private token: string | null = null;
@@ -74,7 +74,7 @@ export class RequestsService {
     try {
       this.errorMessageSubject.next(message);
     } catch (error) {
-      console.log('Typeerror');
+      console.log("Typeerror");
     }
   }
 
@@ -86,10 +86,10 @@ export class RequestsService {
   getData(endpoint: string, token: string, callback: (arg: any) => void) {
     this.emitIsLoading(true);
     this.apiService.getData(endpoint, token).subscribe({
-      next: (response) => {
+      next: response => {
         callback(response.body);
       },
-      error: (error) => {
+      error: error => {
         this.emitErrorMessage(error.message);
       },
       complete: () => {
@@ -102,24 +102,15 @@ export class RequestsService {
    * Generic method for handling all post requests
    * @param data - payload for the post request
    */
-  postData(
-    endpoint: string,
-    data: any,
-    header: HttpHeaders,
-    callback: () => void
-  ) {
+  async postData(endpoint: string, data: any, header: HttpHeaders, callback: () => void) {
     this.apiService.postData(endpoint, data, header).subscribe({
-      next: (response) => {
+      next: response => {
         this.emitResponse(response);
         if (response.token) {
-          if (endpoint === 'login/') {
-            this.getData('api/videos/', response.token, (data) =>
-              this.emitVideos(data)
-            );
-            this.getData('api/videos/recent_videos/', response.token, (data) =>
-              this.emitRecentVideos(data)
-            );
-            sessionStorage.setItem('token', response.token);
+          if (endpoint === "login/") {
+            this.getData("api/videos/", response.token, data => this.emitVideos(data));
+            this.getData("api/videos/recent_videos/", response.token, data => this.emitRecentVideos(data));
+            sessionStorage.setItem("token", response.token);
           }
           callback();
         }
@@ -127,15 +118,12 @@ export class RequestsService {
       complete: () => {
         this.resetLoading(2500);
       },
-      error: (error) => {
+      error: error => {
         if (error.status === 400 || error.status === 404) {
-          console.log('error 1', error.error);
-
           this.emitErrorMessage(error.error);
           this.resetLoading(0);
           return error.error;
         } else {
-          console.log('error 2', error.message);
           this.emitErrorMessage(error.message);
           this.resetLoading(0);
           return error.message;
@@ -150,8 +138,16 @@ export class RequestsService {
     }, timestamp);
   }
 
+  resetErrorState() {
+    this.emitIsError(false);
+    this.emitErrorMessage({
+      type: [null],
+      message: [null],
+    });
+  }
+
   goToPage(pageRoute: string) {
-    const returnUrl = this.route.snapshot.queryParams['returnUrl'] || pageRoute;
+    const returnUrl = this.route.snapshot.queryParams["returnUrl"] || pageRoute;
     this.router.navigate([returnUrl]);
   }
 }
