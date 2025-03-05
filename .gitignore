@@ -64,6 +64,6 @@ videoflix_frontend/testem.log
 videoflix_frontend/typings
 videoflix_frontend/src/app/modules/config.ts
 
-# System files
+# System files  
 videoflix_frontend/.DS_Store
-videoflix_frontend/Thumbs.db
+videoflix_frontend/Thumbs.dt

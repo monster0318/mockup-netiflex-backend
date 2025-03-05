@@ -33,9 +33,11 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit {
   token: string | null = null;
   currentVideo: Video | null = null;
   recentVideos: Video[] = [];
+  recommendedVideos: Video[] = [];
   private storageKey = 'video-progress';
 
   vid: Video[] = [];
+  plyrConfig: string = '';
 
   videos: any[] = [
     {
@@ -147,4 +149,17 @@ export class VideoPlayerComponent implements AfterViewInit, OnInit {
       });
     }
   }
+
+  // nextVideos() {
+  //   this.token = sessionStorage.getItem('token');
+  //   if (this.token) {
+  //     this.requestsService.getData(
+  //       `api/videos/${this.currentVideo?.id}`,
+  //       this.token,
+  //       (data) => {
+  //         this.recommendedVideos;
+  //       }
+  //     );
+  //   }
+  // }
 }

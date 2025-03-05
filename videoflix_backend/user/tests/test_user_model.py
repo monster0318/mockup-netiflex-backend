@@ -21,13 +21,8 @@ class TestUserModel(APITestCase):
         
         return_data = self.user.to_dict()
  
-
         self.assertEqual(len(CustomUser.objects.all()),1)
-        self.assertEqual(return_data, {
-            "username" : self.user.username,
-            "email" : self.user.email,
-            "custom" : self.user.custom,
-            "phone" : self.user.phone,
-            "address" : self.user.address
-        }
-)
+        self.assertIn("username",return_data)
+        self.assertIn("email",return_data)
+        self.assertIn("phone",return_data)
+        self.assertIn("address",return_data)

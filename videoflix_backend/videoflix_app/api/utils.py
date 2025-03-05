@@ -1,12 +1,13 @@
+import json
 from django.http import Http404 
-from django.conf import settings
-from videoflix_app.models import Video
+from django_celery_beat.models import CrontabSchedule, PeriodicTask
 import os
 import glob
 
-DOMAIN = getattr(settings, 'DOMAIN')
+
 VIDEO_EXTRA_FILES = {
     "poster":"poster.jpg",
+    "vtt_file":".vtt",
     "video_file_hd360":"hd360.mp4",
     "video_file_hd480":"hd480.mp4",
     "video_file_hd720":"hd720.mp4",
@@ -27,21 +28,22 @@ def get_or_404(model,pk):
         raise Http404("Model does not exist")
       
 
-def delete_files_starting_with(source, file_postfix="_thumb"):
+def delete_files_starting_with(source, file_suffixes=["_thumb"]):
     # Construct the pattern to match files starting with the given prefix
     file_name, _ = os.path.splitext(source)
     file_name = os.path.basename(file_name)
-    file_postfix = f"{file_name}" + f"{file_postfix}"
 
-    pattern = os.path.join("media/videos/", f"{file_postfix}*")
-    
-    files_to_delete = glob.glob(pattern)
-    if files_to_delete:
-        for file in files_to_delete:
-            try:
-                os.remove(file)
-            except Exception as e:
-                print(f"Error deleting {file}: {e}")
+    for file_suffix in file_suffixes:
+        file_suffix = f"{file_name}" + f"{file_suffix}"
+        pattern = os.path.join("media/videos/", f"{file_suffix}*")
+        
+        files_to_delete = glob.glob(pattern)
+        if files_to_delete:
+            for file in files_to_delete:
+                try:
+                    os.remove(file)
+                except Exception as e:
+                    print(f"Error deleting {file}: {e}")
 
 
 def seconds_to_time(seconds):
@@ -57,27 +59,14 @@ def seconds_to_time(seconds):
         return f"{minutes:02}:{remaining_seconds:02}"
 
 
-def update_video_file(source,video_path, file_field_name):
-    """Update video duration"""
-    file_name = os.path.splitext(source)[0]
-    poster = file_name + f"_{file_field_name.get("poster")}"
-    video_file_hd360 = file_name + f"_{file_field_name.get("video_file_hd360")}"
-    video_file_hd480 = file_name + f"_{file_field_name.get("video_file_hd480")}"
-    video_file_hd720 = file_name + f"_{file_field_name.get("video_file_hd720")}"
-    video_file_hd1080 = file_name + f"_{file_field_name.get("video_file_hd1080")}"
-    poster_file = glob.glob(poster)
-    video_file_hd360_file, video_file_hd480_file = glob.glob(video_file_hd360), glob.glob(video_file_hd480)
-    video_file_hd720_file, video_file_hd1080_file = glob.glob(video_file_hd720), glob.glob(video_file_hd1080)
-    video = Video.objects.filter(video_file=video_path).first()
-    if video:
-        if poster_file:
-            video.poster = DOMAIN + poster_file[0]
-        if video_file_hd360_file:
-            video.video_file_hd360 = DOMAIN + video_file_hd360_file[0]
-        if video_file_hd480_file:
-            video.video_file_hd480 = DOMAIN + video_file_hd480_file[0]
-        if video_file_hd720_file:
-            video.video_file_hd720 = DOMAIN + video_file_hd720_file[0]
-        if video_file_hd1080_file:
-            video.video_file_hd1080 = DOMAIN + video_file_hd1080_file[0]
-        video.save()
+def set_up_export_db_data():
+    """Export video data from database """
+
+    schedule, created = CrontabSchedule.objects.get_or_create(minute="0", hour="6",day_of_week='sunday')
+    args = json.dumps([])
+    periodic_task, created = PeriodicTask.objects.get_or_create(
+            name = 'Database periodic backup',
+            crontab = schedule,
+            args = args,
+            task = "videoflix_app.api.tasks.export_db_data"
+    )

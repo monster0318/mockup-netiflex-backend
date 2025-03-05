@@ -98,25 +98,19 @@ class Dev(Configuration):
             'debug_toolbar',
             'django_filters',
             'user',
-            'django_rq',
+            # 'django_rq',
             'import_export',
             'videoflix_app.apps.VideoflixAppConfig',
+            'django_celery_results',
+            'django_celery_beat',
 
         ]
 
         AUTH_USER_MODEL = 'user.CustomUser'
 
-
-        RQ_QUEUES = {
-            'default': {
-                'HOST': 'localhost',
-                'URL': f'redis://:{RQ_PWD}@127.0.0.1:6379/1',
-                'PORT': 6379,
-                'DB': 0,
-                "password":RQ_PWD,
-                'DEFAULT_TIMEOUT': 360,
-            },
-        }
+        CELERY_RESULT_BACKEND = "django-db"
+        CELERY_BROKER_URL = f'redis://:{RQ_PWD}@127.0.0.1:6379/1'
+        BROKER_CONNECTION_RETRY_ON_STARTUP = True
 
         CACHE_TTL = 60 * 15 # cache every 15 minutes
 
@@ -235,7 +229,8 @@ class Dev(Configuration):
         STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
         STATICFILES_DIRS = [
-            os.path.join(BASE_DIR, 'authentication/static'),
+             'authentication/static',
+            os.path.join(BASE_DIR, '/static'),
         ]
 
         IMPORT_EXPORT_USE_TRANSACTIONS = True
