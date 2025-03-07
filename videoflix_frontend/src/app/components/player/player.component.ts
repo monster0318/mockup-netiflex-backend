@@ -3,11 +3,12 @@ import { Component, ElementRef, ViewChild, OnDestroy, ViewEncapsulation, Input }
 import Plyr from "plyr";
 import { Video } from "../../modules/interfaces";
 import { RequestsService } from "../../services/requests.service";
+import { RouterLink } from "@angular/router";
 
 @Component({
   selector: "app-player",
   standalone: true,
-  imports: [CommonModule],
+  imports: [CommonModule, RouterLink],
   templateUrl: "./player.component.html",
   styleUrl: "./player.component.scss",
   encapsulation: ViewEncapsulation.None,

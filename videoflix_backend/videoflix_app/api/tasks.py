@@ -195,7 +195,7 @@ def update_video_duration(source,video_path):
     try:
         video = Video.objects.filter(video_file=video_path).first()
         duration = get_video_duration(source)
-        video.duration = seconds_to_time(duration)
+        video.duration = duration
         video.save()
         return 1
     except Video.DoesNotExist:
@@ -263,6 +263,7 @@ def update_video_file(source,video_path, file_field_name):
 
 @shared_task(name='Export-DB-data-for-backup', base=CustomTask)
 def export_db_data():
+    """Export DB data"""
     dataset = VideoResource().export()
     with open(f"exports/video_data_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.json")}", "w") as file:
         file.write(dataset.json)

@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase, APIClient
 from authentication.api.serializers import ResetPasswordSerializer
-from user.models import CustomUser
+from user.models import User
 from fixtures.factories import UserFactory
 from rest_framework.exceptions import ValidationError
 from unittest.mock import patch
@@ -17,7 +17,7 @@ class TestResetPasswordSerializer(APITestCase):
         self.user = UserFactory()
     
     def tearDown(self):
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 
 

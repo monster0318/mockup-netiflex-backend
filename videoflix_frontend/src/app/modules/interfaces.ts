@@ -21,7 +21,7 @@ export interface Video {
   video_file_hd480: string;
   video_file_hd720: string;
   video_file_hd1080: string;
-  duration: string;
+  duration: number;
 }
 
 export interface VideoData {

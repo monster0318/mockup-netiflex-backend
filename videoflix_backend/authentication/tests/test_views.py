@@ -3,7 +3,7 @@ from django.test import Client
 from rest_framework.test import APIClient
 from django.urls import reverse
 from rest_framework import status
-from user.models import CustomUser
+from user.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import get_user_model
 from fixtures.factories import UserFactory, UserDataFactory
@@ -23,7 +23,7 @@ class AuthenticationViewTest(APITestCase):
 
 
     def tearDown(self):
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 
 
@@ -61,7 +61,7 @@ class AuthenticationViewTest(APITestCase):
         self.assertIn("email",response.data)
         self.assertIn("username",response.data)
         self.assertIn("token",response.data)
-        self.assertEqual(len(CustomUser.objects.all()),1)
+        self.assertEqual(len(User.objects.all()),1)
 
 
     def test_register_several_users(self):
@@ -71,12 +71,12 @@ class AuthenticationViewTest(APITestCase):
             fake_user_data = UserDataFactory()
             register_data= {"username": fake_user_data.username,"email": fake_user_data.email, "password":fake_user_data.password,"confirm_password":fake_user_data.password} 
             response = self.client.post(self.register_endpoint, register_data, format='json')
-            user = CustomUser.objects.get(email = register_data["email"])
+            user = User.objects.get(email = register_data["email"])
             user_token = Token.objects.get(user=user)
             self.assertEqual(response.status_code,status.HTTP_201_CREATED)
             self.assertEqual(response.data, {"token": user_token.key,"username": user.username,"email": user.email})
         
-        self.assertEqual(len(CustomUser.objects.all()),3)
+        self.assertEqual(len(User.objects.all()),3)
 
 
     def test_register_bad_user_data(self):
@@ -87,7 +87,7 @@ class AuthenticationViewTest(APITestCase):
 
         response = self.client.post(self.register_endpoint, register_data)
         self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
-        self.assertEqual(len(CustomUser.objects.all()),0)
+        self.assertEqual(len(User.objects.all()),0)
 
 
     def test_logout_user(self):
@@ -98,7 +98,7 @@ class AuthenticationViewTest(APITestCase):
         self.client.login(username=self.user.username,password="FakePassword123!*")
         response = self.client.delete(self.logout_endpoint)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(len(CustomUser.objects.all()),1)
+        self.assertEqual(len(User.objects.all()),1)
 
     def test_logout_guest(self):
         """Test guest account deletion after guest user log out"""
@@ -108,7 +108,7 @@ class AuthenticationViewTest(APITestCase):
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         response = self.client.delete(self.logout_endpoint)
         self.assertEqual(response.status_code, status.HTTP_204_NO_CONTENT)
-        self.assertEqual(len(CustomUser.objects.all()),0)
+        self.assertEqual(len(User.objects.all()),0)
 
 
     def test_activate_account_view_good_data(self):

@@ -1,4 +1,4 @@
-from user.models import CustomUser
+from user.models import User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
 from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
@@ -16,8 +16,8 @@ class UserAccountSerializer(serializers.ModelSerializer):
     added for enabling their view
     """
     class Meta:
-        model = CustomUser
-        fields = ['id','username','email','phone','address']
+        model = User
+        fields = ['id','email','phone','address']
 
 class LoginSerializer(serializers.Serializer):
     """
@@ -25,27 +25,26 @@ class LoginSerializer(serializers.Serializer):
     with email and password.
     """
 
-    email = serializers.EmailField(required = False)
+    email = serializers.EmailField()
     password = serializers.CharField(write_only = True)
     remember_me = serializers.BooleanField(default=False)
 
 
     def validate(self, data):
-        email = data.get("email",'')
+        email = data.get("email")
         password = data.get("password")
 
         if email:
             try:
-                user = CustomUser.objects.get(email=email)
-                username = user.username
-            except CustomUser.DoesNotExist:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
                 raise serializers.ValidationError({"type":"email","message":"No user found with this email"})
         else:
-            raise serializers.ValidationError({"type":"email","message":"Please provide an email or a username, field is missing"})
+            raise serializers.ValidationError({"type":"email","message":"Please provide an email, field is missing"})
         
         if not user.is_active:
             raise serializers.ValidationError({"type":"account","message":"User account is not activated"})
-        user = authenticate(username=username, password=password)
+        user = authenticate(email=email, password=password)
         if not user:
             raise serializers.ValidationError({"type":"credentials","message":"Wrong Email or password"})
         
@@ -54,15 +53,15 @@ class LoginSerializer(serializers.Serializer):
 
 class RegisterSerializer(serializers.ModelSerializer):
     """"
-    User registration serializer allowing user to register using their username, password
+    User registration serializer allowing user to register using their password
     and email. 
     """
     confirm_password = serializers.CharField(write_only = True)
-    username = serializers.CharField(required=False, read_only=True)
+    email = serializers.EmailField()
 
     class Meta:
-        model = CustomUser
-        fields = ['username','email','password','confirm_password']
+        model = User
+        fields = ['email','password','confirm_password']
         extra_kwargs = {
             "password":{
                 "write_only":True
@@ -77,7 +76,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         
         has_pwd_match = data.get("password") == data.get("confirm_password")
         entered_email = data.get('email', [])
-        email_list = CustomUser.objects.filter(email=entered_email)
+        email_list = User.objects.filter(email=entered_email)
 
         if len(entered_email)==0:
             raise serializers.ValidationError({"type":"email","message":"Email address is required"})
@@ -99,8 +98,7 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Saving user data if no error happened"""
 
         self.validated_data.pop('confirm_password')
-        user = CustomUser(
-            username=self.validated_data.get('email'),
+        user = User(
             email=self.validated_data.get('email'),
         )
         user.set_password(self.validated_data.get('password'))
@@ -117,8 +115,8 @@ class ActivateAccountSerializer(serializers.Serializer):
 
         try:
             uid = urlsafe_base64_decode(data.get('uid')).decode()
-            user = CustomUser.objects.get(pk=uid)
-        except (CustomUser.DoesNotExist, ValueError):
+            user = User.objects.get(pk=uid)
+        except (User.DoesNotExist, ValueError):
             raise serializers.ValidationError({"type":"token","message":"Invalid user ID or token"})
         if not default_token_generator.check_token(user, data.get('token')):
             raise serializers.ValidationError({"type":"token","message":"Invalid or expired token"})
@@ -146,18 +144,18 @@ class ResetPasswordSerializer(serializers.Serializer):
             validate_email(entered_email)
         except ValidationError as e:
             raise serializers.ValidationError({"type":"email","message":e.messages})
-        if not CustomUser.objects.filter(email=entered_email).exists():
+        if not User.objects.filter(email=entered_email).exists():
             raise serializers.ValidationError({"type":"email","message":"No account found with this email"})
         return data
 
     def save(self):
         email = self.validated_data.get('email')
-        user = CustomUser.objects.get(email=email)
+        user = User.objects.get(email=email)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         reset_link = f"http://localhost:4200/reset-password/{uid}/{token}/"
 
-        subject,message,from_email,recipient_list = message_body(user.username,reset_link,email)
+        subject,message,from_email,recipient_list = message_body(reset_link,email)
        
         email_to_send = EmailMessage(
             subject=subject,
@@ -183,8 +181,8 @@ class ConfirmResetPasswordSerializer(serializers.Serializer):
 
         try:
             uid = urlsafe_base64_decode(data['uid']).decode()
-            user = CustomUser.objects.get(pk=uid)
-        except (CustomUser.DoesNotExist, ValueError):
+            user = User.objects.get(pk=uid)
+        except (User.DoesNotExist, ValueError):
             raise serializers.ValidationError({"type":"token","message":"Invalid user ID or token"})
 
         if not default_token_generator.check_token(user, data.get('token')):

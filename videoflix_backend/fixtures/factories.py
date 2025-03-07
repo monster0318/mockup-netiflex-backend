@@ -1,6 +1,6 @@
 import factory
 import factory.fuzzy
-from user.models import CustomUser
+from user.models import User
 from videoflix_app.models import Video
 from datetime import datetime
 from django.core.files.uploadedfile import SimpleUploadedFile
@@ -15,7 +15,7 @@ class UserDataFactory(factory.Factory):
     password = factory.PostGenerationMethodCall('set_password', 'FakePassword123!*')
 
     class Meta:
-        model = CustomUser
+        model = User
 
 class UserFactory(factory.django.DjangoModelFactory):
 
@@ -27,7 +27,7 @@ class UserFactory(factory.django.DjangoModelFactory):
     password = factory.PostGenerationMethodCall('set_password', 'FakePassword123!*')
 
     class Meta:
-        model = CustomUser
+        model = User
 
 
 

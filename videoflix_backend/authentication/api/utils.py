@@ -1,6 +1,6 @@
 import random
 from django.utils.crypto import get_random_string
-from user.models import CustomUser
+from user.models import User
 from rest_framework.authtoken.models import Token
 from django.contrib.auth import login
 from django.template.loader import render_to_string
@@ -17,13 +17,13 @@ DOMAINS_END = [
         "rnd-mail.com",
     ]
 
-def message_body(username, reset_link, user_email):
+def message_body(reset_link, user_email):
     """
     This function render the email body for password reset using the template.
     """
     subject = "Videoflix Reset Password"
     context = {
-        "username": username,
+        "username": "@" + user_email.split('@')[0] ,
         "reset_link": reset_link,
     }
     # Render the template with context
@@ -66,9 +66,8 @@ def generate_guest_username():
 
 def guest_login(request):
         """Login guest users"""
-        user = CustomUser.objects.create_user(
+        user = User.objects.create_user(
             email=generate_guest_email(),
-            username=generate_guest_username()
         )
         user.save()
 
@@ -79,7 +78,6 @@ def guest_login(request):
         data = {
             "token": token.key,
             "email": user.email,
-            "username": user.username,
           
         }
         return data

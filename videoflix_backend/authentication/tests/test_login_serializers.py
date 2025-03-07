@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase, APIClient
 from authentication.api.serializers import LoginSerializer
-from user.models import CustomUser
+from user.models import User
 from fixtures.factories import UserFactory
 from rest_framework.exceptions import ValidationError
 from django.contrib.auth import get_user_model
@@ -17,7 +17,7 @@ class TestLoginSerializer(APITestCase):
         self.user = UserFactory()
     
     def tearDown(self):
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 
 
@@ -72,7 +72,7 @@ class TestLoginSerializer(APITestCase):
     def test_authenticate_inactive_user(self):
         """Testing authentication of inactive user"""
 
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
         user = get_user_model().objects.create(username='test',email="testuser@gmail.com", password="password", is_active=False)
         serializer = LoginSerializer(data = {"email":user.email, "password":"password"})
         with self.assertRaises(ValidationError) as context:

@@ -2,7 +2,7 @@ from rest_framework.test import APITestCase
 from django.urls import reverse
 from rest_framework import status
 from rest_framework.test import APIClient
-from user.models import CustomUser
+from user.models import User
 from fixtures.factories import UserFactory, UserDataFactory, VideoDataFactory, VideoFactory
 from videoflix_app.models import Video
 from django.contrib.auth import get_user_model
@@ -24,7 +24,7 @@ class VideoListTest(APITestCase):
     @classmethod
     def tearDownTestData(cls):
         Video.objects.all().delete()
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
     def setUp(self):
         self.user = UserFactory()
@@ -34,7 +34,7 @@ class VideoListTest(APITestCase):
 
     def tearDown(self):
         Video.objects.all().delete()
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 ########################################################################
 #          TEST CASES FOR VIDEO VIEW
@@ -151,7 +151,7 @@ class SingleVideoViewTest(APITestCase):
     @classmethod
     def tearDownTestData(cls):
         Video.objects.all().delete()
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
     def setUp(self):
         self.user = UserFactory()
@@ -162,7 +162,7 @@ class SingleVideoViewTest(APITestCase):
         
     def tearDown(self):
         Video.objects.all().delete()
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 # ########################################################################
 # #          TEST CASES FOR SINGLE VIDEO VIEW

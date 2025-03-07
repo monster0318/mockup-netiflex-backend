@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase, APIClient
 from authentication.api.serializers import RegisterSerializer
-from user.models import CustomUser
+from user.models import User
 from fixtures.factories import UserFactory
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
@@ -18,7 +18,7 @@ class TestRegisterSerializer(APITestCase):
         self.user = UserFactory()
     
     def tearDown(self):
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 ################# TEST CASES ################################################
 
@@ -110,13 +110,13 @@ class TestRegisterSerializer(APITestCase):
             "password":"Testuser123!",
             "confirm_password":"Testuser123!"
             }
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
         serializer = RegisterSerializer(data = register_data)
         serializer.is_valid(raise_exception=True)
         self.assertEqual(serializer.validated_data, register_data)
         saved_user = serializer.save()
-        self.assertEqual(CustomUser.objects.all().count(), 1)
+        self.assertEqual(User.objects.all().count(), 1)
         self.assertFalse(saved_user.is_active)
         saved_user_username = "@" + serializer.validated_data.get('email').split('@')[0]
         self.assertEqual(saved_user.username,saved_user_username)
-        self.assertIsInstance(saved_user, CustomUser)
+        self.assertIsInstance(saved_user, User)

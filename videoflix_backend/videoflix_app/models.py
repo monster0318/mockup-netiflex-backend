@@ -1,12 +1,5 @@
 from django.db import models
 from django.conf import settings
-
-# class VideoQuality(models.Model):
-#     vtt_file = models.CharField(max_length=1000, blank=True, null=True, default="")
-#     hd360 = models.CharField(max_length=1000, blank=True, null=True, default="")
-#     hd480 = models.CharField(max_length=1000, blank=True, null=True, default="")
-#     hd720 = models.CharField(max_length=1000, blank=True, null=True, default="")
-#     hd1080 = models.CharField(max_length=1000, blank=True, null=True, default="")
     
 class Video(models.Model):
 
@@ -28,7 +21,7 @@ class Video(models.Model):
     video_file_hd480 = models.CharField(max_length=200, blank=True, null=True, default="")
     video_file_hd720 = models.CharField(max_length=200, blank=True, null=True, default="")
     video_file_hd1080 = models.CharField(max_length=200, blank=True, null=True, default="")
-    duration=models.CharField(max_length=10,blank=True,null=True)
+    duration=models.PositiveIntegerField(blank=True,null=True)
 
 
     def __str__(self):
