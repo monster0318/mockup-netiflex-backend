@@ -4,7 +4,7 @@
   <app-spinner />
   } @else {
   <section>
-    <video autoplay muted loop playsinline #backgroundVideo class="background-video">
+    <video autoplay muted playsinline #backgroundVideo class="background-video">
       <source *ngIf="rndVideo" [src]="rndVideo.video_file_hd1080" type="video/mp4" />
     </video>
     <div class="container">
