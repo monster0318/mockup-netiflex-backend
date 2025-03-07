@@ -40,10 +40,9 @@ class Login(ObtainAuthToken):
 
                 user_data = {
                     "token":token.key,
-                    "username":validated_user.username,
                     "email":validated_user.email,
                 }
-                logger.info(f"{request.user.username} has logged in")
+                logger.info(f"{request.user.email} has logged in")
                 return Response(user_data, status=status.HTTP_200_OK)
             return Response(serializer.errors,status=status.HTTP_400_BAD_REQUEST)
         
@@ -57,8 +56,8 @@ class GuestLogout(generics.DestroyAPIView):
             logger.info("Guest user has logged out")
             return Response({"ok":True,"message":"Guest user successfully removed"}, status=status.HTTP_204_NO_CONTENT)
         logout(request)
-        logger.info(f"{current_user.username} has logged out")
-        return Response({"ok":True,"message":f"User {current_user.username} has logged out"},status=status.HTTP_200_OK)
+        logger.info(f"{current_user.email} has logged out")
+        return Response({"ok":True,"message":f"User {current_user.email} has logged out"},status=status.HTTP_200_OK)
     
 class Register(APIView):
     """Registration of new user"""
@@ -73,7 +72,6 @@ class Register(APIView):
             token, _ = Token.objects.get_or_create(user=saved_account)
             data={
                 "token":token.key,
-                "username":saved_account.username,
                 "email":saved_account.email
             }
             return Response(data, status=status.HTTP_201_CREATED)

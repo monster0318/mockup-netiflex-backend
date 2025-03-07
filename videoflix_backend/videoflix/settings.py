@@ -105,7 +105,7 @@ class Dev(Configuration):
 
         ]
 
-        AUTH_USER_MODEL = 'user.CustomUser'
+        AUTH_USER_MODEL = 'user.User'
 
         CELERY_RESULT_BACKEND = "django-db"
         CELERY_BROKER_URL = f'redis://:{RQ_PWD}@127.0.0.1:6379/1'

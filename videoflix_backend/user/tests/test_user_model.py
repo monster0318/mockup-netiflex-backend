@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase
 from fixtures.factories import UserFactory
-from user.models import CustomUser
+from user.models import User
 
 
 
@@ -21,7 +21,7 @@ class TestUserModel(APITestCase):
         
         return_data = self.user.to_dict()
  
-        self.assertEqual(len(CustomUser.objects.all()),1)
+        self.assertEqual(len(User.objects.all()),1)
         self.assertIn("username",return_data)
         self.assertIn("email",return_data)
         self.assertIn("phone",return_data)

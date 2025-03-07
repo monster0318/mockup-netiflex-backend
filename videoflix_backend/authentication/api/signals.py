@@ -1,5 +1,5 @@
 from django.db.models.signals import post_save
-from user.models import CustomUser
+from user.models import User
 from django.dispatch import receiver
 from django.core.mail import EmailMessage
 from django.template.loader import render_to_string
@@ -9,15 +9,15 @@ from django.utils.encoding import force_bytes
 from config.config_settings import *
 
 
-@receiver(post_save, sender=CustomUser)
+@receiver(post_save, sender=User)
 def send_welcome_email(sender, instance, created,**kwargs):
     if created:  
         subject = "Confirm your email"
-        user = CustomUser.objects.get(email=instance.email)
+        user = User.objects.get(email=instance.email)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         context = {
-            "username": instance.username,
+            "username": "@" + instance.email.split('@')[0],
             "activate_link":f"http://localhost:4200/activate-account/{uid}/{token}/",
         }
         message = render_to_string("welcome.html", context)

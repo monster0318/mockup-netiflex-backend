@@ -5,7 +5,7 @@
   } @else {
   <section>
     <video autoplay muted loop playsinline #backgroundVideo class="background-video">
-      <source src="{{ rndVideo?.video_file_hd1080 }}" type="video/mp4" />
+      <source *ngIf="rndVideo" [src]="rndVideo.video_file_hd1080" type="video/mp4" />
     </video>
     <div class="container">
       <article class="current-video-description">

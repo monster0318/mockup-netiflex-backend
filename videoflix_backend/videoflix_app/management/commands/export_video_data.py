@@ -9,5 +9,5 @@ class Command(BaseCommand):
     def handle(self, *args, **kwargs):
         video_resource = VideoResource().export()
         exported_data = video_resource.json
-        with open(f"exports/video_data_{datetime.date.today()}.json", "w") as file:
+        with open(f"exports/video_data_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.json")}", "w") as file:
             file.write(exported_data)

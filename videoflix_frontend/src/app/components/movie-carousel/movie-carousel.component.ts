@@ -32,8 +32,6 @@ export class MovieCarouselComponent implements OnInit {
       gap: 90,
       focusAt: "center",
       hoverpause: true,
-      rewind: false,
-      bound: true,
       breakpoints: {
         1315: { perView: 3 },
         768: { perView: 3 },

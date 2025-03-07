@@ -1,6 +1,6 @@
 from rest_framework.test import APITestCase, APIClient
 from authentication.api.serializers import ActivateAccountSerializer
-from user.models import CustomUser
+from user.models import User
 from fixtures.factories import UserFactory
 from rest_framework.exceptions import ValidationError
 from rest_framework.authtoken.models import Token
@@ -23,7 +23,7 @@ class TestActivateAccountSerializer(APITestCase):
         self.token = default_token_generator.make_token(user = self.user) 
     
     def tearDown(self):
-        CustomUser.objects.all().delete()
+        User.objects.all().delete()
 
 
 
