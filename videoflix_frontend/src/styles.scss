@@ -10,7 +10,7 @@
 }
 
 body {
-  background-color: black;
+  background-color: #121318;
 }
 
 $paddingInline: 3rem;
@@ -20,3 +20,7 @@ $paddingInlineMobile: 1rem;
 .video-container {
   border-radius: 10px !important;
 }
+
+// .plyr--video {
+//   width: 95% !important;
+// }

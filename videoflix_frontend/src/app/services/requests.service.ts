@@ -9,13 +9,16 @@ import { HttpHeaders } from "@angular/common/http";
   providedIn: "root",
 })
 export class RequestsService {
-  private token: string | null = null;
-
   private videoSubject = new BehaviorSubject<Video[] | []>([]);
   videos$ = this.videoSubject.asObservable();
 
   private recentVideoSubject = new BehaviorSubject<Video[] | []>([]);
   recentVideos$ = this.recentVideoSubject.asObservable();
+
+  private categorizedVideoSubject = new BehaviorSubject<
+    { action: Video[]; horror: Video[]; drama: Video[]; documentary: Video[]; technic: Video[] } | { action: []; horror: []; drama: []; documentary: []; technic: [] }
+  >({ action: [], horror: [], drama: [], documentary: [], technic: [] });
+  categorizedVideos$ = this.categorizedVideoSubject.asObservable();
 
   private currentVideoSubject = new BehaviorSubject<Video | null>(null);
   currentVideos$ = this.currentVideoSubject.asObservable();
@@ -52,6 +55,12 @@ export class RequestsService {
 
   emitRecentVideos(data: Video[] | []) {
     this.recentVideoSubject.next(data);
+  }
+
+  emitCategorizedVideos(
+    data: { action: Video[]; horror: Video[]; drama: Video[]; documentary: Video[]; technic: Video[] } | { action: []; horror: []; drama: []; documentary: []; technic: [] }
+  ) {
+    this.categorizedVideoSubject.next(data);
   }
 
   emitIsLoading(bool: boolean) {
@@ -109,6 +118,7 @@ export class RequestsService {
         if (response.token) {
           if (endpoint === "login/") {
             this.getData("api/videos/", response.token, data => this.emitVideos(data));
+            this.getData("api/videos/categorized_videos/", response.token, data => this.emitCategorizedVideos(data));
             this.getData("api/videos/recent_videos/", response.token, data => this.emitRecentVideos(data));
             sessionStorage.setItem("token", response.token);
           }

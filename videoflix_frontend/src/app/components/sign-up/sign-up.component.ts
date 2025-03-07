@@ -7,8 +7,6 @@ import { ApiService } from "../../services/api.service";
 import { RequestsService } from "../../services/requests.service";
 import { ModuleService } from "../../services/module.service";
 import { ToastrService } from "ngx-toastr";
-import { AuthFormService } from "../../services/auth-form.service";
-
 @Component({
   selector: "app-sign-up",
   standalone: true,
@@ -31,7 +29,7 @@ export class SignUpComponent implements OnInit {
 
   private apiService = inject(ApiService);
   private requestsService = inject(RequestsService);
-  constructor(private authFormService: AuthFormService, private toastr: ToastrService, private moduleService: ModuleService) {}
+  constructor(private toastr: ToastrService, private moduleService: ModuleService) {}
 
   ngOnInit(): void {
     this.moduleService.email$.subscribe(email => {
@@ -41,10 +39,6 @@ export class SignUpComponent implements OnInit {
     this.requestsService.errorMessage$.subscribe(message => {
       this.errorMessage = message["message"][0];
       this.errorType = message["type"][0];
-    });
-
-    this.authFormService.resetSignUpForm$.subscribe(() => {
-      this.signUpForm.reset();
     });
   }
 

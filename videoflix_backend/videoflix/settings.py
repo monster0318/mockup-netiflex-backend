@@ -98,7 +98,6 @@ class Dev(Configuration):
             'debug_toolbar',
             'django_filters',
             'user',
-            # 'django_rq',
             'import_export',
             'videoflix_app.apps.VideoflixAppConfig',
             'django_celery_results',
@@ -230,7 +229,7 @@ class Dev(Configuration):
 
         STATICFILES_DIRS = [
              'authentication/static',
-            os.path.join(BASE_DIR, '/static'),
+            # os.path.join(BASE_DIR, '/static'),
         ]
 
         IMPORT_EXPORT_USE_TRANSACTIONS = True

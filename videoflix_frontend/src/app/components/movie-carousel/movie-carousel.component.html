@@ -1,31 +1,24 @@
 <div #glide class="glide" (click)="handleClick($event)">
   <div class="glide__track" data-glide-el="track">
     <ul class="glide__slides">
-      <li
-        class="glide__slide single-video"
-        *ngFor="let video of videos"
-        [attr.data-video-id]="video.id"
-      >
+      <li class="glide__slide single-video" *ngFor="let video of videos" [attr.data-video-id]="video.id">
         <div class="video-and-duration">
+          <div class="hover-img"></div>
           <img [src]="video.poster" [alt]="video.title" data-clickable />
           <div class="play-movie" data-clickable>
             <img src="assets/img/circle_play.svg" alt="Play" />
-            <span>{{ video.duration ? video.duration : "" }}</span>
+            <span>{{ video.duration ? video.duration : "" }}:{{ videos.length }}</span>
           </div>
         </div>
         <div class="title-watch-now">
-          <p>{{ video.title ? video.title : "" }}</p>
+          <p class="video-title">{{ video.title ? video.title : "" }}</p>
           <a class="watch-movie" data-clickable>Watch now</a>
         </div>
       </li>
     </ul>
   </div>
 
-  <div
-    class="glide__arrows"
-    data-glide-el="controls"
-    *ngIf="videos.length !== 0"
-  >
+  <div class="glide__arrows" data-glide-el="controls" *ngIf="videos.length !== 0">
     <button class="glide__arrow glide__arrow--left" data-glide-dir="<">
       <img src="assets/img/chevron-left.svg" alt="Left" />
     </button>

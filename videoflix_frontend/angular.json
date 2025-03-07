@@ -32,7 +32,8 @@
               "src/assets/styles/plyr.css",
               "node_modules/ngx-spinner/animations/ball-zig-zag-deflect.css",
               "node_modules/ngx-spinner/animations/ball-beat.css",
-              "src/toast.scss"
+              "src/toast.scss",
+              "node_modules/@videogular/ngx-videogular/fonts/videogular.css",
             ],
             "scripts": []
           },
@@ -93,7 +94,8 @@
               "src/assets/styles/glide.theme.min.css",
               "node_modules/ngx-spinner/animations/ball-zig-zag-deflect.css",
               "node_modules/ngx-spinner/animations/ball-beat.css",
-              "src/toast.scss"
+              "src/toast.scss",
+              "node_modules/@videogular/ngx-videogular/fonts/videogular.css"
             ],
             "scripts": []
           }

@@ -8,12 +8,12 @@ export interface Video {
   title: string;
   description: string;
   author: string;
-  genre: 'documentary' | 'action' | 'horror' | 'drama' | 'romance';
+  genre: "documentary" | "action" | "horror" | "drama" | "technic";
   uploaded_at: Date;
   updated_at: Date;
   uploaded_by: string;
   is_favorite: boolean;
-  language: 'french' | 'english' | 'german';
+  language: "french" | "english" | "german";
   video_file: string | null;
   poster: string;
   vtt_file: string;

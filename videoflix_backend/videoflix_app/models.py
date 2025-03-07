@@ -10,7 +10,7 @@ from django.conf import settings
     
 class Video(models.Model):
 
-    CATEGORY_OPTIONS = (('documentary','documentary'),('action','action'),('horror','horror'),('drama','drama'),('romance','romance'))
+    CATEGORY_OPTIONS = (('documentary','documentary'),('action','action'),('horror','horror'),('drama','drama'),('technic','technic'))
     LANGUAGE_OPTIONS = (('french','french'),('english','english'),('german','german'))
     title = models.CharField(max_length=150)
     description = models.TextField(max_length=1000)

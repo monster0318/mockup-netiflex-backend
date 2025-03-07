@@ -12,7 +12,6 @@
 
 .glide__slide img {
   width: 100%;
-  // max-height: 200px;
   border-radius: 12px;
 }
 
@@ -21,32 +20,44 @@
   justify-content: space-between;
 }
 .glide__arrow--left {
-  left: 0.5em;
+  left: -3em;
 }
 .glide__arrow--right {
-  right: 0.5em;
+  right: -3em;
 }
 
 .single-video {
   > .video-and-duration {
+    width: 298.96px;
+    border-radius: 12px;
+    aspect-ratio: 16 / 9 !important;
     position: relative;
+    > .hover-img {
+      position: absolute;
+      inset: 0;
+      background-color: rgba(0, 0, 0, 0.3);
+      display: none;
+    }
     > img {
       border-radius: 12px;
-      width: 298.96px;
-      aspect-ratio: 16 / 9 !important;
+      width: 100%;
+      height: 100%;
       cursor: pointer;
     }
   }
   > div {
     p {
       font-size: 20px;
-      color: white;
+      color: #818999;
     }
   }
 }
 .title-watch-now {
   text-align: left;
-  padding-inline: 1rem;
+}
+
+.video-title {
+  text-transform: capitalize;
 }
 
 .play-movie {
@@ -60,8 +71,7 @@
     width: 30px;
     aspect-ratio: 1 / 1;
     cursor: pointer;
-    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg)
-      brightness(105%) contrast(101%);
+    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg) brightness(105%) contrast(101%);
   }
 
   > span {
@@ -70,9 +80,11 @@
 }
 
 .video-and-duration:hover {
+  > .hover-img {
+    display: block !important;
+  }
   .play-movie > img {
-    filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
-      brightness(88%) contrast(98%);
+    filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg) brightness(88%) contrast(98%);
     transition: all 250ms ease-in-out;
   }
 }
@@ -90,29 +102,60 @@ button {
   > img {
     width: 23px;
     height: auto;
-    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg)
-      brightness(105%) contrast(101%);
+    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg) brightness(105%) contrast(101%);
   }
   &:hover {
     > img {
-      filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
-        brightness(88%) contrast(98%);
+      filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg) brightness(88%) contrast(98%);
       transition: all 300ms ease-in-out;
     }
   }
 }
 
-@media screen and (width<480px) {
+@media screen and (width<1000px) {
   .single-video {
     > .video-and-duration {
-      > img {
-        width: 242.8px;
-        aspect-ratio: 16 / 9 !important;
-      }
+      width: 287.33px;
+      aspect-ratio: 16 / 9 !important;
     }
   }
+  .glide__arrows {
+    padding: 3px 6px !important;
+  }
+  .glide__arrow--left {
+    left: -2.5em !important;
+  }
+  .glide__arrow--right {
+    right: -2.5em !important;
+  }
+}
 
+@media screen and (width<950px) {
+  .single-video {
+    > .video-and-duration {
+      width: 268.5px;
+      aspect-ratio: 16 / 9 !important;
+    }
+  }
+}
+
+@media screen and (width<885px) {
+  .single-video {
+    > .video-and-duration {
+      width: 250.5px;
+      aspect-ratio: 16 / 9 !important;
+    }
+  }
+}
+
+@media screen and (width<615px) {
   .glide__arrows {
     display: none !important;
+  }
+  .single-video {
+    > .video-and-duration {
+      width: 200.5px;
+      aspect-ratio: 16 / 9 !important;
+    }
   }
 }
