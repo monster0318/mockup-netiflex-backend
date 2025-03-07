@@ -99,9 +99,8 @@ class RegisterSerializer(serializers.ModelSerializer):
         """Saving user data if no error happened"""
 
         self.validated_data.pop('confirm_password')
-        username = "@" + self.validated_data.get('email').split('@')[0]
         user = CustomUser(
-            username=username,
+            username=self.validated_data.get('email'),
             email=self.validated_data.get('email'),
         )
         user.set_password(self.validated_data.get('password'))

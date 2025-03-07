@@ -36,12 +36,12 @@ class VideoViewSet(viewsets.ModelViewSet):
         return queryset.order_by("-uploaded_at")
 
 
-    @method_decorator(cache_page(10))
+    @method_decorator(cache_page(CACHE_TTL))
     @method_decorator(vary_on_cookie)
     def list(self, request, *args, **kwargs):
         return super(VideoViewSet, self).list(request, *args, **kwargs)
 
-    @method_decorator(cache_page(10))
+    @method_decorator(cache_page(CACHE_TTL))
     @action(methods=['get'], detail=False)
     def recent_videos(self,request):
         """Recent 5 uploaded videos"""
@@ -54,4 +54,25 @@ class VideoViewSet(viewsets.ModelViewSet):
         videos = videos[:5]
         serializer_videos = VideoSerializer(videos, many=True, context={"request":request})
         return Response(serializer_videos.data,status=status.HTTP_200_OK)
+
+    @method_decorator(cache_page(CACHE_TTL))
+    @action(methods=['get'], detail=False)
+    def categorized_videos(self,request):
+        """Grouped videos per genre"""
+   
+        drama = self.get_queryset().filter(genre__iexact="drama")
+        documentary = self.get_queryset().filter(genre__iexact="documentary")
+        technic = self.get_queryset().filter(genre__iexact="technic")
+        horror = self.get_queryset().filter(genre__iexact="horror")
+        action = self.get_queryset().filter(genre__iexact="action")
+
+        data = {
+            "drama":VideoSerializer(drama, many=True, context={"request":request}).data,
+            "documentary":VideoSerializer(documentary, many=True, context={"request":request}).data,
+            "technic":VideoSerializer(technic, many=True, context={"request":request}).data,
+            "horror":VideoSerializer(horror, many=True, context={"request":request}).data,
+            "action":VideoSerializer(action, many=True, context={"request":request}).data,
+        }
+
+        return Response(data,status=status.HTTP_200_OK)
 

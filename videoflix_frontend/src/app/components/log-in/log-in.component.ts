@@ -8,7 +8,6 @@ import { ApiService } from "../../services/api.service";
 import { RequestsService } from "../../services/requests.service";
 import { CommonModule } from "@angular/common";
 import { GuestCredentials } from "../../modules/config";
-import { AuthFormService } from "../../services/auth-form.service";
 
 @Component({
   selector: "app-log-in",
@@ -29,16 +28,12 @@ export class LogInComponent implements OnInit {
 
   private apiService = inject(ApiService);
   private requestsService = inject(RequestsService);
-  constructor(private authFormService: AuthFormService, private router: Router, private route: ActivatedRoute) {}
+  constructor(private router: Router, private route: ActivatedRoute) {}
 
   ngOnInit(): void {
     this.requestsService.errorMessage$.subscribe(message => {
       this.errorMessage = message["message"][0];
       this.errorType = message["type"][0];
-    });
-
-    this.authFormService.resetLogInForm$.subscribe(() => {
-      this.logInForm.reset();
     });
   }
   /**

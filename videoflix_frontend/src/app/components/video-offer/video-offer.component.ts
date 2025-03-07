@@ -1,95 +1,61 @@
-import {
-  AfterViewInit,
-  Component,
-  ElementRef,
-  OnInit,
-  ViewChild,
-} from '@angular/core';
-import { NavBarComponent } from '../../shared/nav-bar/nav-bar.component';
-import { RouterLink } from '@angular/router';
-import { RequestsService } from '../../services/requests.service';
-import { SpinnerComponent } from '../../shared/spinner/spinner.component';
-import { VideoCategoryComponent } from '../video-category/video-category.component';
-import { Video } from '../../modules/interfaces';
+import { AfterViewInit, Component, ElementRef, OnDestroy, OnInit, ViewChild } from "@angular/core";
+import { NavBarComponent } from "../../shared/nav-bar/nav-bar.component";
+import { RouterLink } from "@angular/router";
+import { RequestsService } from "../../services/requests.service";
+import { SpinnerComponent } from "../../shared/spinner/spinner.component";
+import { VideoCategoryComponent } from "../video-category/video-category.component";
+import { Video } from "../../modules/interfaces";
+import { CommonModule } from "@angular/common";
 
 @Component({
-  selector: 'app-video-offer',
+  selector: "app-video-offer",
   standalone: true,
-  imports: [
-    NavBarComponent,
-    RouterLink,
-    SpinnerComponent,
-    VideoCategoryComponent,
-  ],
-  templateUrl: './video-offer.component.html',
-  styleUrl: './video-offer.component.scss',
+  imports: [NavBarComponent, RouterLink, SpinnerComponent, VideoCategoryComponent, CommonModule],
+  templateUrl: "./video-offer.component.html",
+  styleUrl: "./video-offer.component.scss",
 })
 export class VideoOfferComponent implements AfterViewInit, OnInit {
   isLoading: boolean = false;
   recentVideos: Video[] | [] = [];
+  allVideos: Video[] | [] = [];
+  rndVideo: Video | null = null;
+  categorizedVideos:
+    | { action: Video[]; horror: Video[]; drama: Video[]; documentary: Video[]; technic: Video[] }
+    | { action: []; horror: []; drama: []; documentary: []; technic: [] } = { action: [], horror: [], drama: [], documentary: [], technic: [] };
   token: string | null = null;
   currentVideo: Video | null = null;
+  intervalId: any;
 
-  @ViewChild('backgroundVideo') backgroundVideo!: ElementRef<HTMLVideoElement>;
+  @ViewChild("backgroundVideo") backgroundVideo!: ElementRef<HTMLVideoElement>;
 
   constructor(private requestsService: RequestsService) {}
 
   ngOnInit(): void {
-    this.requestsService.isLoading$.subscribe((value) => {
+    this.requestsService.videos$.subscribe(videos => {
+      this.allVideos = videos;
+      console.log("All videos", this.allVideos);
+      this.selectRandomVideo(this.allVideos);
+    });
+
+    this.requestsService.isLoading$.subscribe(value => {
       this.isLoading = value;
     });
-    this.requestsService.recentVideos$.subscribe((videos) => {
+
+    this.requestsService.recentVideos$.subscribe(videos => {
       this.recentVideos = videos;
+      console.log("recent Offer video:", this.recentVideos);
     });
 
-    this.requestsService.currentVideos$.subscribe((video) => {
+    this.requestsService.currentVideos$.subscribe(video => {
       this.currentVideo = video;
-      console.log('Current Offer video:', this.currentVideo);
+      console.log("Current Offer video:", this.currentVideo);
+    });
+
+    this.requestsService.categorizedVideos$.subscribe(video => {
+      this.categorizedVideos = video;
+      console.log("categorized Offer video:", this.categorizedVideos);
     });
   }
-
-  videos: any[] = [
-    {
-      title: 'Inception',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'The Dark Knight',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'Interstellar',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'Avengers: Endgame',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'Parasite',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'Joker',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'Spider-Man: No Way Home',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-    {
-      title: 'Dune',
-      duration: '02:30',
-      image: 'assets/videos/the_5th_wave_poster.jpg',
-    },
-  ];
 
   /**
    * slowing down the motion of the background video
@@ -100,13 +66,18 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
     }
   }
 
-  updateRecentVideo() {
-    this.token = sessionStorage.getItem('token');
-    if (this.token) {
-      this.requestsService.getData(`api/videos/49`, this.token, (data) => {
+  updateRecentVideo(id: number | undefined) {
+    this.token = sessionStorage.getItem("token");
+    if (this.token && this.rndVideo) {
+      this.requestsService.getData(`api/videos/${id}`, this.token, data => {
         this.requestsService.emitCurrentVideos(data);
       });
-      console.log('Current Offers video:', this.currentVideo);
     }
+  }
+
+  selectRandomVideo(videoArray: Video[]) {
+    // let videoInd = 50 % videoArray.length;
+    this.rndVideo = videoArray[0];
+    console.log("Random video", this.rndVideo);
   }
 }

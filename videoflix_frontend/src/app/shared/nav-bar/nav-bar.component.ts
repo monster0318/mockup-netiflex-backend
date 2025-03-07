@@ -3,7 +3,6 @@ import { Component, inject, Input, OnInit } from "@angular/core";
 import { Router } from "@angular/router";
 import { ApiService } from "../../services/api.service";
 import { RequestsService } from "../../services/requests.service";
-import { AuthFormService } from "../../services/auth-form.service";
 
 @Component({
   selector: "app-nav-bar",
@@ -23,7 +22,7 @@ export class NavBarComponent implements OnInit {
   token: string | null = null;
 
   private requestsService = inject(RequestsService);
-  constructor(private authFormService: AuthFormService, private router: Router, private apiService: ApiService) {}
+  constructor(private router: Router, private apiService: ApiService) {}
   ngOnInit(): void {
     this.isAuthenticated = this.apiService.isAuthenticated();
   }
@@ -49,11 +48,6 @@ export class NavBarComponent implements OnInit {
     this.requestsService.resetErrorState();
   }
 
-  resetForms() {
-    this.authFormService.resetSignUpForm();
-    this.authFormService.resetLogInForm();
-  }
-
   /**
    * Log the guest user out and redirect to login page
    */
@@ -62,7 +56,6 @@ export class NavBarComponent implements OnInit {
       this.removeGuestAccountOnLogout();
     }
     this.requestsService.resetErrorState();
-    this.resetForms();
     this.router.navigateByUrl("/login");
   }
 

@@ -4,40 +4,28 @@
   <app-spinner />
   } @else {
   <section>
-    <video
-      autoplay
-      muted
-      loop
-      playsinline
-      #backgroundVideo
-      class="background-video"
-    >
-      <source src="assets/videos/back.mp4" type="video/mp4" />
+    <video autoplay muted loop playsinline #backgroundVideo class="background-video">
+      <source src="{{ rndVideo?.video_file_hd1080 }}" type="video/mp4" />
     </video>
     <div class="container">
       <article class="current-video-description">
-        <h1>Breakout</h1>
+        <h1 class="video-title">{{ rndVideo?.title }}</h1>
         <p class="description">
-          In a high-security prison, a wrongly convicted man formulates a
-          meticulous plan to break out and prove his innocence. He must navigate
-          a web of alliances and betrayals to reclaim his freedom and expose the
-          truth.
+          {{ rndVideo?.description }}
         </p>
         <button>
           <img src="assets/img/play_arrow.svg" alt="play" />
-          <span routerLink="/video-player" (click)="updateRecentVideo()"
-            >Play Now</span
-          >
+          <span routerLink="/player" (click)="updateRecentVideo(rndVideo?.id)">Play Now</span>
         </button>
       </article>
-      <div class="category-list">
-        <app-video-category
-          [videos]="recentVideos"
-          categoryTitle="New on Videoflix"
-        />
-        <!-- <app-video-category [videos]="videos" categoryTitle="Drama" />
-        <app-video-category [videos]="videos" categoryTitle="Documentary" /> -->
-      </div>
+    </div>
+    <div class="category-list">
+      <app-video-category *ngIf="recentVideos.length !== 0" [videos]="recentVideos" categoryTitle="New on Videoflix" />
+      <app-video-category *ngIf="categorizedVideos.documentary.length !== 0" [videos]="categorizedVideos.documentary" categoryTitle="Documentary" />
+      <app-video-category *ngIf="categorizedVideos.technic.length !== 0" [videos]="categorizedVideos.technic" categoryTitle="Technic" />
+      <app-video-category *ngIf="categorizedVideos.drama.length !== 0" [videos]="categorizedVideos.drama" categoryTitle="Drama" />
+      <app-video-category *ngIf="categorizedVideos.action.length !== 0" [videos]="categorizedVideos.action" categoryTitle="Action" />
+      <app-video-category *ngIf="categorizedVideos.horror.length !== 0" [videos]="categorizedVideos.horror" categoryTitle="Horror" />
     </div>
     <footer>
       <div>

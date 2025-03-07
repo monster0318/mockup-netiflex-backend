@@ -2,14 +2,11 @@
 main {
   min-height: 100vh;
   min-height: 100dvh;
+  height: 100vh;
+  height: 100dvh;
   position: absolute;
   inset: 0;
-  background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.8) 10%,
-    rgba(0, 0, 0, 0.4) 55%,
-    rgba(0, 0, 0, 1) 90%
-  );
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.4) 55%, rgba(0, 0, 0, 1) 90%);
   > section {
     > .background-video {
       position: absolute;
@@ -25,14 +22,12 @@ main {
   }
 }
 
+.video-title {
+  text-transform: capitalize;
+}
+
 .loading-background {
-  background-image: linear-gradient(
-      to bottom,
-      rgba(0, 0, 0, 0.8) 10%,
-      rgba(0, 0, 0, 0.4) 55%,
-      rgba(0, 0, 0, 1) 90%
-    ),
-    url("/assets/img/signup.jpeg");
+  background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.8) 10%, rgba(0, 0, 0, 0.4) 55%, rgba(0, 0, 0, 1) 90%), url("/assets/img/signup.jpeg");
 }
 
 .current-video-description {
@@ -41,7 +36,7 @@ main {
   gap: 2rem;
   justify-content: center;
   align-items: flex-start;
-  max-width: 440px;
+  max-width: 500px;
   width: 100%;
   > h1,
   > p,
@@ -91,13 +86,15 @@ main {
   padding-inline: $paddingInline;
   margin: auto;
   margin-top: 3rem;
+  height: calc(100vh - 3rem);
+  height: calc(100dvh - 3rem);
 }
 
 .category-list {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  margin-top: 6rem;
+  padding-inline: $paddingInline;
   > article {
     padding-bottom: 1.5rem;
     border-bottom: 1px solid rgb(118, 118, 118);
@@ -115,8 +112,7 @@ main {
       > img {
         width: 20px;
         height: 20px;
-        filter: invert(19%) sepia(87%) saturate(4447%) hue-rotate(237deg)
-          brightness(89%) contrast(96%);
+        filter: invert(19%) sepia(87%) saturate(4447%) hue-rotate(237deg) brightness(89%) contrast(96%);
       }
     }
 
@@ -156,8 +152,7 @@ main {
     width: 30px;
     aspect-ratio: 1 / 1;
     cursor: pointer;
-    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg)
-      brightness(105%) contrast(101%);
+    filter: invert(99%) sepia(99%) saturate(2%) hue-rotate(135deg) brightness(105%) contrast(101%);
   }
 
   > span {
@@ -167,8 +162,7 @@ main {
 
 .video-and-duration:hover {
   .play-movie > img {
-    filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg)
-      brightness(88%) contrast(98%);
+    filter: invert(19%) sepia(69%) saturate(4875%) hue-rotate(237deg) brightness(88%) contrast(98%);
     transition: all 250ms ease-in-out;
   }
 }
@@ -187,18 +181,14 @@ footer {
   text-align: center;
   padding-block: 2rem;
   padding-inline: $paddingInline;
-  background-image: linear-gradient(
-    to bottom,
-    rgba(0, 0, 0, 0.2) 10%,
-    rgba(0, 0, 0, 0.8) 55%,
-    rgba(0, 0, 0, 1) 90%
-  );
+  background-image: linear-gradient(to bottom, rgba(18, 19, 24, 0.2) 10%, rgba(18, 19, 24, 0.8) 55%, rgba(18, 19, 24, 1) 90%);
   > div {
     display: flex;
     gap: 2rem;
     align-items: center;
     justify-content: flex-end;
     max-width: 1440px;
+    background-color: rgba(18, 19, 24, 1);
     > a {
       color: #ffffff;
       text-decoration: none;
@@ -226,7 +216,8 @@ footer {
       }
     }
   }
-  .container {
+  .container,
+  .category-list {
     padding-inline: $paddingInlineMobile !important;
   }
   .current-video-description {
