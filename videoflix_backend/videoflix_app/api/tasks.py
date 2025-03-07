@@ -42,67 +42,8 @@ def has_audio_stream(source):
     except Exception:
         return False
 
-def convert_to_format_m3u8(source, qualities):
-    """
-    Convert video to an HLS stream with two quality variants: 480p and 720p.
-    This generates a master playlist (master.m3u8) that references the two variant playlists.
-    """
-    # Ensure qualities is a list and contains both 480 and 720 (as strings for comparison)
-    if not qualities or not isinstance(qualities, list):
-        return
-    required = {"480", "720"}
-    provided = {str(q) for q in qualities}
-    if not required.issubset(provided):
-        # If both qualities are not requested, you can decide to add defaults or return.
-        return
-
-    # Get the file name without extension
-    file_name, _ = os.path.splitext(source)
-    # If running on Windows, adjust path for WSL (as in your original function)
-    if os.name == "nt":
-        source = source.replace("\\", "/").replace("C:", "/mnt/c")
-        file_name = file_name.replace("\\", "/").replace("C:", "/mnt/c")
-
-    audio_exists = has_audio_stream(source)
-
-    # Build the FFmpeg command based on whether audio exists
-    if audio_exists:
-        # Build command including audio mapping
-        ffmpeg_command = (
-            f'ffmpeg -i "{source}" '
-            f'-filter_complex "[0:v]split=2[v720][v480]" '
-            f'-map "[v720]" -c:v:0 libx264 -b:v:0 2500k -s:v:0 1280x720 '
-            f'-map 0:a -c:a aac -b:a:0 128k '
-            f'-map "[v480]" -c:v:1 libx264 -b:v:1 1000k -s:v:1 854x480 '
-            f'-map 0:a -c:a aac -b:a:1 96k '
-            f'-f hls -hls_time 4 -hls_playlist_type vod '
-            f'-var_stream_map "v:0,a:0 v:1,a:1" '
-            f'-master_pl_name master.m3u8 '
-            f'-hls_segment_filename "{file_name}_%v_%03d.ts" '
-            f'"{file_name}_%v.m3u8"'
-        )
-    else:
-        # Build command without audio mapping
-        ffmpeg_command = (
-            f'ffmpeg -i "{source}" '
-            f'-filter_complex "[0:v]split=2[v720][v480]" '
-            f'-map "[v720]" -c:v:0 libx264 -b:v:0 2500k -s:v:0 1280x720 '
-            f'-map "[v480]" -c:v:1 libx264 -b:v:1 1000k -s:v:1 854x480 '
-            f'-f hls -hls_time 4 -hls_playlist_type vod '
-            f'-var_stream_map "v:0 v:1" '
-            f'-master_pl_name master.m3u8 '
-            f'-hls_segment_filename "{file_name}_%v_%03d.ts" '
-            f'"{file_name}_%v.m3u8"'
-        )
-
-    resp=subprocess.run(ffmpeg_command, capture_output=True, shell=True,text=True)
-    if resp.returncode !=0:
-        print('error happen',resp.stderr)
-    else:
-        print('success')
-
-@shared_task(name="Generate-video-qualities", base=CustomTask)
-def convert_to_format(source,qualities):
+# @shared_task(name="Generate-video-qualities", base=CustomTask)
+# def convert_to_format(source,qualities):
     """Convert video to format {360,120,720,1080}"""
     if not qualities or not isinstance(qualities,list):
         return
@@ -115,6 +56,40 @@ def convert_to_format(source,qualities):
         
         converted_video = f'ffmpeg -i "{source}" -s {quality} -c:v libx264 -crf 23 -c:a aac -strict -2 "{target}"'
         subprocess.run(converted_video,capture_output=True,shell=True)
+
+@shared_task(name="Generate-video-qualities", base=CustomTask)
+def convert_to_format(source, qualities):
+    """Convert video to different formats: 360p, 480p, 720p, 1080p"""
+    
+    if not qualities or not isinstance(qualities, list):
+        return
+    
+    quality_settings = {
+        'hd360': ("640x360", "800k"),    
+        'hd480': ("854x480", "1200k"),   
+        'hd720': ("1280x720", "2500k"),  
+        'hd1080': ("1920x1080", "5000k") 
+    }
+    
+    for quality in qualities:
+        if quality not in quality_settings:
+            continue
+        
+        resolution, bitrate = quality_settings[quality]   
+        file_name, _ = os.path.splitext(source)
+        target = f"{file_name}_{quality}.mp4"
+
+        if os.name == "nt":  
+            source = source.replace("\\", "/").replace("C:", "/mnt/c")
+            target = target.replace("\\", "/").replace("C:", "/mnt/c")
+      
+        converted_video = (
+            f'ffmpeg -i "{source}" '
+            f'-vf "scale={resolution}" ' 
+            f'-c:v libx264 -preset fast -b:v {bitrate} -maxrate {bitrate} -bufsize {bitrate} '
+            f'-c:a aac -b:a 128k -strict -2 "{target}"'
+        )
+        subprocess.run(converted_video, capture_output=True, shell=True)
 
 def generate_thumbnails(source, thumb_width):
     """Generate the thumbnails files"""
@@ -226,7 +201,7 @@ def create_vtt_file(source):
         sprite_file_name = os.path.basename(file_name)
         video_duration = get_video_duration(source=source)
         generate_thumbnails(source=source, thumb_width=320)
-        generate_video_poster(source=source, video_duration=int(0.5*video_duration))
+        generate_video_poster(source=source, video_duration=int(0.25*video_duration))
         cols = generate_sprite(source=source)
         generate_vtt(f"{sprite_file_name}.jpg", num_thumbnails=video_duration, cols=cols, thumb_width=320, thumb_height=180)
         delete_files_starting_with(source=source)

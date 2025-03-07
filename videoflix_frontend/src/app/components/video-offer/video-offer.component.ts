@@ -36,9 +36,6 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
       this.allVideos = videos;
       console.log("All videos", this.allVideos);
       this.selectRandomVideo();
-      setInterval(() => {
-        this.selectRandomVideo();
-      }, 100000);
     });
 
     this.requestsService.isLoading$.subscribe(value => {
@@ -80,6 +77,7 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
   }
 
   selectRandomVideo() {
+    clearTimeout(this.timeoutId);
     const randomIndex = Math.floor(Math.random() * this.allVideos.length);
     this.rndVideo = this.allVideos[randomIndex];
     console.log("Random video", this.rndVideo);
@@ -98,22 +96,14 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
           console.error("Autoplay failed:", err);
         }
 
-        // Listen for video end event
         video.onended = () => {
           this.selectRandomVideo();
         };
-        // video.muted = true;
-        // video.load();
-        // video.play();
 
-        // video.onended = () => {
-        //   this.selectRandomVideo();
-        // };
-
-        // const changeTime = Math.min(this.rndVideo.duration, 30) * 1000;
-        // this.timeoutId = setTimeout(() => {
-        //   this.selectRandomVideo();
-        // }, changeTime);
+        const changeTime = Math.min(this.rndVideo.duration, 60) * 1000;
+        this.timeoutId = setTimeout(() => {
+          this.selectRandomVideo();
+        }, changeTime);
       }
     }, 100);
   }
