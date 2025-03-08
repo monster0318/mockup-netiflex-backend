@@ -15,11 +15,12 @@ logger = logging.getLogger(__name__)
 
 
 class Login(ObtainAuthToken):
-    """Users can log in using their username and password
+    """Users can log in using their email and password
     
     Keyword arguments:
-    argument -- username - username given during the registration
-    Return: {username, email, token}
+    argument -- email - email given during the registration
+    argument -- password - password given during the registration
+    Return: {email, token}
     """
     permission_classes = [AllowAny]
     serializer_class = LoginSerializer
@@ -60,7 +61,14 @@ class GuestLogout(generics.DestroyAPIView):
         return Response({"ok":True,"message":f"User {current_user.email} has logged out"},status=status.HTTP_200_OK)
     
 class Register(APIView):
-    """Registration of new user"""
+    """Registration of new user with email and password
+    
+    Keyword arguments:
+    argument -- email - email given during the registration
+    argument -- password - password of the user
+    argument -- confirm_password - confirm_password for confirmation of password
+    Return: {email, token}
+    """
 
     permission_classes = [AllowAny]
 
@@ -80,7 +88,11 @@ class Register(APIView):
 
 
 class ActivateAccountView(generics.CreateAPIView):
-    """Activate user account after first sign up"""
+    """Activate user account after first sign up
+    
+    argument -- email - email given during the registration
+    """
+
     serializer_class = ActivateAccountSerializer
     permission_classes = [AllowAny]
 

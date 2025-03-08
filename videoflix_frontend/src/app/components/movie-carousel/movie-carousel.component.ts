@@ -4,6 +4,7 @@ import Glide from "@glidejs/glide";
 import { RequestsService } from "../../services/requests.service";
 import { Video } from "../../modules/interfaces";
 import { Router } from "@angular/router";
+import { ModuleService } from "../../services/module.service";
 @Component({
   selector: "app-movie-carousel",
   standalone: true,
@@ -17,7 +18,7 @@ export class MovieCarouselComponent implements OnInit {
   token: string | null = null;
   currentVideo: Video | null = null;
 
-  constructor(private router: Router, private requestsService: RequestsService) {}
+  constructor(private router: Router, private moduleService: ModuleService, private requestsService: RequestsService) {}
 
   ngOnInit(): void {
     this.requestsService.currentVideos$.subscribe(video => {
@@ -52,6 +53,10 @@ export class MovieCarouselComponent implements OnInit {
         this.updateRecentVideo(Number(videoId));
       }
     }
+  }
+
+  stringifyVideoDuration(duration: number) {
+    return this.moduleService.convertDurationToString(duration);
   }
 
   updateRecentVideo(videoId: number | null) {
