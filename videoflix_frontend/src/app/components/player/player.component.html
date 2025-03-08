@@ -13,6 +13,7 @@
         previewThumbnails: { enabled: true, src: this.currentVideo?.vtt_file },
       }"
   >
+    <source [src]="currentVideo?.video_file_hd360" type="video/mp4" size="360" />
     <source [src]="currentVideo?.video_file_hd480" type="video/mp4" size="480" />
     <source [src]="currentVideo?.video_file_hd720" type="video/mp4" size="720" />
     <source [src]="currentVideo?.video_file_hd1080" type="video/mp4" size="1080" />

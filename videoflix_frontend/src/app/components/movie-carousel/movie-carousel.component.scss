@@ -56,6 +56,14 @@
   text-align: left;
 }
 
+li {
+  div {
+    img {
+      background-color: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
 .video-title {
   text-transform: capitalize;
 }

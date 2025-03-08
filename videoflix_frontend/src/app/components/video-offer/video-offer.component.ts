@@ -100,7 +100,7 @@ export class VideoOfferComponent implements AfterViewInit, OnInit {
           this.selectRandomVideo();
         };
 
-        const changeTime = Math.min(this.rndVideo.duration, 60) * 1000;
+        const changeTime = Math.min(this.rndVideo.duration, 100) * 1000;
         this.timeoutId = setTimeout(() => {
           this.selectRandomVideo();
         }, changeTime);
