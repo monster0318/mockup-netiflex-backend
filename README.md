@@ -76,7 +76,7 @@ You can read the documentation or test the API through the following urls if you
 
     http://localhost:8000/redoc/
 
-<img src="media/documentation/redoc.png" width="700">
+<img src="https://github.com/user-attachments/assets/e95e6cfc-bf4b-47b6-9b89-6c9039c91da1" width="700">
 
 #### 3.2 Testing the API with swagger UI
 
