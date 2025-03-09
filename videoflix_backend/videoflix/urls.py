@@ -46,8 +46,9 @@ urlpatterns +=[
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
-
+urlpatterns += static('/authentication/', document_root=settings.BASE_DIR / "authentication")
 if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include('debug_toolbar.urls')),
     ]
+    urlpatterns += static('/coverage_html_report/', document_root=settings.BASE_DIR / "coverage_html_report")

@@ -95,12 +95,6 @@ class TestRegisterSerializer(APITestCase):
         is_valid_error = set(context.exception.detail["message"]).issubset(pwd_error)
         self.assertTrue(is_valid_error)
 
-        serializer = RegisterSerializer(data = { "email":'test3@gmail.com',"password":self.user.username, "confirm_password":self.user.username})
-        with self.assertRaises(ValidationError) as context:
-            serializer.is_valid(raise_exception=True)
-        self.assertEqual(context.exception.detail["type"][0],"password")
-        is_valid_error = set(context.exception.detail["message"]).issubset(pwd_error)
-        self.assertTrue(is_valid_error)
         
     def test_save_registered_data(self):
         """Testing save data by registering"""
@@ -117,6 +111,4 @@ class TestRegisterSerializer(APITestCase):
         saved_user = serializer.save()
         self.assertEqual(User.objects.all().count(), 1)
         self.assertFalse(saved_user.is_active)
-        saved_user_username = "@" + serializer.validated_data.get('email').split('@')[0]
-        self.assertEqual(saved_user.username,saved_user_username)
         self.assertIsInstance(saved_user, User)

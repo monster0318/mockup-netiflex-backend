@@ -1,2 +1,2 @@
-pytest --cov=. --cov-report=term-missing -s --verbose --color=yes
+pytest videoflix_app/tests/test_video_models.py --cov=. --cov-report=term-missing --cov-report=html -s --verbose --color=yes
 

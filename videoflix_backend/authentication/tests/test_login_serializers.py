@@ -56,8 +56,7 @@ class TestLoginSerializer(APITestCase):
         serializer = LoginSerializer(data = login_data)
         with self.assertRaises(ValidationError) as context:
             serializer.is_valid(raise_exception=True)
-
-        self.assertEqual({"type":context.exception.detail["type"][0],"message":context.exception.detail["message"][0]},{"type":"email","message":"Please provide an email or a username, field is missing"} )
+        self.assertEqual({"type":context.exception.detail["type"][0],"message":context.exception.detail["message"][0]},{"type":"email","message":"Please provide an email, field is missing"} )
 
     def test_authenticate_non_existing_user(self):
         """Testing authentication of non existing user"""
@@ -65,7 +64,6 @@ class TestLoginSerializer(APITestCase):
         serializer = LoginSerializer(data = {"email":self.user.email, "password":"password"})
         with self.assertRaises(ValidationError) as context:
             serializer.is_valid(raise_exception=True)
-
         self.assertEqual({"type":context.exception.detail["type"][0],"message":context.exception.detail["message"][0]},{"type":"credentials","message":"Wrong Email or password"})
     
 
@@ -73,11 +71,10 @@ class TestLoginSerializer(APITestCase):
         """Testing authentication of inactive user"""
 
         User.objects.all().delete()
-        user = get_user_model().objects.create(username='test',email="testuser@gmail.com", password="password", is_active=False)
+        user = get_user_model().objects.create(email="testuser@gmail.com", password="password", is_active=False)
         serializer = LoginSerializer(data = {"email":user.email, "password":"password"})
         with self.assertRaises(ValidationError) as context:
             serializer.is_valid(raise_exception=True)
-
         self.assertEqual({"type":context.exception.detail["type"][0],"message":context.exception.detail["message"][0]},{"type":"account","message":"User account is not activated"})
 
         
