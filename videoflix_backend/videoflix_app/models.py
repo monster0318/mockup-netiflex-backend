@@ -41,5 +41,11 @@ class Video(models.Model):
             "is_favorite" :self.is_favorite,
             "language" :self.language,
             "video_file" :self.video_file,
+            "poster":self.poster,
+            "vtt_file":self.vtt_file,
+            "video_file_hd360":self.video_file_hd360,
+            "video_file_hd480":self.video_file_hd480,
+            "video_file_hd720":self.video_file_hd720,
+            "video_file_hd1080":self.video_file_hd1080,
             "duration" :self.duration,
         }

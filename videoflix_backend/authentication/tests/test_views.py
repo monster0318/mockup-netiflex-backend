@@ -25,8 +25,6 @@ class AuthenticationViewTest(APITestCase):
     def tearDown(self):
         User.objects.all().delete()
 
-
-
 ########################################################################
 #          TEST CASES FOR LOGIN AND REGISTRATION OF USERS
 #########################################################################
@@ -41,7 +39,7 @@ class AuthenticationViewTest(APITestCase):
         self.user_token = Token.objects.get(user=self.user)
 
         self.assertEqual(response.status_code, status.HTTP_200_OK)
-        self.assertEqual(response.data, {"token":self.user_token.key,"username":self.user.username,"email":self.user.email})
+        self.assertEqual(response.data, {"token":self.user_token.key,"email":self.user.email})
 
 
     def test_login_non_existent_user(self):
@@ -54,12 +52,11 @@ class AuthenticationViewTest(APITestCase):
         """Test creation of new user"""
 
         fake_register_user_data = UserDataFactory()
-        register_data= {"username":fake_register_user_data.username,"email":fake_register_user_data.email, "password":fake_register_user_data.password,"confirm_password":fake_register_user_data.password} 
+        register_data= {"email":fake_register_user_data.email, "password":fake_register_user_data.password,"confirm_password":fake_register_user_data.password} 
         response = self.client.post(self.register_endpoint, register_data, format='json')
 
         self.assertEqual(response.status_code,status.HTTP_201_CREATED)
         self.assertIn("email",response.data)
-        self.assertIn("username",response.data)
         self.assertIn("token",response.data)
         self.assertEqual(len(User.objects.all()),1)
 
@@ -74,7 +71,7 @@ class AuthenticationViewTest(APITestCase):
             user = User.objects.get(email = register_data["email"])
             user_token = Token.objects.get(user=user)
             self.assertEqual(response.status_code,status.HTTP_201_CREATED)
-            self.assertEqual(response.data, {"token": user_token.key,"username": user.username,"email": user.email})
+            self.assertEqual(response.data, {"token": user_token.key,"email": user.email})
         
         self.assertEqual(len(User.objects.all()),3)
 
@@ -83,7 +80,7 @@ class AuthenticationViewTest(APITestCase):
         """Test creation of new user with bad data"""
 
         fake_register_user_data = UserDataFactory()
-        register_data= {"username":fake_register_user_data.username,"email":fake_register_user_data.email, "password":fake_register_user_data.password,"confirm_password":"FakePassword133*+"} 
+        register_data= {"email":fake_register_user_data.email, "password":fake_register_user_data.password,"confirm_password":"FakePassword133*+"} 
 
         response = self.client.post(self.register_endpoint, register_data)
         self.assertEqual(response.status_code,status.HTTP_400_BAD_REQUEST)
@@ -95,7 +92,7 @@ class AuthenticationViewTest(APITestCase):
 
         self.user = UserFactory()
         self.login_credentials = {"email":self.user.email, "password":"FakePassword123!*"}
-        self.client.login(username=self.user.username,password="FakePassword123!*")
+        self.client.login(email=self.user.email,password="FakePassword123!*")
         response = self.client.delete(self.logout_endpoint)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(User.objects.all()),1)
@@ -114,7 +111,7 @@ class AuthenticationViewTest(APITestCase):
     def test_activate_account_view_good_data(self):
         """Test account activation view with good credentials"""
 
-        user = get_user_model().objects.create(username='test',email="testuser@gmail.com", password="password", is_active=False)
+        user = get_user_model().objects.create(email="testuser@gmail.com", password="password", is_active=False)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         url = reverse("activate-account")

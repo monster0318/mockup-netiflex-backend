@@ -55,9 +55,17 @@ class Dev(Configuration):
                     },
                 "handlers": {
                         "console": {
+                            "level":"DEBUG",
                             "class": "logging.StreamHandler",
                             "stream": "ext://sys.stdout",
                             "formatter": "verbose",
+                            "filters": ["require_debug_false"],
+                        },
+                        "file": {
+                            "level": "WARNING",
+                            "class": "logging.FileHandler",
+                            "filename": "debug.log",
+                            "filters": ["require_debug_false"], 
                         },
                         "mail_admins": {
                             "level": "ERROR",
@@ -73,7 +81,7 @@ class Dev(Configuration):
                         },
                     },
                 "root": {
-                            "handlers": ["console"],
+                            "handlers": ["console","file"],
                             "level": "DEBUG",
                     },
             }
@@ -228,8 +236,9 @@ class Dev(Configuration):
         STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 
         STATICFILES_DIRS = [
-             'authentication/static',
-            # os.path.join(BASE_DIR, '/static'),
+             
+            os.path.join(BASE_DIR, 'authentication'),
+            os.path.join(BASE_DIR, 'coverage_html_report'),
         ]
 
         IMPORT_EXPORT_USE_TRANSACTIONS = True

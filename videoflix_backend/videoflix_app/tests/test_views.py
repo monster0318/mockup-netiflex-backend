@@ -36,20 +36,25 @@ class VideoListTest(APITestCase):
         Video.objects.all().delete()
         User.objects.all().delete()
 
-########################################################################
-#          TEST CASES FOR VIDEO VIEW
-#########################################################################
+# ########################################################################
+# #          TEST CASES FOR VIDEO VIEWS
+# #########################################################################
 
     def test_list_video_auth_user(self):
         """Test the retrieval of all videos for a authenticated user"""
 
-
         response = self.client.get(self.video_endpoint)
         self.assertEqual(response.status_code, status.HTTP_200_OK)
         self.assertEqual(len(response.data), 1)
-        users = UserFactory.create_batch(5)
-        for u in users:
-            VideoFactory(uploaded_by=u)
+        Video.objects.all().delete()
+        User.objects.all().delete()
+        for i in range(6):
+            superuser_data = UserDataFactory()
+            superuser = get_user_model().objects.create_superuser(**superuser_data.to_dict(), password=superuser_data.password)
+            video = VideoDataFactory(uploaded_by=superuser)
+            self.client.force_login(user=superuser)
+            response = self.client.post(self.video_endpoint, video.to_dict(), format='multipart')
+            self.assertEqual(response.status_code, status.HTTP_201_CREATED)
         response = self.client.get(self.video_endpoint)
         self.assertEqual(len(response.data), 6)
 
@@ -67,7 +72,7 @@ class VideoListTest(APITestCase):
         """Test the upload of video for a super user"""
 
         superuser_data = UserDataFactory()
-        superuser = get_user_model().objects.create_superuser(**superuser_data.to_dict())
+        superuser = get_user_model().objects.create_superuser(**superuser_data.to_dict(), password=superuser_data.password)
         video = VideoFactory(uploaded_by=superuser)        
         self.client.force_login(user=superuser)
         response = self.client.post(self.video_endpoint, video.to_dict(), format='multipart')
@@ -135,9 +140,9 @@ class VideoListTest(APITestCase):
   
 
 
-#  ###########################################################################################################################
-#  #####               TEST FOR SINGLE VIDEO VIEW
-#  ###########################################################################################################################
+# #  ###########################################################################################################################
+# #  #####               TEST FOR SINGLE VIDEO VIEW
+# #  ###########################################################################################################################
 
 
 class SingleVideoViewTest(APITestCase):

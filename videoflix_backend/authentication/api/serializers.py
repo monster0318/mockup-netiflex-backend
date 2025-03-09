@@ -25,7 +25,7 @@ class LoginSerializer(serializers.Serializer):
     with email and password.
     """
 
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False)
     password = serializers.CharField(write_only = True)
     remember_me = serializers.BooleanField(default=False)
 
@@ -57,7 +57,7 @@ class RegisterSerializer(serializers.ModelSerializer):
     and email. 
     """
     confirm_password = serializers.CharField(write_only = True)
-    email = serializers.EmailField()
+    email = serializers.EmailField(required=False)
 
     class Meta:
         model = User

@@ -39,6 +39,12 @@ class TestUserModel(APITestCase):
             "is_favorite" :self.video.is_favorite,
             "language" :self.video.language,
             "video_file" :self.video.video_file,
+            "poster":self.video.poster,
+            "vtt_file":self.video.vtt_file,
+            "video_file_hd360":self.video.video_file_hd360,
+            "video_file_hd480":self.video.video_file_hd480,
+            "video_file_hd720":self.video.video_file_hd720,
+            "video_file_hd1080":self.video.video_file_hd1080,
              "duration" :self.video.duration,
         }
 )

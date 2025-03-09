@@ -5,11 +5,10 @@ from config.config_settings import *
 class TestUtils(SimpleTestCase):
 
     def test_message_body(self):
-        username = 'mario'
         user_email = 'mario@gmail.com'
         reset_link = "https://videoflix.ibrahima-sourabie.com/account/reset-password/"
 
-        subject,message,from_email,recipient_list = message_body(username,reset_link,user_email)
+        subject,message,from_email,recipient_list = message_body(reset_link,user_email)
         self.assertIn(subject,"Videoflix Reset Password")
         self.assertEqual(from_email,MAIL_USERNAME)
         self.assertEqual(len(recipient_list), 2)
