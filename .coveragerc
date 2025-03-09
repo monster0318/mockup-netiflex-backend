@@ -1,0 +1,22 @@
+[run]
+source = videoflix_app, authentication, user  # Include only these apps in the coverage report
+
+[report]
+omit =
+    */migrations/*
+    */tests/*
+    */admin.py*
+    */settings.py*
+    */wsgi.py*
+    */asgi.py*
+    */config/*
+    */__init__.py*
+    */urls.py*
+    */apps.py* 
+    */manage.py*
+    */venv/*  
+    omit =
+    videoflix_app/management/commands/*
+
+[html]
+directory = coverage_html_report  
