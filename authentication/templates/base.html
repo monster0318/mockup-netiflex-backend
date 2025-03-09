@@ -7,17 +7,9 @@
 
     <title>Videoflix</title>
     <meta name="description" content="A brief description" />
-
-    <!-- Include CSS files -->
-    <link
-      rel="preload"
-      as="style"
-      href="{% static 'styles/style.css' %}"
-      onload="this.rel = 'stylesheet'"
-    />
   </head>
   <html>
-    <body>
+    <body style="line-height: 1.6; padding-inline: 1.5rem">
       {% block content %} {% endblock %}
     </body>
   </html>

@@ -1,3 +1,4 @@
+from django.shortcuts import render
 from rest_framework.authtoken.views import ObtainAuthToken
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
@@ -12,7 +13,6 @@ from authentication.api.utils import guest_login, is_guest_user, is_guest_user_e
 import logging
 
 logger = logging.getLogger(__name__)
-
 
 class Login(ObtainAuthToken):
     """Users can log in using their email and password
