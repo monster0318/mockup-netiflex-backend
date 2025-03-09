@@ -155,3 +155,8 @@ For this purpose the django celery beat service should also be started the same 
     celery -A videoflix beat -l info --scheduler django_celery_beat.schedulers:DatabaseScheduler
 
 In production this need to be done by the daemon of your system, for instance systemd. However, the periodic tasks will be set up when celery worker starts and do not need to be done manually in the admin panel. Visit the admin panel to see the setting under Crontab.
+
+## Author
+
+Ibrahima Sourabie
+contact@ibrahima-sourabie.com

@@ -1,22 +1,55 @@
 {% extends 'base.html' %} {% load static %} {% block content %}
-<div class="logo-videoflix">
-  <img src="{% static 'img/logo.svg' %}" alt="logo" />
+<div
+  style="
+    font-family: Roboto, system-ui;
+    color: #535456;
+    line-height: 21.71px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 3rem;
+  "
+>
+  <img
+    src="https://videoflix.ibrahima-sourabie.com/authentication/static/img/logo.svg"
+    alt="logo"
+  />
 </div>
-<p>
+<p style="font-family: Roboto, system-ui; color: #535456; line-height: 21.71px">
   Dear <span style="color: #2e3edf; font-weight: 500">{{ username }}</span>,
 </p>
-<p>
+<p style="font-family: Roboto, system-ui; color: #535456; line-height: 21.71px">
   Thank you for registering with
   <span style="color: #2e3edf; font-weight: 500">Videoflix</span>. To complete
   your registration and verify your email address, please click the link below:
 </p>
-<a class="reset-link" href="{{ activate_link }}">Activate account</a>
-<p>
+<a
+  style="
+    font-family: Roboto, system-ui;
+    color: #535456;
+    line-height: 21.71px;
+    display: inline-block;
+    background-color: #2e3edf;
+    color: white;
+    text-decoration: none;
+    padding: 0.7rem 1.2rem;
+    border-radius: 1000px;
+    font-size: 18px;
+    font-weight: bold;
+  "
+  href="{{ activate_link }}"
+  >Activate account</a
+>
+<p style="font-family: Roboto, system-ui; color: #535456; line-height: 21.71px">
   If you did not sign up for
   <span style="color: #2e3edf; font-weight: 500">Videoflix</span>, please ignore
   this email.
 </p>
 
-<p>Happy Streaming! 🎬</p>
-<p>Best regards,<br />Your Videoflix team!</p>
+<p style="font-family: Roboto, system-ui; color: #535456; line-height: 21.71px">
+  Happy Streaming! 🎬
+</p>
+<p style="font-family: Roboto, system-ui; color: #535456; line-height: 21.71px">
+  Best regards,<br />Your Videoflix team!
+</p>
 {% endblock %}
