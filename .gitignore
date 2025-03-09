@@ -2,27 +2,27 @@
 
 # Django backend
 .pytest_cache/
-videoflix_backend/fixtures/__pycache__
-videoflix_backend/config
-videoflix_backend/videoflix_app/management/commands/__pycache__
-videoflix_backend/env
-videoflix_backend/ntenv
-videoflix_backend/linux_env
-videoflix_backend/exports
-videoflix_backend/media
-videoflix_backend/videoflix/__pycache__
-videoflix_backend/authentication/__pycache__
-videoflix_backend/authentication/tests/__pycache__
-videoflix_backend/authentication/api/__pycache__
-videoflix_backend/authentication/migrations/__pycache__
-videoflix_backend/videoflix_app/__pycache__
-videoflix_backend/videoflix_app/api/__pycache__
-videoflix_backend/videoflix_app/tests/__pycache__
-videoflix_backend/videoflix_app/migrations/__pycache__
-videoflix_backend/user/__pycache__
-videoflix_backend/user/migrations/__pycache__
-videoflix_backend/user/tests/__pycache__
-videoflix_backend/user/api/__pycache__
+/fixtures/__pycache__
+/config
+/videoflix_app/management/commands/__pycache__
+/env
+/ntenv
+/linux_env
+/exports
+/media
+/videoflix/__pycache__
+/authentication/__pycache__
+/authentication/tests/__pycache__
+/authentication/api/__pycache__
+/authentication/migrations/__pycache__
+/videoflix_app/__pycache__
+/videoflix_app/api/__pycache__
+/videoflix_app/tests/__pycache__
+/videoflix_app/migrations/__pycache__
+/user/__pycache__
+/user/migrations/__pycache__
+/user/tests/__pycache__
+/user/api/__pycache__
 videoflix_frontend/src/assets/videos
 
 # Compiled output
