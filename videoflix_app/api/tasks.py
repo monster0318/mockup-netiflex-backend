@@ -210,12 +210,12 @@ def create_vtt_file(source):
 def update_video_file(source,video_path, file_field_name):
     """Update video duration"""
     file_name = os.path.splitext(source)[0]
-    poster = file_name + f"_{file_field_name.get("poster")}"
-    vtt_file = file_name + f"{file_field_name.get("vtt_file")}"
-    video_file_hd360 = file_name + f"_{file_field_name.get("video_file_hd360")}"
-    video_file_hd480 = file_name + f"_{file_field_name.get("video_file_hd480")}"
-    video_file_hd720 = file_name + f"_{file_field_name.get("video_file_hd720")}"
-    video_file_hd1080 = file_name + f"_{file_field_name.get("video_file_hd1080")}"
+    poster = file_name + f"_{file_field_name.get('poster')}"
+    vtt_file = file_name + f"{file_field_name.get('vtt_file')}"
+    video_file_hd360 = file_name + f"_{file_field_name.get('video_file_hd360')}"
+    video_file_hd480 = file_name + f"_{file_field_name.get('video_file_hd480')}"
+    video_file_hd720 = file_name + f"_{file_field_name.get('video_file_hd720')}"
+    video_file_hd1080 = file_name + f"_{file_field_name.get('video_file_hd1080')}"
     poster_file, vtt_file = glob.glob(poster), glob.glob(vtt_file)
     video_file_hd360_file, video_file_hd480_file = glob.glob(video_file_hd360), glob.glob(video_file_hd480)
     video_file_hd720_file, video_file_hd1080_file = glob.glob(video_file_hd720), glob.glob(video_file_hd1080)
@@ -240,5 +240,5 @@ def update_video_file(source,video_path, file_field_name):
 def export_db_data():
     """Export DB data"""
     dataset = VideoResource().export()
-    with open(f"exports/video_data_{datetime.datetime.now().strftime("%Y-%m-%d_%H-%M-%S.json")}", "w") as file:
+    with open(f"exports/video_data_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S.json')}", "w") as file:
         file.write(dataset.json)
