@@ -11,7 +11,7 @@ click-plugins==1.1.1
 click-repl==0.3.0
 cmake==3.31.4
 colorama==0.4.6
-coverage==7.6.10
+coverage
 cron-descriptor==1.4.5
 diff-match-patch==20241021
 dj-database-url==2.3.0
