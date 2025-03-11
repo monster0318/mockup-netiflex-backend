@@ -35,6 +35,8 @@ class Dev(Configuration):
         ALLOWED_HOSTS = [
                 'localhost',
                 '127.0.0.1',
+                'videoflix.ibrahima-sourabie.com',
+                SERVER_ALLOWED_HOST,
         ]
 
         #Logging
@@ -155,7 +157,9 @@ class Dev(Configuration):
         CORS_ALLOWED_ORIGINS = [
         "https://localhost:8000",
         "http://127.0.0.1:8000",
-        "http://localhost:4200"
+        "http://localhost:4200",
+        "https://videoflix.ibrahima-sourabie.com",
+        "https://videoflix.ibrahima-sourabie-server.com",
         ]
 
         CORS_ALLOW_HEADERS = [
