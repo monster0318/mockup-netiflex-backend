@@ -20,6 +20,7 @@ from django.contrib import admin
 from django.urls import path, include
 from drf_yasg import openapi
 from drf_yasg.views import get_schema_view
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
 schema_view = get_schema_view(
    openapi.Info(
@@ -38,7 +39,7 @@ urlpatterns = [
     path('api-auth', include("rest_framework.urls")),
     path('', include("authentication.api.urls")),
     path('api/', include("videoflix_app.api.urls")),
-]
+] + staticfiles_urlpatterns()
 
 urlpatterns +=[
     path('swagger<format>/', schema_view.without_ui(cache_timeout=0), name='schema-json'),
@@ -46,9 +47,9 @@ urlpatterns +=[
     path('redoc/', schema_view.with_ui('redoc', cache_timeout=0), name='schema-redoc'),
 ]
 urlpatterns += static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
+urlpatterns += static('/coverage_html_report/', document_root=settings.BASE_DIR / "coverage_html_report")
 urlpatterns += static('/authentication/', document_root=settings.BASE_DIR / "authentication")
 if settings.DEBUG:
     urlpatterns += [
         path('__debug__/', include('debug_toolbar.urls')),
     ]
-    urlpatterns += static('/coverage_html_report/', document_root=settings.BASE_DIR / "coverage_html_report")
