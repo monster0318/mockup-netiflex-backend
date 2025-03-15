@@ -3,9 +3,10 @@
 # Django backend
 .pytest_cache/
 /fixtures/__pycache__
-/config
+/config/__pycache__
 /videoflix_app/management/commands/__pycache__
 /env
+/setups
 /ntenv
 /linux_env
 /exports
