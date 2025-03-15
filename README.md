@@ -4,7 +4,7 @@ VIDEOFLIX API DOCUMENTATION
 
 ## Table of Contents
 
-1. [Prerequisites]
+1. [Prerequisites](#prerequisites)
 2. [Project Setup](#project-setup)
 3. [Endpoints Overview](#endpoints-overview)
 4. [Swagger OpenAPI Documentation](#swagger-openapi-documentation)
