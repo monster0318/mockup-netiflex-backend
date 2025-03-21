@@ -42,21 +42,6 @@ def has_audio_stream(source):
     except Exception:
         return False
 
-# @shared_task(name="Generate-video-qualities", base=CustomTask)
-# def convert_to_format(source,qualities):
-    """Convert video to format {360,120,720,1080}"""
-    if not qualities or not isinstance(qualities,list):
-        return
-    for quality in qualities:
-        file_name, _ = os.path.splitext(source)
-        target = file_name + f'_{quality}.mp4'
-        if os.name == "nt":
-            source = source.replace("\\","/").replace("C:","/mnt/c")
-            target = target.replace("\\","/").replace("C:","/mnt/c")
-        
-        converted_video = f'ffmpeg -i "{source}" -s {quality} -c:v libx264 -crf 23 -c:a aac -strict -2 "{target}"'
-        subprocess.run(converted_video,capture_output=True,shell=True)
-
 @shared_task(name="Generate-video-qualities", base=CustomTask)
 def convert_to_format(source, qualities):
     """Convert video to different formats: 360p, 480p, 720p, 1080p"""
@@ -240,5 +225,8 @@ def update_video_file(source,video_path, file_field_name):
 def export_db_data():
     """Export DB data"""
     dataset = VideoResource().export()
-    with open(f"exports/video_data_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S.json')}", "w") as file:
+    export_dir = "exports"
+    os.makedirs(export_dir, exist_ok=True)
+    file_path = os.path.join(export_dir, f"video_data_{datetime.datetime.now().strftime('%Y-%m-%d_%H-%M-%S.json')}")
+    with open(file_path, "w") as file:
         file.write(dataset.json)

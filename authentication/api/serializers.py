@@ -1,3 +1,4 @@
+from django.conf import settings
 from user.models import User
 from rest_framework import serializers
 from django.contrib.auth import authenticate
@@ -9,6 +10,8 @@ from authentication.api.utils import message_body
 from django.core.exceptions import ValidationError
 from django.core.validators import validate_email
 from django.contrib.auth.password_validation import validate_password
+
+DOMAIN_FRONTEND = getattr(settings, 'DOMAIN_FRONTEND')
 
 class UserAccountSerializer(serializers.ModelSerializer):
     """
@@ -153,7 +156,7 @@ class ResetPasswordSerializer(serializers.Serializer):
         user = User.objects.get(email=email)
         token = default_token_generator.make_token(user)
         uid = urlsafe_base64_encode(force_bytes(user.pk))
-        reset_link = f"http://localhost:4200/reset-password/{uid}/{token}/"
+        reset_link = f"{DOMAIN_FRONTEND}reset-password/{uid}/{token}/"
 
         subject,message,from_email,recipient_list = message_body(reset_link,email)
        

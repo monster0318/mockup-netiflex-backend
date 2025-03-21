@@ -13,6 +13,7 @@ https://docs.djangoproject.com/en/5.1/ref/settings/
 from pathlib import Path
 import os
 from config.config_settings import *
+from setups.config_settings import *
 from configurations import Configuration, values
 
 
@@ -36,7 +37,6 @@ class Dev(Configuration):
                 'localhost',
                 '127.0.0.1',
                 'videoflix.ibrahima-sourabie.com',
-                SERVER_ALLOWED_HOST,
         ]
 
         #Logging
@@ -159,7 +159,6 @@ class Dev(Configuration):
         "http://127.0.0.1:8000",
         "http://localhost:4200",
         "https://videoflix.ibrahima-sourabie.com",
-        "https://videoflix.ibrahima-sourabie-server.com",
         ]
 
         CORS_ALLOW_HEADERS = [
@@ -266,6 +265,9 @@ class Dev(Configuration):
         EMAIL_HOST_PASSWORD = MAIL_PASSWORD
 
         DOMAIN = "http://127.0.0.1:8000/"
+        DOMAIN_FRONTEND = "http://localhost:4200/"
+        DATA_UPLOAD_MAX_MEMORY_SIZE = 1048576000
+        FILE_UPLOAD_MAX_MEMORY_SIZE = 1048576000
 
 
 
@@ -307,3 +309,4 @@ class Prod(Dev):
         DEBUG = False
         SECRET_KEY = values.SecretValue()
         DOMAIN = DOMAIN_PROD
+        DOMAIN_FRONTEND = "https://videoflix.ibrahima-sourabie.com/"
