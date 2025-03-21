@@ -1,3 +1,4 @@
+from django.conf import settings
 from django.db.models.signals import post_save
 from user.models import User
 from django.dispatch import receiver
@@ -8,6 +9,7 @@ from django.utils.http import urlsafe_base64_encode
 from django.utils.encoding import force_bytes
 from config.config_settings import *
 
+DOMAIN_FRONTEND = getattr(settings, 'DOMAIN_FRONTEND')
 
 @receiver(post_save, sender=User)
 def send_welcome_email(sender, instance, created,**kwargs):
@@ -18,7 +20,7 @@ def send_welcome_email(sender, instance, created,**kwargs):
         uid = urlsafe_base64_encode(force_bytes(user.pk))
         context = {
             "username": "@" + instance.email.split('@')[0],
-            "activate_link":f"http://localhost:4200/activate-account/{uid}/{token}/",
+            "activate_link":f"{DOMAIN_FRONTEND}activate-account/{uid}/{token}/",
         }
         message = render_to_string("welcome.html", context)
         from_email = MAIL_USERNAME

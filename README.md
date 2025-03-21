@@ -40,7 +40,24 @@ brew install ffmpeg
 - **Linux**: Install via package manager:
 
 ```sh
-sudo apt update && sudo apt install ffmpeg
+sudo apt update && sudo apt-get install ffmpeg
+```
+
+### imagemagick Installation
+
+imagemagick is required for handling video sprite processing tasks.
+
+- **Windows**: [Download imagemagick](https://imagemagick.org/script/download.php#windows) and make sure to enable "Install legacy utilities (e.g., convert)" so that montage is available
+- **Mac**: Install via Homebrew:
+
+```sh
+brew install imagemagick
+```
+
+- **Linux**: Install via package manager:
+
+```sh
+sudo apt-get install imagemagick
 ```
 
 ### Redis Installation
@@ -82,6 +99,7 @@ After installation, confirm everything is installed correctly:
 
 ```sh
 ffmpeg -version
+montage -version
 redis-server --version
 psql --version
 ```
