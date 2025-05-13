@@ -5,12 +5,18 @@ from django.conf import settings
 from celery import shared_task
 import subprocess
 import glob
+
 import os
 import json
+
 import datetime
 import math  
 from celery import Task
 from django_celery_results.models import TaskResult
+
+
+
+
 
 
 DOMAIN = getattr(settings, 'DOMAIN')
