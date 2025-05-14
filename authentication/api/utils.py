@@ -1,4 +1,5 @@
 import random
+
 from django.utils.crypto import get_random_string
 from user.models import User
 from rest_framework.authtoken.models import Token
